@@ -1,7 +1,8 @@
 (ns clojurians-log.views
   (:require [hiccup2.core :as hiccup]
-            [java-time :as time]
-            [clojure.string :as str]))
+            [clojurians-log.time-util :as cl.tu]
+            [clojure.string :as str]
+            [clojure.pprint :as pp]))
 
 (defn log-page-head [{:data/keys [channel date]}]
   [:head
@@ -188,38 +189,24 @@
        [:span [:span.prefix "#"] "\nclojure\n"]]]]]])
 
 (defn message-history [{:data/keys [messages]}]
-  (let [ts->id (fn [ts]
-                 (let [ts (Double/parseDouble ts)
-                       seconds (java.lang.Math/floor ts)
-                       nanos (java.lang.Math/round (* 1e9 (- ts seconds)))
-                       inst (java.time.Instant/ofEpochSecond seconds nanos)]
-                   (str inst)))
-        ts->time #(subs (ts->id %) 11 19) #_hax0r]
-    [:div.message-history
-     (for [message messages
-           :let [{:keys [event_ts channel type user_profile ts team user subtype text]} message
-                 {:keys [id name real_name is_admin is_owner profile]} user
-                 {:keys [image_48]} profile]]
+  [:div.message-history
+   (for [message messages
+         :let [{:keys [event_ts channel type user_profile ts inst team user subtype text]} message
+               {:keys [id name real_name is_admin is_owner profile]} user
+               {:keys [image_48]} profile]]
 
-       ;; ts is a unix timestamp (float) in seconds, but with decimals going up to
-       ;; microseconds. it seems the old site rendered these also up to microsecond
-       ;; precision, which means we will have to do the same so as not to break
-       ;; links
-       ;;
-       ;; e.g. inst-2015-09-03T22:50:26.000005Z
+     ;; things in the profile
+     ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
+     ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
 
-       ;; things in the profile
-       ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
-       ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
-
-       [:div.message {:id (ts->id ts)}
-        [:a.message_profile-pic {:href "" :style (str "background-image: url(" image_48 ");")}]
-        [:a.message_username {:href ""} name]
-        [:span.message_timestamp [:a {:href (str "#" (ts->id ts))} (ts->time ts)]]
-        [:span.message_star]
-        ;; TODO render slack style markdown (especially code blocks)
-        [:span.message_content [:p (hiccup/raw text)]]
-        #_[:pre (prn-str (:type message)) " " (prn-str (:subtype message))]])]))
+     [:div.message {:id (cl.tu/format-inst-id inst)}
+      [:a.message_profile-pic {:href "" :style (str "background-image: url(" image_48 ");")}]
+      [:a.message_username {:href ""} name]
+      [:span.message_timestamp [:a {:href (str "#" (cl.tu/format-inst-id inst))} (cl.tu/format-inst-time inst)]]
+      [:span.message_star]
+      ;; TODO render slack style markdown (especially code blocks)
+      [:span.message_content [:p (hiccup/raw text)]]
+      [:pre {:style {:display "none"}} (with-out-str (pp/pprint message))]])])
 
 (defn log-page [context]
   (assoc context

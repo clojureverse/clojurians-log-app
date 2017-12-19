@@ -1,7 +1,8 @@
 (ns clojurians-log.data
   (:require [clojure.java.io :as io]
             [clojure.tools.reader.edn :as edn]
-            [clojure.data.json :as json]))
+            [clojure.data.json :as json]
+            [clojurians-log.time-util :as cl.tu]))
 
 (def channels
   (memoize
@@ -24,6 +25,11 @@
 (defn channel-by-name [name]
   (get (channels-by-name) name))
 
+(defn coerce-message [message]
+  (-> message
+      (update :user user)
+      (assoc :inst (cl.tu/ts->inst (:ts message)))))
+
 (defn channel-messages [channel-id date]
   (some->> (str "logs/" date ".txt")
            io/resource
@@ -34,7 +40,8 @@
              (map json/read-json)
              (filter #(and (= "message" (:type %))
                            (nil? (:subtype %))
-                           (= channel-id (:channel %))))))))
+                           (= channel-id (:channel %))))
+             (map coerce-message)))))
 ;; TODO handle message_changed and message_deleted messages
 
 (defn load-channel-messages [{:keys [request] :as context}]
@@ -43,7 +50,7 @@
         messages (channel-messages channel-id date)]
     (assoc context
            :data/channel channel
-           :data/messages (map #(update % :user user) messages)
+           :data/messages messages
            :data/date date)))
 
 

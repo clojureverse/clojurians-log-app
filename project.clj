@@ -22,7 +22,8 @@
                  [lambdaisland/garden-watcher "0.3.2"]
                  [hiccup "2.0.0-alpha1"]
                  [org.clojure/data.json "0.2.6"]
-                 [clojure.java-time "0.3.1"]]
+                 [clojure.java-time "0.3.1"]
+                 [prone "1.1.4"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0"]]
