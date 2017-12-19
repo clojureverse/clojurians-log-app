@@ -19,7 +19,8 @@
                  [org.clojure/tools.namespace "0.3.0-alpha4"]
                  [http-kit "2.3.0-alpha4"]
                  [re-frame "0.10.3-SNAPSHOT"]
-                 [lambdaisland/garden-watcher "0.3.2"]]
+                 [lambdaisland/garden-watcher "0.3.2"]
+                 [hiccup "2.0.0-alpha1"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0"]]

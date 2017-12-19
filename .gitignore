@@ -9,8 +9,13 @@
 /log/
 /out/
 /resources/public/js/compiled/**
+/resources/public/css/style.css
 /target/
 figwheel_server.log
 pom.xml
 pom.xml.asc
 /dev-target
+/resources/channels.edn
+/resources/users.edn
+/resources/logs
+
