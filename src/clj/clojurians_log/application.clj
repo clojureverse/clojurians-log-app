@@ -11,7 +11,9 @@
 
 (defn app-system [config]
   (component/system-map
-   :routes     (new-endpoint home-routes)
+   :routes     (new-endpoint (fn [endpoint]
+                               (fn [request]
+                                 ((home-routes endpoint) request))))
    :middleware (new-middleware {:middleware (:middleware config)})
    :handler    (-> (new-handler)
                    (component/using [:routes :middleware]))

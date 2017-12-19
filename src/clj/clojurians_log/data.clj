@@ -24,22 +24,29 @@
 (defn channel-by-name [name]
   (get (channels-by-name) name))
 
-(defn channel-messages [channel-id year month day]
-  (some->> (str "logs/" year "-" month "-" day ".txt")
+(defn channel-messages [channel-id date]
+  (some->> (str "logs/" date ".txt")
            io/resource
            io/reader
            line-seq
-           (map json/read-json)
-           (filter #(= channel-id (:channel %)))))
+           (sequence
+            (comp
+             (map json/read-json)
+             (filter #(and (= "message" (:type %))
+                           (nil? (:subtype %))
+                           (= channel-id (:channel %))))))))
+;; TODO handle message_changed and message_deleted messages
 
 (defn load-channel-messages [{:keys [request] :as context}]
-  (let [{:keys [channel year month day]} (:params request)
+  (let [{:keys [channel date]} (:params request)
         {channel-id :id :as channel} (channel-by-name channel)
-        messages (channel-messages channel-id day month year)]
+        messages (channel-messages channel-id date)]
     (assoc context
            :data/channel channel
-           :data/messages messages
-           :data/day [year month day])))
+           :data/messages (map #(update % :user user) messages)
+           :data/date date)))
+
+
 
 (comment
   (take 10 (keys (channels)))

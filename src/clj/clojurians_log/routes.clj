@@ -20,7 +20,7 @@
          (assoc :headers {"Content-Type" "text/html; charset=utf-8"})))
 
    ;; https://clojurians-log.clojureverse.org/clojure/2017-11-15.html
-   (GET "/:channel/:year-:month-:day.html" request
+   (GET "/:channel/:date.html" request
      (-> request
          context
          data/load-channel-messages
@@ -28,3 +28,6 @@
          response/render))
 
    (resources "/")))
+
+(comment
+  (data/load-channel-messages {:request {:params {:channel "clojure" :year "2017" :month "01" :day "01"}}}))

@@ -1,11 +1,13 @@
 (ns clojurians-log.views
-  (:require [hiccup2.core :as hiccup]))
+  (:require [hiccup2.core :as hiccup]
+            [java-time :as time]
+            [clojure.string :as str]))
 
-(defn log-page-head [context]
+(defn log-page-head [{:data/keys [channel date]}]
   [:head
    [:meta {:charset "utf-8"}]
    [:meta {:http-equiv "X-UA-Compatible", :content "IE=edge"}]
-   [:title "clara | Clojurians Slack Log"]
+   [:title  (:name channel) " " date " | Clojurians Slack Log"]
 
    ;; Remnant of the static site, let's not sell out our user's click data to
    ;; google just for a font.
@@ -18,15 +20,15 @@
    ;; styling over in clean Garden or Garden+Tachyons.
    [:link {:href "/css/legacy.css", :rel "stylesheet", :type "text/css"}]])
 
-(defn log-page-header [context]
+(defn log-page-header [{:data/keys [channel]}]
   [:div.header
    [:div.team-menu [:a {:href "/"} "Clojurians"]]
    [:div.channel-menu
-    [:span.channel-menu_name [:span.channel-menu_prefix "#"] "\nclara\n"]]])
+    [:span.channel-menu_name [:span.channel-menu_prefix "#"] (:name channel) ]]])
 
-(defn channel-list [context]
+(defn channel-list [{:data/keys [date]}]
   [:div.listings_channels
-   [:h2.listings_header.listings_header_date "2015-09-03"]
+   [:h2.listings_header.listings_header_date date]
    [:h2.listings_header "Channels"]
    [:ul.channel_list
     [:li.channel
@@ -185,39 +187,39 @@
        {:href "../clojure/2015-09-03.html"}
        [:span [:span.prefix "#"] "\nclojure\n"]]]]]])
 
-(defn message-history [context]
-  [:div.message-history
-   [:div#inst-2015-09-03T22:50:03.000003Z.message
-    [:a.message_profile-pic
-     {:href "",
-      :style
-      "background-image: url(https://secure.gravatar.com/avatar/ed8cd6f26fffbe2b783df3b12508dfd0.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0004-48.png);"}]
-    [:a.message_username {:href ""} "devn"]
-    [:span.message_timestamp
-     [:a {:href "#inst-2015-09-03T22:50:03.000003Z"} "22:50:03"]]
-    [:span.message_star]
-    [:span.message_content [:p "Howdy folks"]]]
-   [:div#inst-2015-09-03T22:50:08.000004Z.message
-    [:a.message_profile-pic
-     {:href "",
-      :style
-      "background-image: url(https://secure.gravatar.com/avatar/ed8cd6f26fffbe2b783df3b12508dfd0.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_000-48.png);"}]
-    [:a.message_username {:href ""} "devn"]
-    [:span.message_timestamp
-     [:a {:href "#inst-2015-09-03T22:50:08.000004Z"} "22:50:08"]]
-    [:span.message_star]
-    [:span.message_content [:p "I am embarking on a Clara journey"]]]
-   [:div#inst-2015-09-03T22:50:26.000005Z.message
-    [:a.message_profile-pic
-     {:href "",
-      :style
-      "background-image: url(https://secure.gravatar.com/avatar/ed8cd6f26fffbe2b783df3b12508dfd0.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0004-48.png);"}]
-    [:a.message_username {:href ""} "devn"]
-    [:span.message_timestamp
-     [:a {:href "#inst-2015-09-03T22:50:26.000005Z"} "22:50:26"]]
-    [:span.message_star]
-    [:span.message_content
-     [:p "I am curious if anyone has any recommended reading"]]]])
+(defn message-history [{:data/keys [messages]}]
+  (let [ts->id (fn [ts]
+                 (let [ts (Double/parseDouble ts)
+                       seconds (java.lang.Math/floor ts)
+                       nanos (java.lang.Math/round (* 1e9 (- ts seconds)))
+                       inst (java.time.Instant/ofEpochSecond seconds nanos)]
+                   (str inst)))
+        ts->time #(subs (ts->id %) 11 19) #_hax0r]
+    [:div.message-history
+     (for [message messages
+           :let [{:keys [event_ts channel type user_profile ts team user subtype text]} message
+                 {:keys [id name real_name is_admin is_owner profile]} user
+                 {:keys [image_48]} profile]]
+
+       ;; ts is a unix timestamp (float) in seconds, but with decimals going up to
+       ;; microseconds. it seems the old site rendered these also up to microsecond
+       ;; precision, which means we will have to do the same so as not to break
+       ;; links
+       ;;
+       ;; e.g. inst-2015-09-03T22:50:26.000005Z
+
+       ;; things in the profile
+       ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
+       ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
+
+       [:div.message {:id (ts->id ts)}
+        [:a.message_profile-pic {:href "" :style (str "background-image: url(" image_48 ");")}]
+        [:a.message_username {:href ""} name]
+        [:span.message_timestamp [:a {:href (str "#" (ts->id ts))} (ts->time ts)]]
+        [:span.message_star]
+        ;; TODO render slack style markdown (especially code blocks)
+        [:span.message_content [:p (hiccup/raw text)]]
+        #_[:pre (prn-str (:type message)) " " (prn-str (:subtype message))]])]))
 
 (defn log-page [context]
   (assoc context
