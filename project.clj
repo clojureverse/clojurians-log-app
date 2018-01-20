@@ -23,7 +23,9 @@
                  [hiccup "2.0.0-alpha1"]
                  [org.clojure/data.json "0.2.6"]
                  [clojure.java-time "0.3.1"]
-                 [prone "1.1.4"]]
+                 [prone "1.1.4"]
+                 [com.google.guava/guava "23.5-jre"]
+                 [com.datomic/datomic-free "0.9.5656"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0"]]

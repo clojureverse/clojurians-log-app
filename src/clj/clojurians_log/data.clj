@@ -30,14 +30,17 @@
       (update :user user)
       (assoc :inst (cl.tu/ts->inst (:ts message)))))
 
-(defn channel-messages [channel-id date]
-  (some->> (str "logs/" date ".txt")
+(defn event-seq [file]
+  (some->> file
            io/resource
            io/reader
            line-seq
+           (map json/read-json)))
+
+(defn channel-messages [channel-id date]
+  (some->> (event-seq (str "logs/" date ".txt"))
            (sequence
             (comp
-             (map json/read-json)
              (filter #(and (= "message" (:type %))
                            (nil? (:subtype %))
                            (= channel-id (:channel %))))
@@ -53,6 +56,9 @@
            :data/messages messages
            :data/date date)))
 
+
+(defn log-files []
+  (file-seq (io/file (io/resource "logs"))))
 
 
 (comment

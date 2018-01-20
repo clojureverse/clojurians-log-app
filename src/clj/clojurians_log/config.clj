@@ -10,4 +10,5 @@
    :middleware [[wrap-defaults site-defaults]
                 wrap-with-logger
                 wrap-gzip
-                prone/wrap-exceptions]})
+                prone/wrap-exceptions]
+   :datomic-uri "datomic:mem:clojurians-dev"})
