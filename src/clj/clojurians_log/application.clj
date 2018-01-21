@@ -11,23 +11,23 @@
             [clojurians-log.config :refer [config]]
             [clojurians-log.routes :refer [home-routes]]))
 
-(defn app-system [config]
+(defn app-system [{:keys [datomic http] :as config}]
   (component/system-map
    :routes     (new-endpoint (fn [endpoint]
                                (fn [request]
                                  ((home-routes endpoint) request))))
-   :middleware (new-middleware {:middleware (:middleware config)})
+   :middleware (new-middleware {:middleware (:middleware http)})
    :handler    (-> (new-handler)
                    (component/using [:routes :middleware]))
-   :http       (-> (new-web-server (:http-port config))
+   :http       (-> (new-web-server (:port http))
                    (component/using [:handler]))
-   :server-info (server-info (:http-port config))
-   :datomic (new-datomic-db (:datomic-uri config))
+   :server-info (server-info (:port http))
+   :datomic (new-datomic-db (:uri datomic))
    :datomic-schema (-> (new-datomic-schema)
                        (component/using [:datomic]))))
 
 (defn -main [& _]
-  (let [config (config)]
+  (let [config (config :prod)]
     (-> config
         app-system
         component/start)))

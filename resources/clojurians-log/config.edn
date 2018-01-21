@@ -1,0 +1,2 @@
+{:datomic {:uri #or [#env DATOMIC_URI "datomic:mem:clojurians_log"]}
+ :http {:port #long #or [#env CLOJURIANS_LOG_PORT 4983]}}

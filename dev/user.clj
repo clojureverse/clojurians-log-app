@@ -5,21 +5,18 @@
             [figwheel-sidecar.system :as fw-sys]
             [reloaded.repl :refer [system init]]
             [ring.middleware.reload :refer [wrap-reload]]
-            [ring.middleware.file :refer [wrap-file]]
             [system.components.middleware :refer [new-middleware]]
             [figwheel-sidecar.repl-api :as figwheel]
             [garden-watcher.core :refer [new-garden-watcher]]
             [clojurians-log.config :refer [config]]))
 
 (defn dev-system []
-  (let [config (config)]
-    (assoc (clojurians-log.application/app-system config)
-           :middleware (new-middleware
-                        {:middleware (into [[wrap-file "dev-target/public"]]
-                                           (:middleware config))})
+  (let [config (config :dev)
+        system-map (clojurians-log.application/app-system config)]
+    (assoc system-map
            :figwheel-system (fw-sys/figwheel-system (fw-config/fetch-config))
            :css-watcher (fw-sys/css-watcher {:watch-paths ["resources/public/css"]})
-    :garden-watcher (new-garden-watcher ['clojurians-log.styles]))))
+           :garden-watcher (new-garden-watcher ['clojurians-log.styles]))))
 
 (reloaded.repl/set-init! #(dev-system))
 
