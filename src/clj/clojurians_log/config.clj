@@ -1,12 +1,33 @@
 (ns clojurians-log.config
-  (:require [environ.core :refer [env]]
-            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
+  (:require [aero.core :as aero]
+            [clojure.java.io :as io]
+            [prone.middleware :as prone]
+            [ring.middleware.defaults :refer [wrap-defaults]]
+            [ring.middleware.file :refer [wrap-file]]
             [ring.middleware.gzip :refer [wrap-gzip]]
             [ring.middleware.logger :refer [wrap-with-logger]]
-            [prone.middleware :as prone]
-            [aero.core :as aero]
-            [clojure.java.io :as io]
-            [ring.middleware.file :refer [wrap-file]]))
+            [ring.middleware.session.memory :as mem]))
+
+(def session-store (mem/memory-store))
+
+(def site-defaults
+  {:params {:urlencoded true
+            :multipart true
+            :nested true
+            :keywordize true}
+   :cookies true
+   :session {:store session-store
+             :flash true
+             :cookie-attrs {:http-only true :same-site :strict}}
+   :security {:anti-forgery true
+              :xss-protection {:enable? true :mode :block}
+              :frame-options :sameorigin
+              :content-type-options :nosniff}
+   :static {:resources "public"}
+   :responses {:not-modified-responses true
+               :absolute-redirects true
+               :content-types true
+               :default-charset "utf-8"}})
 
 (def middleware-stack
   {:prod [[wrap-defaults site-defaults]

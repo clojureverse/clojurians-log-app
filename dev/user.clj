@@ -1,22 +1,23 @@
 (ns user
-  (:require [clojurians-log.application]
-            [com.stuartsierra.component :as component]
+  (:require [clojurians-log.application :as app]
+            [clojurians-log.config :as config :refer [config]]
             [figwheel-sidecar.config :as fw-config]
             [figwheel-sidecar.system :as fw-sys]
-            [reloaded.repl :refer [system init]]
-            [ring.middleware.reload :refer [wrap-reload]]
-            [system.components.middleware :refer [new-middleware]]
-            [figwheel-sidecar.repl-api :as figwheel]
             [garden-watcher.core :refer [new-garden-watcher]]
-            [clojurians-log.config :refer [config]]))
+            [lambdaisland.repl-tools.browse-url :as browse-url]
+            [lambdaisland.repl-tools.ring-history :as ring-history]
+            [reloaded.repl :refer [system]]
+            [ring.middleware.cookies :as cookies]
+            [ring.middleware.session.store :as session-store]))
 
 (defn dev-system []
-  (let [config (config :dev)
-        system-map (clojurians-log.application/app-system config)]
-    (assoc system-map
-           :figwheel-system (fw-sys/figwheel-system (fw-config/fetch-config))
-           :css-watcher (fw-sys/css-watcher {:watch-paths ["resources/public/css"]})
-           :garden-watcher (new-garden-watcher ['clojurians-log.styles]))))
+  (let [config (config :dev)]
+    (-> (app/app-system config)
+        (ring-history/inject-ring-history)
+        (assoc :figwheel-system (fw-sys/figwheel-system (fw-config/fetch-config))
+               :css-watcher (fw-sys/css-watcher {:watch-paths ["resources/public/css"]})
+               :garden-watcher (new-garden-watcher ['clojurians-log.styles])
+               :browse-url (browse-url/new-browse-url-component (str "http://localhost:" (get-in config [:http :port])))))))
 
 (reloaded.repl/set-init! #(dev-system))
 
@@ -30,12 +31,26 @@
 (def go reloaded.repl/go)
 (def reset reloaded.repl/reset)
 (def reset-all reloaded.repl/reset-all)
+(def clear reloaded.repl/clear)
 
-;; deprecated, to be removed in Chestnut 1.0
-(defn run []
-  (println "(run) is deprecated, use (go)")
-  (go))
+(defn last-request
+  ([]
+   (last-request 0))
+  ([n]
+   (ring-history/last-request (:ring-history reloaded.repl/system) n)))
 
-(defn browser-repl []
-  (println "(browser-repl) is deprecated, use (cljs-repl)")
-  (cljs-repl))
+(defn last-response
+  ([]
+   (last-request 0))
+  ([n]
+   (ring-history/last-response (:ring-history reloaded.repl/system) n)))
+
+(defn session-id []
+  (-> (last-request)
+      cookies/cookies-request
+      (get-in [:cookies "ring-session" :value])))
+
+(defn session []
+  (session-store/read-session
+   config/session-store
+   (session-id)))

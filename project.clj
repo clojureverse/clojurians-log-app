@@ -26,7 +26,8 @@
                  [prone "1.1.4"]
                  [com.google.guava/guava "23.5-jre"]
                  [com.datomic/datomic-free "0.9.5656"]
-                 [aero "1.1.2"]]
+                 [aero "1.1.2"]
+                 [lambdaisland/repl-tools "0.1.0"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0"]]
