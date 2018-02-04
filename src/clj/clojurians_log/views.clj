@@ -27,166 +27,17 @@
    [:div.channel-menu
     [:span.channel-menu_name [:span.channel-menu_prefix "#"] (:name channel) ]]])
 
-(defn channel-list [{:data/keys [date]}]
+(defn channel-list [{:data/keys [date channels]}]
   [:div.listings_channels
    [:h2.listings_header.listings_header_date date]
    [:h2.listings_header "Channels"]
    [:ul.channel_list
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../clojure-canada/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nclojure-canada\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../testing/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\ntesting\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../clara/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nclara\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../clojure-brasil/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nclojure-brasil\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../code-reviews/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\ncode-reviews\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../boot/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nboot\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../datomic/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\ndatomic\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../sydney/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nsydney\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../clojure-nl/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nclojure-nl\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../re-frame/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nre-frame\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../clojure-russia/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nclojure-russia\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../events/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nevents\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../jobs/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\njobs\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../clojurescript/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nclojurescript\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../ldnclj/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nldnclj\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../hoplon/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nhoplon\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../onyx/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nonyx\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../clojure-italy/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nclojure-italy\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../beginners/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nbeginners\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../clojure-argentina/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nclojure-argentina\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../sneer-br/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nsneer-br\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../om/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nom\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../admin-announcements/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nadmin-announcements\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../cljs-dev/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\ncljs-dev\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../reagent/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nreagent\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../cider/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\ncider\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../immutant/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nimmutant\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../melbourne/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nmelbourne\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../off-topic/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\noff-topic\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../cursive/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\ncursive\n"]]]]
-    [:li.channel
-     [:span.channel_name
-      [:a
-       {:href "../clojure/2015-09-03.html"}
-       [:span [:span.prefix "#"] "\nclojure\n"]]]]]])
+    (for [{:channel/keys [name slack-id]} (sort-by :channel/name channels)]
+      [:li.channel
+       [:span.channel_name
+        [:a
+         {:href (str "/" name "/" date ".html")}
+         [:span [:span.prefix "#"] " " name]]]])]])
 
 (defn message-history [{:data/keys [messages]}]
   [:div.message-history
@@ -217,8 +68,7 @@
            (log-page-header context)
            [:div.main
             [:div.listings
-             [:p.disclaimer
-              "This page is not created by, affiliated with, or supported by Slack Technologies, Inc."]
+             [:p.disclaimer "This page is not created by, affiliated with, or supported by Slack Technologies, Inc."]
              (channel-list context)
              [:div.listings_direct-messages]]
             (message-history context)]]]))

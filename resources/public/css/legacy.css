@@ -203,7 +203,6 @@ body {
 
 /* line 26, ../tests/sass/components/_listings.scss */
 .channel {
-    height: 24px;
     line-height: 24px;
     -moz-border-radius-topright: 0.25rem;
     -webkit-border-top-right-radius: 0.25rem;

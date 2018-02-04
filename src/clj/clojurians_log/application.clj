@@ -13,9 +13,10 @@
 
 (defn app-system [{:keys [datomic http] :as config}]
   (component/system-map
-   :routes     (new-endpoint (fn [endpoint]
-                               (fn [request]
-                                 ((home-routes endpoint) request))))
+   :routes     (-> (new-endpoint (fn [endpoint]
+                                   (fn [request]
+                                     ((home-routes endpoint) request))))
+                   (component/using [:datomic]))
    :middleware (new-middleware {:middleware (:middleware http)})
    :handler    (-> (new-handler)
                    (component/using [:routes :middleware]))

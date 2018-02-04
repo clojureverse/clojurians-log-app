@@ -309,13 +309,17 @@
 (d/transact (conn) clojurians-log.db.schema/full-schema)
 
 ;; Load users
-(d/transact (conn) (mapv i/user->tx (vals (users))))
+(doseq [users (partition-all 1000 (vals (users)))]
+  (d/transact (conn) (mapv i/user->tx users)))
+
 
 ;; Load channels
 (d/transact (conn) (mapv i/channel->tx (vals (channels))))
 
 ;; Load messages
-(d/transact (conn) (keep i/event->tx ++msgs++))
+(doseq [day (range 30)]
+  (let [msgs (event-seq (format "logs/2017-11-%02d.txt" day))]
+    (d/transact (conn) (keep i/event->tx msgs))))
 
 (d/q '[:find ?t
        :where

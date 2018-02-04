@@ -3,13 +3,13 @@
             [clojurians-log.data :as data]
             [clojure.string :as str]))
 
-(def conn (-> reloaded.repl/system :datomic :conn))
-
+(defn conn [] (-> reloaded.repl/system :datomic :conn))
+(defn db [] (d/db (conn)))
 ;; - message / message event
 ;; - users
 ;; - channels
 
-(d/transact conn [{:db/ident :message/text
+(d/transact (conn) [{:db/ident :message/text
                    :db/valueType :db.type/string
                    :db/cardinality :db.cardinality/one}
                   {:db/ident :message/timestamp
@@ -88,9 +88,31 @@
   :display_name_normalized "pesterhazy"}}
 
 
-(d/transact conn clojurians-log.db.schema/full-schema)
+(d/transact (conn) clojurians-log.db.schema/full-schema)
 
-(into {} (d/entity (d/db conn) :user/profile))
+(into {} (d/entity (d/db (conn)) :user/profile))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 2018-02-03
+
+(d/pull)
+
+(d/q '[:find [(pull ?chan [:channel/slack-id :channel/name]) ...]
+       :in $ ?day
+       :where
+       [?msg :message/day ?day]
+       [?msg :message/channel ?chan]]
+     (db)
+     "2017-11-01")
+
+
+(d/q '[:find (pull ?msg [:message/text]) (pull ?user [:user/name])
+       :in $ ?chan-name ?day
+       :where
+       [?msg :message/channel ?chan]
+       [?msg :message/user ?user]
+       [?chan :channel/name ?chan-name]
+       [?msg :message/day ?day]]
+     (db)
+     "beginners"
+     "2017-11-10")
