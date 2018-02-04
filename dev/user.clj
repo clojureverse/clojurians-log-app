@@ -17,7 +17,7 @@
         (assoc :figwheel-system (fw-sys/figwheel-system (fw-config/fetch-config))
                :css-watcher (fw-sys/css-watcher {:watch-paths ["resources/public/css"]})
                :garden-watcher (new-garden-watcher ['clojurians-log.styles])
-               :browse-url (browse-url/new-browse-url-component (str "http://localhost:" (get-in config [:http :port])))))))
+               #_#_:browse-url (browse-url/new-browse-url-component (str "http://localhost:" (get-in config [:http :port])))))))
 
 (reloaded.repl/set-init! #(dev-system))
 

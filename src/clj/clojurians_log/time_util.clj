@@ -15,6 +15,7 @@
 (def UTC (jt/zone-id "UTC"))
 (def inst-id-formatter (jt/with-zone (jt/formatter "'inst-'yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'") UTC))
 (def inst-time-formatter (jt/with-zone (jt/formatter "HH:MM:ss") UTC))
+(def inst-day-formatter (jt/with-zone (jt/formatter "yyyy-MM-dd") UTC))
 
 (defn format-inst-id
   "Format an Instant into an id used to link to individual messages. Fun fact: the
@@ -30,3 +31,8 @@
   view."
   [inst]
   (jt/format inst-time-formatter inst))
+
+(defn format-inst-day
+  "Format an instant as year-month-day, e.g. 2017-11-20."
+  [inst]
+  (jt/format inst-day-formatter inst))
