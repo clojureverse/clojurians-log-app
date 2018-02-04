@@ -8,7 +8,8 @@
             [lambdaisland.repl-tools.ring-history :as ring-history]
             [reloaded.repl :refer [system]]
             [ring.middleware.cookies :as cookies]
-            [ring.middleware.session.store :as session-store]))
+            [ring.middleware.session.store :as session-store]
+            [datomic.api :as d]))
 
 (defn dev-system []
   (let [config (config :dev)]
@@ -54,3 +55,9 @@
   (session-store/read-session
    config/session-store
    (session-id)))
+
+(defn conn []
+  (get-in reloaded.repl/system [:datomic :conn]))
+
+(defn db []
+  (d/db (conn)))
