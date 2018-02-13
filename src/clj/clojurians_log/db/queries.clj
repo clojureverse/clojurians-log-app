@@ -1,30 +1,46 @@
 (ns clojurians-log.db.queries
-  (:require [datomic.api :as d]))
+  (:require [datomic.api :as d]
+            [clojurians-log.time-util :as time-util]))
 
 (defn channel-list
   ([db]
-   (d/q '[:find [(pull ?chan [:channel/slack-id :channel/name]) ...]
-          :in $
-          :where
-          [?msg :message/channel ?chan]]
-        db))
+   (->> (d/q '[:find [(pull ?chan [:channel/slack-id :channel/name]) ...]
+               :in $
+               :where
+               [?msg :message/channel ?chan]]
+             db)
+        (sort-by :channel/name)))
   ([db day]
-   (d/q '[:find [(pull ?chan [:channel/slack-id :channel/name]) ...]
-          :in $ ?day
-          :where
-          [?msg :message/day ?day]
-          [?msg :message/channel ?chan]]
-        db
-        day)))
+   (->> (d/q '[:find (pull ?chan [:channel/slack-id :channel/name]) (count ?msg)
+               :in $ ?day
+               :where
+               [?msg :message/day ?day]
+               [?msg :message/channel ?chan]]
+             db
+             day)
+        (map #(assoc (first %) :channel/message-count (last %))))))
+
+(defn- assoc-inst [message]
+  (assoc message :message/inst (time-util/ts->inst (:message/ts message))))
 
 (defn channel-day-messages [db chan-name day]
-  (d/q '[:find (pull ?msg [:message/text]) (pull ?user [:user/name])
-         :in $ ?chan-name ?day
+  (->> (d/q '[:find [(pull ?msg [:message/text :message/ts {:message/user [:user/name :user-profile/image-48]}]) ...]
+              :in $ ?chan-name ?day
+              :where
+              [?msg :message/channel ?chan]
+              [?msg :message/user ?user]
+              [?chan :channel/name ?chan-name]
+              [?msg :message/day ?day]]
+            db
+            chan-name
+            day)
+       (map assoc-inst)
+       (sort-by :message/inst)))
+
+(defn channel [db name]
+  (d/q '[:find (pull ?chan [*]) .
+         :in $ ?chan-name
          :where
-         [?msg :message/channel ?chan]
-         [?msg :message/user ?user]
-         [?chan :channel/name ?chan-name]
-         [?msg :message/day ?day]]
-       (db)
-       chan-name
-       day))
+         [?chan :channel/name ?chan-name]]
+       db
+       name))

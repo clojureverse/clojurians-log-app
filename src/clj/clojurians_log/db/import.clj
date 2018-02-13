@@ -27,7 +27,7 @@
   (let [inst (time-util/ts->inst ts)]
     #:message {:key (message-key message)
                :ts ts
-               :inst (jt/to-java-date inst)
+               #_#_:inst (jt/to-java-date inst)
                :day (time-util/format-inst-day inst)
                :text text
                :channel [:channel/slack-id channel]

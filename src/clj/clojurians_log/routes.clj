@@ -15,22 +15,27 @@
 (defn home-routes [endpoint]
   (let [conn (get-in endpoint [:datomic :conn])]
     (routes
-     (GET "/" _
-       (-> "public/index.html"
-           io/resource
-           io/input-stream
-           response
-           (assoc :headers {"Content-Type" "text/html; charset=utf-8"})))
+     (GET "/" request
+       (let [db (d/db conn)]
+         (-> request
+             context
+             (assoc :data/title "Clojurians Slack Log"
+                    :data/channels (queries/channel-list db))
+             views/channel-list-page
+             response/render)))
 
      ;; https://clojurians-log.clojureverse.org/clojure/2017-11-15.html
      (GET "/:channel/:date.html" [channel date :as request]
-       (-> request
-           context
-           data/load-channel-messages
-           (assoc :data/channels (queries/channel-list (d/db conn) date))
-           #_(assoc :data/messages )
-           views/log-page
-           response/render))
+       (let [db (d/db conn)]
+         (-> request
+             context
+             (assoc :data/channel (queries/channel db channel)
+                    :data/channels (queries/channel-list db date)
+                    :data/messages (queries/channel-day-messages db channel date)
+                    :data/title (str channel " " date " | Clojurians Slack Log")
+                    :data/date date)
+             views/log-page
+             response/render)))
 
      (resources "/"))))
 

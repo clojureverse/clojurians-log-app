@@ -97,7 +97,7 @@
 
 (d/pull)
 
-(d/q '[:find [(pull ?chan [:channel/slack-id :channel/name]) ...]
+(d/q '[:find (pull ?chan [:channel/slack-id :channel/name]) (count ?msg)
        :in $ ?day
        :where
        [?msg :message/day ?day]
