@@ -109,7 +109,7 @@
   :doo {:build "test"}
 
   :aliases {"prep" ["do"
-                    "compile"
+                    #_"compile"
                     #_["cljsbuild" "once" "min"]
                     ["run" "-m" "garden-watcher.main" "clojurians-log.styles"]]}
 
