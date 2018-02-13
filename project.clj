@@ -108,6 +108,11 @@
 
   :doo {:build "test"}
 
+  :aliases {"prep" ["do"
+                    "compile"
+                    #_["cljsbuild" "once" "min"]
+                    ["run" "-m" "garden-watcher.main" "clojurians-log.styles"]]}
+
   :profiles {:dev
              {:dependencies [[figwheel "0.5.15-SNAPSHOT"]
                              [figwheel-sidecar "0.5.15-SNAPSHOT"]
@@ -121,6 +126,9 @@
 
               :source-paths ["dev"]
               :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}}
+
+             :production
+             {:aot :all}
 
              :uberjar
              {:source-paths ^:replace ["src/clj" "src/cljc"]
