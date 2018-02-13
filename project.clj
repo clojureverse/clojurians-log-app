@@ -128,7 +128,8 @@
               :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}}
 
              :production
-             {:aot :all}
+             {:aot :all
+              :source-paths ^:replace ["src/clj" "src/cljc"]}
 
              :uberjar
              {:source-paths ^:replace ["src/clj" "src/cljc"]
