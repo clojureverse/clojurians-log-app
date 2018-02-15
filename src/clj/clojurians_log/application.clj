@@ -33,9 +33,9 @@
 
 (defn -main [& [config-file]]
   (let [conf (if (and config-file (.exists (io/file config-file)))
-               (config (io/file config-file) :prod)
-               (config :prod))]
-    (alter-var-root #'config (constantly config))
+               (config/config (io/file config-file) :prod)
+               (config/config :prod))]
+    (alter-var-root #'config (constantly conf))
     (alter-var-root #'system (constantly
                               (-> conf
                                   app-system
