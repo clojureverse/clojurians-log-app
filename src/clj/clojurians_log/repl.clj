@@ -20,6 +20,7 @@
        (remove #(.isDirectory %))))
 
 (defn load-log-file! [file]
+  (println (str file))
   (let [msgs (data/event-seq file)]
     (d/transact (conn) (keep import/event->tx msgs))))
 
