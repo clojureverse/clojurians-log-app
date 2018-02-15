@@ -37,6 +37,17 @@
        (map assoc-inst)
        (sort-by :message/inst)))
 
+(defn channel-days [db chan-name]
+  (->> (d/q '[:find ?day (count ?msg)
+              :in $ ?chan-name
+              :where
+              [?chan :channel/name ?chan-name]
+              [?msg :message/channel ?chan]
+              [?msg :message/day ?day]]
+            db
+            chan-name)
+       (sort-by first)))
+
 (defn channel [db name]
   (d/q '[:find (pull ?chan [*]) .
          :in $ ?chan-name

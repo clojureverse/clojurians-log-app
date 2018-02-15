@@ -24,6 +24,10 @@
   (let [msgs (data/event-seq file)]
     (d/transact (conn) (keep import/event->tx msgs))))
 
+
 (comment
+  ;; nc localhost 50505
+  (use 'clojurians-log.repl)
   (load-slack-data!)
-  (run! load-log-file! (log-files)))
+  (run! load-log-file! (log-files))
+  )

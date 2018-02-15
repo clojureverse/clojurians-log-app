@@ -24,6 +24,16 @@
              views/channel-list-page
              response/render)))
 
+     (GET "/:channel" [channel :as request]
+       (let [db (d/db conn)]
+         (-> request
+             context
+             (assoc :data/title "Clojurians Slack Log | " channel
+                    :data/days (queries/channel-days db channel)
+                    :data/channel-name channel)
+             views/channel-page
+             response/render)))
+
      ;; https://clojurians-log.clojureverse.org/clojure/2017-11-15.html
      (GET "/:channel/:date.html" [channel date :as request]
        (let [db (d/db conn)]

@@ -71,18 +71,32 @@
       [:div.listings_direct-messages]]
      (message-history context)]]])
 
+(defn- channel-page-html [{:data/keys [days channel-name] :as context}]
+  [:html
+   (page-head context)
+   [:body
+    [:div.main
+     [:h1 "Channel: #" channel-name]
+     [:ul
+      (for [[day cnt] days]
+        [:li [:a {:href (str "/" channel-name "/" day ".html")} "#" channel-name " (" cnt ")"]])]]]])
+
 (defn- channel-list-page-html [{:data/keys [channels] :as context}]
   [:html
    (page-head context)
    [:body
-    [:h1 "Channels"]
-    [:ul
-     (for [{:channel/keys [name]} channels]
-       [:li
-        [:a {:href (str "/" name)} "# " name]])]]])
+    [:div.main
+     [:h1 "Channels"]
+     [:ul
+      (for [{:channel/keys [name]} channels]
+        [:li
+         [:a {:href (str "/" name)} "# " name]])]]]])
 
 (defn log-page [context]
   (assoc context :response/html (log-page-html context)))
+
+(defn channel-page [context]
+  (assoc context :response/html (channel-page-html context)))
 
 (defn channel-list-page [context]
   (assoc context :response/html (channel-list-page-html context)))
