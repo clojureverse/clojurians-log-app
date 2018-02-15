@@ -40,7 +40,10 @@
          wrap-gzip
          prone/wrap-exceptions]})
 
-(defn config [profile]
-  (assoc-in (aero/read-config (io/resource "clojurians-log/config.edn") {:profile profile})
-            [:http :middleware]
-            (middleware-stack profile)))
+(defn config
+  ([file profile]
+   (assoc-in (aero/read-config file {:profile profile})
+             [:http :middleware]
+             (middleware-stack profile)))
+  ([profile]
+   (config (io/resource "clojurians-log/config.edn") profile)))

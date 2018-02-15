@@ -9,7 +9,8 @@
             [system.components.http-kit :refer [new-web-server]]
             [system.components.datomic :refer [new-datomic-db]]
             [clojurians-log.config :refer [config]]
-            [clojurians-log.routes :refer [home-routes]]))
+            [clojurians-log.routes :refer [home-routes]]
+            [clojure.java.io :as io]))
 
 (defn app-system [{:keys [datomic http] :as config}]
   (component/system-map
@@ -27,8 +28,10 @@
    :datomic-schema (-> (new-datomic-schema)
                        (component/using [:datomic]))))
 
-(defn -main [& _]
-  (let [config (config :prod)]
+(defn -main [& [config-file]]
+  (let [config (if (and config-file (.exists (io/file config-file)))
+                 (config (io/file config-file) :prod)
+                 (config :prod))]
     (-> config
         app-system
         component/start)))
