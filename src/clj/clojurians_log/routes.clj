@@ -28,7 +28,7 @@
        (let [db (d/db conn)]
          (-> request
              context
-             (assoc :data/title "Clojurians Slack Log | " channel
+             (assoc :data/title (str "Clojurians Slack Log | " channel)
                     :data/days (queries/channel-days db channel)
                     :data/channel-name channel)
              views/channel-page
