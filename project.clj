@@ -129,7 +129,12 @@
 
              :production
              {:aot :all
-              :source-paths ^:replace ["src/clj" "src/cljc"]}
+              :source-paths ^:replace ["src/clj" "src/cljc"]
+              :dependencies [;; Set through .lein/profiles.clj, see ansible scripts
+                             ;; [com.datomic/datomic-pro ""]
+
+                             ;; JDBC driver for Datomic+PostgreSQL
+                             [org.postgresql/postgresql "9.3-1102-jdbc41"]]}
 
              :uberjar
              {:source-paths ^:replace ["src/clj" "src/cljc"]
