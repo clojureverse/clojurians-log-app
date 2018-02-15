@@ -25,7 +25,6 @@
                  [clojure.java-time "0.3.1"]
                  [prone "1.1.4"]
                  [com.google.guava/guava "23.5-jre"]
-                 [com.datomic/datomic-free "0.9.5656"]
                  [aero "1.1.2"]
                  [lambdaisland/repl-tools "0.1.0"]]
 
@@ -119,7 +118,8 @@
                              [com.cemerick/piggieback "0.2.2"]
                              [org.clojure/tools.nrepl "0.2.13"]
                              [lein-doo "0.1.8"]
-                             [reloaded.repl "0.2.4"]]
+                             [reloaded.repl "0.2.4"]
+                             [com.datomic/datomic-free "0.9.5656"]]
 
               :plugins [[lein-figwheel "0.5.15-SNAPSHOT"]
                         [lein-doo "0.1.8"]]
