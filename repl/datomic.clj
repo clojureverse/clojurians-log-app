@@ -116,3 +116,9 @@
      (db)
      "beginners"
      "2017-11-10")
+
+(count
+ (d/q '[:find ?uid
+        :where
+        [?uid :user/slack-id]]
+      (db)))

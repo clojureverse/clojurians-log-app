@@ -13,6 +13,7 @@
 
 (defn dev-system []
   (let [config (config :dev)]
+    (alter-var-root #'app/config (constantly config))
     (-> (app/app-system config)
         (ring-history/inject-ring-history)
         (assoc :figwheel-system (fw-sys/figwheel-system (fw-config/fetch-config))
@@ -61,3 +62,10 @@
 
 (defn db []
   (d/db (conn)))
+
+(defn add-dependency [dep-vec]
+  (require 'cemerick.pomegranate)
+  ((resolve 'cemerick.pomegranate/add-dependencies)
+   :coordinates [dep-vec]
+   :repositories (merge @(resolve 'cemerick.pomegranate.aether/maven-central)
+                        {"clojars" "https://clojars.org/repo"})))

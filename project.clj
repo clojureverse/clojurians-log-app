@@ -26,7 +26,9 @@
                  [prone "1.1.4"]
                  [com.google.guava/guava "23.5-jre"]
                  [aero "1.1.2"]
-                 [lambdaisland/repl-tools "0.1.0"]]
+                 [lambdaisland/repl-tools "0.1.0"]
+                 [clj-http "3.7.0"]
+                 [org.julienxx/clj-slack "0.5.5"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0"]]
@@ -119,7 +121,9 @@
                              [org.clojure/tools.nrepl "0.2.13"]
                              [lein-doo "0.1.8"]
                              [reloaded.repl "0.2.4"]
-                             [com.datomic/datomic-free "0.9.5656"]]
+                             [com.datomic/datomic-free "0.9.5656"]
+                             [com.cemerick/pomegranate "1.0.0"]
+                             [alembic "0.3.2"]]
 
               :plugins [[lein-figwheel "0.5.15-SNAPSHOT"]
                         [lein-doo "0.1.8"]]

@@ -32,13 +32,12 @@
 
 (defn event-seq [file]
   (some->> file
-           io/resource
            io/reader
            line-seq
            (map json/read-json)))
 
 (defn channel-messages [channel-id date]
-  (some->> (event-seq (str "logs/" date ".txt"))
+  (some->> (event-seq (io/resource (str "logs/" date ".txt")))
            (sequence
             (comp
              (filter #(and (= "message" (:type %))
