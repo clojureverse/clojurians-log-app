@@ -119,36 +119,41 @@
      "beginners"
      "2017-11-10")
 
-(count
- (d/q '[:find ?uid
-        :where
-        [?uid :user/slack-id]]
-      (db)))
+(count (d/q '[:find ?uid :where [?uid :user/slack-id]] (user/db)))
+(d/q '[:find [?sid ...] :where [?cid :channel/slack-id ?sid]] (user/db))
 
 ;; save out demo users and channels
 (spit "/tmp/users.edn"
       (with-out-str
         (->> (range 1 10)
-             (map #(str "2018-01-0" %))
+             (map #(str "2018-02-0" %))
+             (cons "2018-01-31")
              (d/q '[:find [(pull ?uid [*]) ...]
                     :in $ [?dates ...]
                     :where
                     [?msg :message/day ?dates]
                     [?msg :message/user ?uid]]
                   (user/db))
+             (into (set (d/q '[:find [(pull ?uid [*]) ...]
+                               :where
+                               [_ :channel/creator ?uid]]
+                             (user/db))))
              (map #(assoc % :user-profile/email (str (:user/name %) "@example.com")))
+             (map #(dissoc % :db/id))
              (clojure.pprint/pprint))))
 
 (spit "/tmp/channels.edn"
       (with-out-str
         (clojure.pprint/pprint
-         (d/q '[:find [(pull ?ch [*]) ...]
-                :in $ [?dates ...]
-                :where
-                [?msg :message/day ?dates]
-                [?msg :message/channel ?ch]]
-              (user/db)
-              (map #(str "2018-01-0" %) (range 1 10))))))
+         (->> (d/q '[:find [(pull ?ch [* {:channel/creator [:user/slack-id]}]) ...]
+                     :in $ [?dates ...]
+                     :where
+                     [?msg :message/day ?dates]
+                     [?msg :message/channel ?ch]]
+                   (user/db)
+                   (map #(str "2018-02-0" %) (range 1 10)))
+              (map #(dissoc % :db/id))
+              (map #(update % :channel/creator first))))))
 
 (time (count (clojurians-log.db.queries/channel-day-messages (user/db) "clojure" "2018-01-01")))
 
