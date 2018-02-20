@@ -14,7 +14,7 @@ development. Together we can learn from each other, and make this an example of
 good Clojure practices.
 
 There are still many small things that need doing, have a look at the
-[issues](https://github.com/clojureverse/clojure-log-app/issues) if you're
+[issues](https://github.com/clojureverse/clojurians-log-app/issues) if you're
 curious to get started.
 
 ## Running the app
