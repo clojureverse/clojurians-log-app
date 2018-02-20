@@ -15,6 +15,10 @@
 (defn home-routes [endpoint]
   (let [conn (get-in endpoint [:datomic :conn])]
     (routes
+     (GET "/healthcheck" _
+       {:headers {"Content-Type" "text/plain"}
+        :body "OK"})
+
      (GET "/" request
        (let [db (d/db conn)]
          (-> request
