@@ -79,7 +79,7 @@
      [:h1 "Channel: #" channel-name]
      [:ul
       (for [[day cnt] days]
-        [:li [:a {:href (str "/" channel-name "/" day ".html")} "#" channel-name " (" cnt ")"]])]]]])
+        [:li [:a {:href (str "/" channel-name "/" day ".html")} day " (" cnt ")"]])]]]])
 
 (defn- channel-list-page-html [{:data/keys [channels] :as context}]
   [:html
