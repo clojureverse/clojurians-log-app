@@ -13,7 +13,8 @@
    #:db{:ident       :message/channel
         :valueType   :db.type/ref
         :cardinality :db.cardinality/one
-        :doc         "Channel the message was posted in."}
+        :doc         "Channel the message was posted in."
+        :index       true}
    #:db{:ident       :message/user
         :valueType   :db.type/ref
         :cardinality :db.cardinality/one
@@ -29,7 +30,8 @@
    #:db{:ident       :message/day
         :valueType   :db.type/string
         :cardinality :db.cardinality/one
-        :doc         "The day this message is categorized under, e.g. 2017-11-20."}
+        :doc         "The day this message is categorized under, e.g. 2017-11-20."
+        :index       true}
    #_#:db{:ident       :message/team
           :valueType   :db.type/ref
           :cardinality :db.cardinality/one}
@@ -123,7 +125,8 @@
         :unique      :db.unique/identity}
    #:db{:ident       :channel/name
         :valueType   :db.type/string
-        :cardinality :db.cardinality/one}
+        :cardinality :db.cardinality/one
+        :unique      :db.unique/identity}
    #:db{:ident       :channel/created
         :valueType   :db.type/long
         :cardinality :db.cardinality/one}

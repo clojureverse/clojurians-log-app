@@ -27,10 +27,10 @@
   (->> (d/q '[:find [(pull ?msg [:message/text :message/ts {:message/user [:user/name :user-profile/image-48]}]) ...]
               :in $ ?chan-name ?day
               :where
+              [?msg :message/day ?day]
               [?msg :message/channel ?chan]
               [?msg :message/user ?user]
-              [?chan :channel/name ?chan-name]
-              [?msg :message/day ?day]]
+              [?chan :channel/name ?chan-name]]
             db
             chan-name
             day)
