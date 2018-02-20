@@ -1,1 +1,0 @@
-(ns clojurians-log.schema)
