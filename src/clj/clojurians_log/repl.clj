@@ -50,13 +50,15 @@
   First clone https://github.com/plexus/clojurians-log-demo-data, thne call this
   function, pointing at the repository."
   [directory]
+  (if-not (conn)
+    (println "Can't find Datomic connection. Make sure the system is up and running with (user/go).")
+    (doseq [users (->> "/users.edn"
+                       (str directory)
+                       slurp
+                       edn/read-string
+                       (partition-all 1000))]
+      @(d/transact (conn) users)))
   @(d/transact (conn) (edn/read-string (slurp (str directory "/channels.edn"))))
-  (doseq [users (->> "/users.edn"
-                     (str directory)
-                     slurp
-                     edn/read-string
-                     (partition-all 1000))]
-    @(d/transact (conn) users))
   (run! load-log-file! (log-files directory)))
 
 (comment
