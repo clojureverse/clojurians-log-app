@@ -28,7 +28,8 @@
                  [aero "1.1.2"]
                  [lambdaisland/repl-tools "0.1.0"]
                  [clj-http "3.7.0"]
-                 [org.julienxx/clj-slack "0.5.5"]]
+                 [org.julienxx/clj-slack "0.5.5"]
+                 [reloaded.repl "0.2.4"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0"]]
@@ -120,7 +121,6 @@
                              [com.cemerick/piggieback "0.2.2"]
                              [org.clojure/tools.nrepl "0.2.13"]
                              [lein-doo "0.1.8"]
-                             [reloaded.repl "0.2.4"]
                              [com.datomic/datomic-free "0.9.5656"]
                              [com.cemerick/pomegranate "1.0.0"]
                              [alembic "0.3.2"]]
