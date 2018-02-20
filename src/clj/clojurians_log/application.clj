@@ -10,12 +10,15 @@
             [system.components.datomic :refer [new-datomic-db]]
             [clojurians-log.config :as config]
             [clojurians-log.routes :refer [home-routes]]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+            [reloaded.repl]))
 
 (def config nil)
-(def system nil)
 
-(defn app-system [{:keys [datomic http] :as config}]
+(defn system []
+  reloaded.repl/system)
+
+(defn prod-system [{:keys [datomic http] :as config}]
   (component/system-map
    :routes     (-> (new-endpoint (fn [endpoint]
                                    (fn [request]
@@ -36,7 +39,5 @@
                (config/config (io/file config-file) :prod)
                (config/config :prod))]
     (alter-var-root #'config (constantly conf))
-    (alter-var-root #'system (constantly
-                              (-> conf
-                                  app-system
-                                  component/start)))))
+    (reloaded.repl/set-init! #(prod-system conf))
+    (reloaded.repl/go)))

@@ -14,7 +14,7 @@
 (defn dev-system []
   (let [config (config :dev)]
     (alter-var-root #'app/config (constantly config))
-    (-> (app/app-system config)
+    (-> (app/prod-system config)
         (ring-history/inject-ring-history)
         (assoc :figwheel-system (fw-sys/figwheel-system (fw-config/fetch-config))
                :css-watcher (fw-sys/css-watcher {:watch-paths ["resources/public/css"]})
