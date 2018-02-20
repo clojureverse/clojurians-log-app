@@ -33,6 +33,12 @@
                :channel [:channel/slack-id channel]
                :user [:user/slack-id user]}))
 
+(defmethod event->tx "message_deleted" [{:keys [deleted_ts channel] :as message}]
+  [:db.fn/retractEntity [:message/key (message-key {:channel channel :ts deleted_ts})]])
+
+(defmethod event->tx "message_changed" [{:keys [message channel]}]
+  (event->tx (assoc message :channel channel)))
+
 (defn user->tx [{:keys [id name real_name is_admin is_owner profile]}]
   (let [{:keys [image_512 email first_name real_name_normalized image_48 image_192
                 real_name image_72 image_24 avatar_hash team image_32 last_name
