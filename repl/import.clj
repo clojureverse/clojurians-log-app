@@ -1,8 +1,11 @@
 (ns repl.import
   (:require [clojurians-log.data :refer :all]
+            [clojurians-log.db.import :as i]
             [clojure.set :as set]
             [clojure.string :as str]
-            [datomic.api :as d]))
+            [datomic.api :as d]
+            [clojure.data.json :as json]
+            [clojure.java.io :as io]))
 
 
 ;; This is an attempt at figuring out the structure and semantics of the various
@@ -336,3 +339,80 @@
        [?m :message/channel ?c]
        [?c :channel/name "chestnut"]]
      (d/db (conn)))
+
+
+;; Clean out demo data
+
+(def demo-data-days (map #(str "2018-02-0" %) (range 1 10)))
+
+(defn day->json [day]
+  (event-seq (str "/home/arne/github/clojurians-log/logs/" day ".txt")))
+
+
+(defn scrub-event [db msg]
+  (let [subtype (:subtype msg)
+        message (d/entity db [:message/key (i/message-key msg)])
+        prev-message (some->> msg :previous_message (into msg) (i/message-key) (vector :message/key) (d/entity db))
+        new-text-matches? (= (:message/text prev-message) (get-in msg [:message :text]))]
+    (case subtype
+      nil
+      (if (= (:message/text message) (:text msg))
+        msg
+        (assoc msg :text "[message text edited or deleted]"))
+      "message_changed"
+      (sc.api/spy
+       (cond-> (assoc-in msg [:previous_message :text] "[message text edited or deleted]")
+         (not new-text-matches?)
+         (assoc-in [:message :text] "[message text edited or deleted]")))
+      "message_deleted"
+      (assoc-in msg [:previous_message :text] "[message text edited or deleted]")
+      msg)))
+
+(defn write-json-log-file [file data]
+  (with-open [out (io/writer (io/output-stream file))]
+    (doseq [d data]
+      (json/write d out)
+      (.write out "\n"))))
+
+(let [db (user/db)]
+  (doseq [d demo-data-days]
+    (->> d
+         day->json
+         (map (partial scrub-event db))
+         (write-json-log-file (str "/tmp/scrubbed/" d ".txt") ))))
+
+(def txt
+  (let [db (user/db)]
+    (->> demo-data-days
+         first
+         day->json
+         (filter #(= (:subtype %) "message_changed"))
+         (first)
+         :previous_message
+         :text)))
+
+(let [db (user/db)]
+  (->> demo-data-days
+       first
+       day->json
+       (filter #(= (:subtype %) "message_changed"))))
+
+
+(=
+ txt
+ (:message/text
+  (d/q
+   '[:find (pull ?msg [*]) .
+     :where
+     [?msg :message/key "C1Q164V29--1517437503.000643"]]
+   (user/db))))
+
+(require 'sc.api)
+
+(user/add-dependency '[vvvvalvalval/scope-capture "0.1.4"])
+
+(sc.api/letsc 114
+              prev-message
+
+              (some->> msg :previous_message (into {}) (vector :message/key) )
+              )

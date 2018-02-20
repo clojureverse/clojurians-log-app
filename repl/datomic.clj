@@ -16,6 +16,8 @@
                    :db/valueType :db.type/string
                    :db/cardinality :db.cardinality/one}])
 
+(d/transact (user/conn) clojurians-log.db.schema/full-schema)
+
 (first (data/event-seq "logs/2017-06-13.txt"))
 
 {"event_ts": "1501621953.010722"
@@ -122,3 +124,32 @@
         :where
         [?uid :user/slack-id]]
       (db)))
+
+;; save out demo users and channels
+(spit "/tmp/users.edn"
+      (with-out-str
+        (->> (range 1 10)
+             (map #(str "2018-01-0" %))
+             (d/q '[:find [(pull ?uid [*]) ...]
+                    :in $ [?dates ...]
+                    :where
+                    [?msg :message/day ?dates]
+                    [?msg :message/user ?uid]]
+                  (user/db))
+             (map #(assoc % :user-profile/email (str (:user/name %) "@example.com")))
+             (clojure.pprint/pprint))))
+
+(spit "/tmp/channels.edn"
+      (with-out-str
+        (clojure.pprint/pprint
+         (d/q '[:find [(pull ?ch [*]) ...]
+                :in $ [?dates ...]
+                :where
+                [?msg :message/day ?dates]
+                [?msg :message/channel ?ch]]
+              (user/db)
+              (map #(str "2018-01-0" %) (range 1 10))))))
+
+(time (count (clojurians-log.db.queries/channel-day-messages (user/db) "clojure" "2018-01-01")))
+
+(time (clojurians-log.db.queries/channel-days (user/db) "clojure"))
