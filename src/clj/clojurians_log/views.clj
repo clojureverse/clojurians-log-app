@@ -19,7 +19,8 @@
    ;; This one is just copied over from the static site, seems it was generated
    ;; with Compass and SASS. At some point I'd prefer to delete this and do the
    ;; styling over in clean Garden or Garden+Tachyons.
-   [:link {:href "/css/legacy.css", :rel "stylesheet", :type "text/css"}]])
+   [:link {:href "/css/legacy.css", :rel "stylesheet", :type "text/css"}]
+   [:link {:href "/css/style.css", :rel "stylesheet", :type "text/css"}]])
 
 (defn channel-day-offset
   "Given a list of [date msg-count] pairs, return `date` of the entry that is
