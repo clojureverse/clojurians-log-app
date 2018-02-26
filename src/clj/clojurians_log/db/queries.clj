@@ -1,6 +1,7 @@
 (ns clojurians-log.db.queries
   (:require [datomic.api :as d]
-            [clojurians-log.time-util :as time-util]))
+            [clojurians-log.time-util :as time-util]
+            [clojure.pprint :as pp]))
 
 (defn channel-list
   ([db]
@@ -55,3 +56,13 @@
          [?chan :channel/name ?chan-name]]
        db
        name))
+
+(defn user-names
+  [db names]
+  (d/q '[:find ?ids ?username
+         :in $ [?ids ...]
+         :where
+         [?user :user/slack-id ?ids]
+         [?user :user/name ?username]]
+       db
+       names))

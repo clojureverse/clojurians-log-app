@@ -18,4 +18,5 @@ pom.xml.asc
 /resources/channels.edn
 /resources/users.edn
 /resources/logs
-
+.idea/
+clojurians-log.iml

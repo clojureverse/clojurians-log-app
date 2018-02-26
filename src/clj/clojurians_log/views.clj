@@ -2,7 +2,8 @@
   (:require [hiccup2.core :as hiccup]
             [clojurians-log.time-util :as cl.tu]
             [clojure.string :as str]
-            [clojure.pprint :as pp]))
+            [clojure.pprint :as pp]
+            [clojurians-log.components.parser :as parser]))
 
 (defn page-head [{:data/keys [title channel date]}]
   [:head
@@ -25,7 +26,7 @@
   [:div.header
    [:div.team-menu [:a {:href "/"} "Clojurians"]]
    [:div.channel-menu
-    [:span.channel-menu_name [:span.channel-menu_prefix "#"] (:channel/name channel) ]]])
+    [:span.channel-menu_name [:span.channel-menu_prefix "#"] (:channel/name channel)]]])
 
 (defn- channel-list [{:data/keys [date channels]}]
   [:div.listings_channels
@@ -39,7 +40,7 @@
          {:href (str "/" name "/" date ".html")}
          [:span [:span.prefix "#"] " " name " (" message-count ")"]]]])]])
 
-(defn- message-history [{:data/keys [messages]}]
+(defn- message-history [{:data/keys [messages usernames]}]
   [:div.message-history
    (for [message messages
          :let [{:message/keys [user inst user text]} message
@@ -49,14 +50,13 @@
      ;; things in the profile
      ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
      ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
-
      [:div.message {:id (cl.tu/format-inst-id inst)}
       [:a.message_profile-pic {:href "" :style (str "background-image: url(" image-48 ");")}]
       [:a.message_username {:href ""} name]
       [:span.message_timestamp [:a {:href (str "#" (cl.tu/format-inst-id inst))} (cl.tu/format-inst-time inst)]]
       [:span.message_star]
       ;; TODO render slack style markdown (especially code blocks)
-      [:span.message_content [:p (hiccup/raw text)]]
+      [:span.message_content [:p (hiccup/raw (parser/replace-ids-names text usernames))]]
       #_[:pre {:style {:display "none"}} (with-out-str (pp/pprint message))]])])
 
 (defn- log-page-html [context]

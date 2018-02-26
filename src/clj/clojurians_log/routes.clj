@@ -4,10 +4,12 @@
             [clojurians-log.db.queries :as queries]
             [clojurians-log.response :as response]
             [clojurians-log.views :as views]
+            [clojurians-log.components.parser :as parser]
             [compojure.core :refer [GET routes]]
             [compojure.route :refer [resources]]
             [datomic.api :as d]
-            [ring.util.response :refer [response]]))
+            [ring.util.response :refer [response]]
+            [clojure.pprint :as pp]))
 
 (defn context [request]
   {:request request})
@@ -40,12 +42,15 @@
 
      ;; https://clojurians-log.clojureverse.org/clojure/2017-11-15.html
      (GET "/:channel/:date.html" [channel date :as request]
-       (let [db (d/db conn)]
+       (let [db (d/db conn)
+             messages (queries/channel-day-messages db channel date)
+             user-ids (parser/extract-user-ids messages)]
          (-> request
              context
              (assoc :data/channel (queries/channel db channel)
                     :data/channels (queries/channel-list db date)
-                    :data/messages (queries/channel-day-messages db channel date)
+                    :data/messages messages
+                    :data/usernames (into {} (queries/user-names db user-ids))
                     :data/title (str channel " " date " | Clojurians Slack Log")
                     :data/date date)
              views/log-page
