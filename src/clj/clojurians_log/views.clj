@@ -29,10 +29,10 @@
   [channel-days today offset]
 
   (as-> channel-days $
+    (map vector (range) $)
     (some (fn [[index [a-date msg-count]]] (when (and (= a-date today)
                                                      (not (zero? msg-count)))
-                                            index))
-          (map vector (range) $))
+                                            index)) $)
     (+ $ offset)
     (nth channel-days $ nil)
     (first $)))
