@@ -447,3 +447,14 @@ pre.highlight > code {
   border: none;
   color: inherit;
 }
+
+
+.day-arrows .day-prev {
+    display: inline-block;
+    margin-right: 0.3rem;
+}
+
+.day-arrows .day-next {
+    display: inline-block;
+    margin-left: 0.3rem;
+}

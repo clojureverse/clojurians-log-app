@@ -46,6 +46,7 @@
              (assoc :data/channel (queries/channel db channel)
                     :data/channels (queries/channel-list db date)
                     :data/messages (queries/channel-day-messages db channel date)
+                    :data/channel-days (queries/channel-days db channel)
                     :data/title (str channel " " date " | Clojurians Slack Log")
                     :data/date date)
              views/log-page
