@@ -448,13 +448,28 @@ pre.highlight > code {
   color: inherit;
 }
 
+.day-arrows {
+  margin-left: 1rem;
+}
 
 .day-arrows .day-prev {
     display: inline-block;
     margin-right: 0.3rem;
+    background-color: rgb(62, 49, 60);
+    color: white;
+    min-height: 1rem;
+    min-width: 1rem;
+    text-align: center;
+    border-radius: 20%;
 }
 
 .day-arrows .day-next {
     display: inline-block;
     margin-left: 0.3rem;
+    background-color: rgb(62, 49, 60);
+    color: white;
+    min-height: 1rem;
+    min-width: 1rem;
+    text-align: center;
+    border-radius: 20%;
 }
