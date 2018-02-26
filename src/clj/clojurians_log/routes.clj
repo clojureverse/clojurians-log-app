@@ -8,8 +8,7 @@
             [compojure.core :refer [GET routes]]
             [compojure.route :refer [resources]]
             [datomic.api :as d]
-            [ring.util.response :refer [response]]
-            [clojure.pprint :as pp]))
+            [ring.util.response :refer [response]]))
 
 (defn context [request]
   {:request request})

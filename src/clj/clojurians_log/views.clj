@@ -2,7 +2,6 @@
   (:require [hiccup2.core :as hiccup]
             [clojurians-log.time-util :as cl.tu]
             [clojure.string :as str]
-            [clojure.pprint :as pp]
             [clojurians-log.components.parser :as parser]))
 
 (defn page-head [{:data/keys [title channel date]}]

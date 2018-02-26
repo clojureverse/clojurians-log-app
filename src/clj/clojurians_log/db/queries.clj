@@ -1,7 +1,6 @@
 (ns clojurians-log.db.queries
   (:require [datomic.api :as d]
-            [clojurians-log.time-util :as time-util]
-            [clojure.pprint :as pp]))
+            [clojurians-log.time-util :as time-util]))
 
 (defn channel-list
   ([db]
