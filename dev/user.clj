@@ -69,3 +69,7 @@
    :coordinates [dep-vec]
    :repositories (merge @(resolve 'cemerick.pomegranate.aether/maven-central)
                         {"clojars" "https://clojars.org/repo"})))
+
+(defn update-cache-time! [new-cache-time]
+  "Changes how long to ask http clients to cache each of the messages pages"
+  (alter-var-root #'app/config update-in [:message-page :cache-time] (constantly new-cache-time)))
