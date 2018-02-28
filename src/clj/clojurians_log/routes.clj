@@ -50,6 +50,7 @@
                     :data/channels (queries/channel-list db date)
                     :data/messages messages
                     :data/usernames (into {} (queries/user-names db user-ids))
+                    :data/channel-days (queries/channel-days db channel)
                     :data/title (str channel " " date " | Clojurians Slack Log")
                     :data/date date)
              views/log-page

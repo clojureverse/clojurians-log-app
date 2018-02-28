@@ -19,13 +19,35 @@
    ;; This one is just copied over from the static site, seems it was generated
    ;; with Compass and SASS. At some point I'd prefer to delete this and do the
    ;; styling over in clean Garden or Garden+Tachyons.
-   [:link {:href "/css/legacy.css", :rel "stylesheet", :type "text/css"}]])
+   [:link {:href "/css/legacy.css", :rel "stylesheet", :type "text/css"}]
+   [:link {:href "/css/style.css", :rel "stylesheet", :type "text/css"}]])
 
-(defn- log-page-header [{:data/keys [channel]}]
+(defn channel-day-offset
+  "Given a list of [date msg-count] pairs, return `date` of the entry that is
+  `offset` positions away. Returns nil if the applying the offset goes out of
+  bounds."
+  [channel-days today offset]
+
+  (as-> channel-days $
+    (map vector (range) $)
+    (some (fn [[index [a-date msg-count]]] (when (and (= a-date today)
+                                                     (not (zero? msg-count)))
+                                            index)) $)
+    (+ $ offset)
+    (nth channel-days $ nil)
+    (first $)))
+
+(defn- log-page-header [{:data/keys [channel date channel-days]}]
   [:div.header
    [:div.team-menu [:a {:href "/"} "Clojurians"]]
    [:div.channel-menu
-    [:span.channel-menu_name [:span.channel-menu_prefix "#"] (:channel/name channel)]]])
+    [:span.channel-menu_name [:span.channel-menu_prefix "#"] (:channel/name channel)]
+    [:span.day-arrows
+     (if-let [prev-date (channel-day-offset channel-days date -1)]
+       [:a {:href (str prev-date ".html")} [:div.day-prev "<"]])
+     date
+     (if-let [next-date (channel-day-offset channel-days date 1)]
+       [:a {:href (str next-date ".html")} [:div.day-next ">"]])]]])
 
 (defn- channel-list [{:data/keys [date channels]}]
   [:div.listings_channels
