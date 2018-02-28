@@ -2,7 +2,7 @@
   (:require [hiccup2.core :as hiccup]
             [clojurians-log.time-util :as cl.tu]
             [clojure.string :as str]
-            [clojurians-log.components.parser :as parser]))
+            [clojurians-log.slack-messages :as slack-messages]))
 
 (defn page-head [{:data/keys [title channel date]}]
   [:head
@@ -55,7 +55,7 @@
       [:span.message_timestamp [:a {:href (str "#" (cl.tu/format-inst-id inst))} (cl.tu/format-inst-time inst)]]
       [:span.message_star]
       ;; TODO render slack style markdown (especially code blocks)
-      [:span.message_content [:p (hiccup/raw (parser/replace-ids-names text usernames))]]
+      [:span.message_content [:p (hiccup/raw (slack-messages/replace-ids-names text usernames))]]
       #_[:pre {:style {:display "none"}} (with-out-str (pp/pprint message))]])])
 
 (defn- log-page-html [context]

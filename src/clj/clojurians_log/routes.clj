@@ -4,7 +4,7 @@
             [clojurians-log.db.queries :as queries]
             [clojurians-log.response :as response]
             [clojurians-log.views :as views]
-            [clojurians-log.components.parser :as parser]
+            [clojurians-log.slack-messages :as slack-messages]
             [compojure.core :refer [GET routes]]
             [compojure.route :refer [resources]]
             [datomic.api :as d]
@@ -43,7 +43,7 @@
      (GET "/:channel/:date.html" [channel date :as request]
        (let [db (d/db conn)
              messages (queries/channel-day-messages db channel date)
-             user-ids (parser/extract-user-ids messages)]
+             user-ids (slack-messages/extract-user-ids messages)]
          (-> request
              context
              (assoc :data/channel (queries/channel db channel)

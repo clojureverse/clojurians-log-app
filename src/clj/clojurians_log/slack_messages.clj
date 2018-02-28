@@ -1,10 +1,10 @@
-(ns clojurians-log.components.parser
+(ns clojurians-log.slack-messages
   (:require [clojure.string :as str]))
 
 (defn- extract-texts
   [messages]
   (let [texts (map :message/text messages)]
-    (clojure.string/join " " texts)))
+    (str/join " " texts)))
 
 (defn- parse-users
   [texts]
@@ -13,7 +13,11 @@
 (defn extract-user-ids
   "returns all the user/slack-ids from a string"
   [messages]
-  (parse-users (extract-texts messages)))
+  (into #{} (comp
+              (map :message/text)
+              (map parse-users)
+              cat)
+        messages))
 
 (defn replace-ids-names
   "replaces user/slack-id with user/name"

@@ -58,10 +58,10 @@
 
 (defn user-names
   [db names]
-  (d/q '[:find ?ids ?username
-         :in $ [?ids ...]
+  (d/q '[:find ?id ?username
+         :in $ [?id ...]
          :where
-         [?user :user/slack-id ?ids]
+         [?user :user/slack-id ?id]
          [?user :user/name ?username]]
        db
        names))
