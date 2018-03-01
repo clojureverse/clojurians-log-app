@@ -55,3 +55,13 @@
          [?chan :channel/name ?chan-name]]
        db
        name))
+
+(defn user-names
+  [db names]
+  (d/q '[:find ?id ?username
+         :in $ [?id ...]
+         :where
+         [?user :user/slack-id ?id]
+         [?user :user/name ?username]]
+       db
+       names))
