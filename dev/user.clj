@@ -1,6 +1,7 @@
 (ns user
   (:require [clojurians-log.application :as app]
             [clojurians-log.config :as config :refer [config]]
+            [clojurians-log.repl :as repl]
             [figwheel-sidecar.config :as fw-config]
             [figwheel-sidecar.system :as fw-sys]
             [garden-watcher.core :refer [new-garden-watcher]]
@@ -9,6 +10,7 @@
             [reloaded.repl :refer [system]]
             [ring.middleware.cookies :as cookies]
             [ring.middleware.session.store :as session-store]
+            [system.components.middleware :refer [new-middleware]]
             [datomic.api :as d]))
 
 (defn dev-system []
@@ -16,7 +18,8 @@
     (alter-var-root #'app/config (constantly config))
     (-> (app/prod-system config)
         (ring-history/inject-ring-history)
-        (assoc :figwheel-system (fw-sys/figwheel-system (fw-config/fetch-config))
+        (assoc :middleware (new-middleware {:middleware (clojurians-log.config/middleware-stack :dev)})
+               :figwheel-system (fw-sys/figwheel-system (fw-config/fetch-config))
                :css-watcher (fw-sys/css-watcher {:watch-paths ["resources/public/css"]})
                :garden-watcher (new-garden-watcher ['clojurians-log.styles])
                #_#_:browse-url (browse-url/new-browse-url-component (str "http://localhost:" (get-in config [:http :port])))))))
@@ -69,3 +72,8 @@
    :coordinates [dep-vec]
    :repositories (merge @(resolve 'cemerick.pomegranate.aether/maven-central)
                         {"clojars" "https://clojars.org/repo"})))
+
+(defn update-cache-time! [new-cache-time]
+  "Changes how long to ask http clients to cache each of the messages pages"
+  (swap! (get-in system [:config :value]) update-in [:message-page :cache-time] (constantly new-cache-time))
+  true)

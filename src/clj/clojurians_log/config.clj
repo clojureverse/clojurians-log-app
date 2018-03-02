@@ -42,8 +42,6 @@
 
 (defn config
   ([file profile]
-   (assoc-in (aero/read-config file {:profile profile})
-             [:http :middleware]
-             (middleware-stack profile)))
+   (aero/read-config file {:profile profile}))
   ([profile]
    (config (io/resource "clojurians-log/config.edn") profile)))

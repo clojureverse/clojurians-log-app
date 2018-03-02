@@ -18,13 +18,19 @@
 (defn system []
   reloaded.repl/system)
 
+(defrecord ValueComponent [value]
+  component/Lifecycle
+  (start [component] component)
+  (stop [component] component))
+
 (defn prod-system [{:keys [datomic http] :as config}]
   (component/system-map
+   :config     (->ValueComponent (atom config))
    :routes     (-> (new-endpoint (fn [endpoint]
                                    (fn [request]
                                      ((home-routes endpoint) request))))
-                   (component/using [:datomic]))
-   :middleware (new-middleware {:middleware (:middleware http)})
+                   (component/using [:datomic :config]))
+   :middleware (new-middleware {:middleware (clojurians-log.config/middleware-stack :prod)})
    :handler    (-> (new-handler)
                    (component/using [:routes :middleware]))
    :http       (-> (new-web-server (:port http))

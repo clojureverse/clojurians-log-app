@@ -1,7 +1,8 @@
 (ns clojurians-log.time-util
   (:require [java-time :as jt]
             [clojure.string :as str])
-  (:import [java.time Instant]))
+  (:import [java.time Instant]
+           [java.time.format DateTimeFormatter]))
 
 (defn ts->inst
   "Convert a Slack timestamp like \"1433399521.000490\" into a java.time.Instant like
@@ -36,3 +37,11 @@
   "Format an instant as year-month-day, e.g. 2017-11-20."
   [inst]
   (jt/format inst-day-formatter inst))
+
+(defn time->html-ts
+  [zoned-dt]
+  (jt/format DateTimeFormatter/RFC_1123_DATE_TIME zoned-dt))
+
+(defn html-ts->time
+  [ts]
+  (jt/zoned-date-time DateTimeFormatter/RFC_1123_DATE_TIME ts))
