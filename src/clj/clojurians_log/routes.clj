@@ -26,7 +26,7 @@
       (println (.isEqual fetch-date page-date))
       (.isEqual fetch-date page-date))))
 
-(defn home-routes [endpoint]
+(defn home-routes [{:keys [config] :as endpoint}]
   (let [conn (get-in endpoint [:datomic :conn])]
     (routes
      (GET "/healthcheck" _
@@ -54,8 +54,7 @@
 
      ;; https://clojurians-log.clojureverse.org/clojure/2017-11-15.html
      (GET "/:channel/:date.html" [channel date :as request]
-       (let [config (var-get (resolve 'clojurians-log.application/config))
-             cache-time (get-in config [:message-page :cache-time])]
+       (let [cache-time (get-in @(:value config) [:message-page :cache-time] 0)]
 
          ;; Since we're displaying a log, presumably, all of the content is permanently cachable
          ;; Message page content also most likely have not changed and does not require any processing/page-generation.
