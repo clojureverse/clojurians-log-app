@@ -1,4 +1,4 @@
-(ns clojurians-log.message
+(ns clojurians-log.message-parser
   (:require [instaparse.core :as insta]
             [clojure.java.io :as io]))
 

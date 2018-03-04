@@ -76,9 +76,7 @@
       [:a.message_username {:href ""} name]
       [:span.message_timestamp [:a {:href (str "#" (cl.tu/format-inst-id inst))} (cl.tu/format-inst-time inst)]]
       [:span.message_star]
-      ;; TODO render slack style markdown (especially code blocks)
-      [:span.message_content [:p (hiccup/raw (slack-messages/replace-ids-names text usernames))]]
-      #_[:pre {:style {:display "none"}} (with-out-str (pp/pprint message))]])])
+      [:span.message_content [:p (slack-messages/render-hiccup text usernames)]]])])
 
 (defn- log-page-html [context]
   [:html

@@ -3,17 +3,17 @@
 <code> = code-block / inline-code
 code-block = <code-block-delimiter> #"(?s).*(?=```)" <code-block-delimiter>
 code-block-delimiter = "```"
+inline-code = <"`"> #"[^`]+" <"`">
 
 <reference> = <"<@"> slack-id <">">
 <slack-id> = user-id | channel-id
 user-id = #"U[A-Z0-9]{7,}"
 channel-id = #"C[A-Z0-9]{7,}"
 
-inline-code = <"`"> #"[^`]+" <"`">
 emoji = <":"> #"[^:]+" <":">
 
-<styled> = strong | bold
-strong = <"_"> #"[^_]+" <"_">
+<styled> = italic | bold
+italic = <"_"> #"[^_]+" <"_">
 bold = <"*"> #"[^\*]+" <"*">
 
 undecorated = notwhitespace | whitespace
