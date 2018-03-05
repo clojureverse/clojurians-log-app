@@ -1,7 +1,7 @@
 <slack-message> = ( code / reference / emoji / styled / undecorated )*
 
 <code> = code-block / inline-code
-code-block = <code-block-delimiter> #"(?s).*(?=```)" <code-block-delimiter>
+code-block = <code-block-delimiter> <#"\s*"> #"(?s).*(?=```)" <code-block-delimiter>
 code-block-delimiter = "```"
 inline-code = <"`"> #"[^`]+" <"`">
 

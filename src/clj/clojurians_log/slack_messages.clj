@@ -37,7 +37,7 @@
   content)
 
 (defmethod render-segment :code-block [[type content]]
-  [:pre [:code (hiccup/raw content)]])
+  [:pre.highlight [:code (hiccup/raw content)]])
 
 (defmethod render-segment :inline-code [[type content]]
   [:code (hiccup/raw content)])
