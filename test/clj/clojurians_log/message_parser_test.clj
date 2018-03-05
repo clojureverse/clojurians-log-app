@@ -1,5 +1,5 @@
-(ns clojurians-log.message-test
-  (:require [clojurians-log.message :refer [parse] :as sut]
+(ns clojurians-log.message-parser-test
+  (:require [clojurians-log.message-parser :refer [parse] :as sut]
             [clojure.test :refer :all]))
 
 (deftest test-parse
@@ -16,7 +16,7 @@
            (parse "```(some clojure code)```")))
     (is (= [[:bold "hey!"]]
            (parse "*hey!*")))
-    (is (= [[:strong "hello"]]
+    (is (= [[:italic "hello"]]
            (parse "_hello_")))
     (is (= [[:emoji "thumbsup"]]
            (parse ":thumbsup:")))
@@ -35,11 +35,11 @@ please respond in <@C346HE24SD>"]
               [:undecorated " here is the "]
               [:inline-code "my-ns.core"]
               [:undecorated " code "]
-              [:code-block "\n  (let [code 42]\n   (inc code))\n"]
+              [:code-block "(let [code 42]\n   (inc code))\n"]
               [:undecorated "\n"]
               [:bold "what do"]
               [:undecorated " "]
-              [:strong "you"]
+              [:italic "you"]
               [:undecorated " "]
               [:bold "think"]
               [:undecorated " "]
