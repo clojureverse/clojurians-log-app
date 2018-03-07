@@ -2,11 +2,12 @@
   (:require [clj-slack.users :as slack-users]
             [clj-slack.channels :as slack-channels]
             [datomic.api :as d]
-            [clojurians-log.db.import :as import]))
+            [clojurians-log.db.import :as import]
+            [clojurians-log.application :as cl-app]))
 
 (defn conn []
   {:api-url "https://slack.com/api"
-   :token (get-in @#'clojurians-log.application/config [:slack :api-token])})
+   :token (get-in cl-app/config [:slack :api-token])})
 
 (defn users []
   (:members (slack-users/list (conn))))
