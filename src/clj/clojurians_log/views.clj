@@ -1,5 +1,6 @@
 (ns clojurians-log.views
   (:require [hiccup2.core :as hiccup]
+            [cemerick.url :refer [url]]
             [clojurians-log.time-util :as cl.tu]
             [clojure.string :as str]
             [clojurians-log.slack-messages :as slack-messages]))
