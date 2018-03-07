@@ -34,7 +34,7 @@
           [:meta {:property "og:url" :content (str (url hostname
                                                         (:channel/name channel)
                                                         date
-                                                        (cl.tu/format-inst-id (:message/inst target-message))))}]
+                                                        (:message/ts target-message)))}]
           [:meta {:property "og:image" :content (get-in target-message [:message/user :user-profile/image-48])}]
           [:meta {:property "og:image:width" :content 50}]
           [:meta {:property "og:image:height" :content 50}]
@@ -107,7 +107,7 @@
       [:span.message_timestamp [:a {:href (->> (url hostname
                                                     (:channel/name channel)
                                                     date
-                                                    (cl.tu/format-inst-id (:message/inst message)))
+                                                    (:message/ts message))
                                                str)}
                                 (cl.tu/format-inst-time inst)]]
       [:span.message_star]

@@ -31,7 +31,7 @@
 
   (let [config @(get-in endpoint [:config :value])
         conn (get-in endpoint [:datomic :conn])
-        {:keys [channel date ts-str]} (:route-params request)
+        {:keys [channel date ts]} (:route-params request)
         cache-time (get-in config [:message-page :cache-time] 0)]
 
 
@@ -46,7 +46,6 @@
 
       (let [db (d/db conn)
             messages (queries/channel-day-messages db channel date)
-            target-msg-ts (when ts-str (time-util/inst-id->inst ts-str))
             user-ids (slack-messages/extract-user-ids messages)]
 
         (-> request
@@ -54,7 +53,7 @@
             (assoc :data/channel (queries/channel db channel)
                    :data/channels (queries/channel-list db date)
                    :data/messages messages
-                   :data/target-message (some #(when (= (:message/inst %) target-msg-ts) %) messages)
+                   :data/target-message (some #(when (= (:message/ts %) ts) %) messages)
                    :data/usernames (into {} (queries/user-names db user-ids))
                    :data/channel-days (queries/channel-days db channel)
                    :data/title (str channel " " date " | Clojurians Slack Log")
@@ -95,7 +94,7 @@
      (GET "/:channel/:date.html" request
        (log-route endpoint request))
 
-     (GET "/:channel/:date/:ts-str" [channel date ts-str :as request]
+     (GET "/:channel/:date/:ts" [channel date ts :as request]
        (log-route endpoint request))
 
      (resources "/"))))
