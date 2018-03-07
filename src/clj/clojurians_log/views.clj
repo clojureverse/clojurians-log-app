@@ -76,7 +76,7 @@
       [:a.message_username {:href ""} name]
       [:span.message_timestamp [:a {:href (str "#" (cl.tu/format-inst-id inst))} (cl.tu/format-inst-time inst)]]
       [:span.message_star]
-      [:span.message_content [:p (slack-messages/render-hiccup text usernames)]]])])
+      [:span.message_content [:p (slack-messages/message->hiccup text usernames)]]])])
 
 (defn- log-page-html [context]
   [:html

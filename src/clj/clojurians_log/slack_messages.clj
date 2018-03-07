@@ -10,10 +10,10 @@
 
 (defn- parse-users
   [texts]
-  (re-seq #"(?<=<@).*?(?=>)" texts))
+  (re-seq #"(?<=<@)[^\|>]+" texts))
 
 (defn extract-user-ids
-  "returns all the user/slack-ids from a string"
+  "Given a seq of slack messages, return user ids mentioned."
   [messages]
   (into #{} (comp
               (map :message/text)
@@ -22,8 +22,9 @@
         messages))
 
 (defn replace-ids-names
-  "replaces user/slack-id with user/name.
-  message is a vector of vectors format returned by mp/parse"
+  "Replaces user/slack-id with user/name.
+
+  Message is a vector of vectors format returned by mp/parse."
   [message id-names]
   (map (fn [[type content :as token]]
          (if (= :user-id type)
@@ -31,36 +32,81 @@
            token))
        message))
 
-(defmulti render-segment first)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Hiccup
 
-(defmethod render-segment :default [[type content]]
+(defmulti segment->hiccup
+  "Convert a single parsed segment of the form [type content] to hiccup."
+  first)
+
+(defmethod segment->hiccup :default [[type content]]
   content)
 
-(defmethod render-segment :code-block [[type content]]
+(defmethod segment->hiccup :code-block [[type content]]
   [:pre.highlight [:code (hiccup/raw content)]])
 
-(defmethod render-segment :inline-code [[type content]]
+(defmethod segment->hiccup :inline-code [[type content]]
   [:code (hiccup/raw content)])
 
-(defmethod render-segment :user [[type content]]
+(defmethod segment->hiccup :user [[type content]]
   [:span.username "@" (:user-name content)])
 
-(defmethod render-segment :channel-id [[type content]]
-  [:i content])
+(defmethod segment->hiccup :channel-id [[type content]]
+  [:i "#" content])
 
-(defmethod render-segment :emoji [[type content]]
+(defmethod segment->hiccup :emoji [[type content]]
   [:span.emoji ":" content ":"])
 
-(defmethod render-segment :bold [[type content]]
+(defmethod segment->hiccup :bold [[type content]]
   [:b content])
 
-(defmethod render-segment :italic [[type content]]
+(defmethod segment->hiccup :italic [[type content]]
   [:i content])
 
-(defn render-hiccup
-  "parse slack markup and convert to hiccup"
+(defn message->hiccup
+  "Parse slack markup and convert to hiccup."
   [message usernames]
-  [:p (map render-segment
+  [:p (map segment->hiccup
            (-> message
                (mp/parse)
                (replace-ids-names usernames)))])
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Plain text
+
+(defmulti segment->text
+  "Convert a single parsed segment of the form [type content] to plain text."
+  first)
+
+(defmethod segment->text :default [[type content]]
+  content)
+
+(defmethod segment->text :code-block [[type content]]
+  (str "\n" content "\n"))
+
+(defmethod segment->text :inline-code [[type content]]
+  (str "`" content "`"))
+
+(defmethod segment->text :user [[type content]]
+  (str "@" (:user-name content)))
+
+(defmethod segment->text :channel-id [[type content]]
+  (str "#" content))
+
+(defmethod segment->text :emoji [[type content]]
+  (str ":" content ":"))
+
+(defmethod segment->text :bold [[type content]]
+  (str "*" content "*"))
+
+(defmethod segment->text :italic [[type content]]
+  (str "_" content "_"))
+
+(defn message->text
+  "Convert Slack markup to plain text."
+  [message usernames]
+  (->> (-> message
+           (mp/parse)
+           (replace-ids-names usernames))
+       (map segment->text)
+       (apply str)))
