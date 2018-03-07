@@ -317,7 +317,7 @@ body {
     color: #5050df;
 }
 
-.message:target {
+.message:target , .message.targeted{
     background-color: #FFF8DC;
 }
 

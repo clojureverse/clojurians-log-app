@@ -45,7 +45,9 @@
           [:script (hiccup.util/raw-string
                     (format
                      "document.addEventListener(\"DOMContentLoaded\", function(event) {
-                          window.location = \"#%s\"
+                          var element = document.getElementById('%s');
+                          element.classList.add(\"targeted\");
+                          element.scrollIntoView();
                        });"
                      (cl.tu/format-inst-id (:message/inst target-message))))])))
 
