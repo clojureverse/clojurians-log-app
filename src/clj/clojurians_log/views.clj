@@ -42,9 +42,7 @@
           [:meta {:property "og:image:width" :content 50}]
           [:meta {:property "og:image:height" :content 50}]
           [:meta {:property "og:description" :content
-                  ;; (format "%s: %s" (get-in target-message [:message/user :user/name]) (:message/text target-message))
-                  (hiccup/html
-                   (slack-messages/render-hiccup (:message/text target-message) usernames))}]
+                   (slack-messages/message->text (:message/text target-message) usernames)}]
           ;; Add javascript to jump to the targeted message when the page is finished loading
           [:script (hiccup.util/raw-string
                     (format
