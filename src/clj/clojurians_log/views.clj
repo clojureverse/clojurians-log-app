@@ -22,6 +22,33 @@
    [:link {:href "/css/legacy.css", :rel "stylesheet", :type "text/css"}]
    [:link {:href "/css/style.css", :rel "stylesheet", :type "text/css"}]])
 
+(defn log-page-head [{:data/keys [title channel date target-message hostname usernames] :as context}]
+  (cond-> (page-head context)
+    ;; Are we targeting a specific message in the log page?
+    ;; If, add tags to enable open graph support.
+    ;; This allows external services to generate a preview/summary card of the page.
+    (not (nil? target-message))
+    (conj [:meta {:property "og:title" :content title}]
+          [:meta {:property "og:type" :content "website"}]
+          [:meta {:property "og:url" :content (str (url hostname
+                                                        (:channel/name channel)
+                                                        date
+                                                        (cl.tu/format-inst-id (:message/inst target-message))))}]
+          [:meta {:property "og:image" :content (get-in target-message [:message/user :user-profile/image-48])}]
+          [:meta {:property "og:image:width" :content 50}]
+          [:meta {:property "og:image:height" :content 50}]
+          [:meta {:property "og:description" :content
+                  ;; (format "%s: %s" (get-in target-message [:message/user :user/name]) (:message/text target-message))
+                  (hiccup/html
+                   (slack-messages/render-hiccup (:message/text target-message) usernames))}]
+          ;; Add javascript to jump to the targeted message when the page is finished loading
+          [:script (hiccup.util/raw-string
+                    (format
+                     "document.addEventListener(\"DOMContentLoaded\", function(event) {
+                          window.location = \"#%s\"
+                       });"
+                     (cl.tu/format-inst-id (:message/inst target-message))))])))
+
 (defn channel-day-offset
   "Given a list of [date msg-count] pairs, return `date` of the entry that is
   `offset` positions away. Returns nil if the applying the offset goes out of
@@ -61,7 +88,7 @@
          {:href (str "/" name "/" date ".html")}
          [:span [:span.prefix "#"] " " name " (" message-count ")"]]]])]])
 
-(defn- message-history [{:data/keys [messages usernames]}]
+(defn- message-history [{:data/keys [messages usernames channel date hostname]}]
   [:div.message-history
    (for [message messages
          :let [{:message/keys [user inst user text]} message
@@ -74,13 +101,18 @@
      [:div.message {:id (cl.tu/format-inst-id inst)}
       [:a.message_profile-pic {:href "" :style (str "background-image: url(" image-48 ");")}]
       [:a.message_username {:href ""} name]
-      [:span.message_timestamp [:a {:href (str "#" (cl.tu/format-inst-id inst))} (cl.tu/format-inst-time inst)]]
+      [:span.message_timestamp [:a {:href (->> (url hostname
+                                                    (:channel/name channel)
+                                                    date
+                                                    (cl.tu/format-inst-id (:message/inst message)))
+                                               str)}
+                                (cl.tu/format-inst-time inst)]]
       [:span.message_star]
       [:span.message_content [:p (slack-messages/render-hiccup text usernames)]]])])
 
 (defn- log-page-html [context]
   [:html
-   (page-head context)
+   (log-page-head context)
    [:body
     (log-page-header context)
     [:div.main

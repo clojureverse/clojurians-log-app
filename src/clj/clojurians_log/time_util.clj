@@ -27,6 +27,12 @@
   (jt/format inst-id-formatter
              (jt/plus inst (jt/hours 3))))
 
+(defn inst-id->inst
+  [inst-id-str]
+  (as-> inst-id-str $
+    (jt/instant inst-id-formatter $)
+    (jt/minus $ (jt/hours 3))))
+
 (defn format-inst-time
   "Format an Instant to a simple hour:minute:second time to be displayed in the
   view."
