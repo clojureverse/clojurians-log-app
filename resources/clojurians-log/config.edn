@@ -1,6 +1,6 @@
 {:datomic {:uri #or [#env DATOMIC_URI "datomic:mem:clojurians_log"]}
  :http {:port #long #or [#env CLOJURIANS_LOG_PORT 4983]
-        :hostname #or [#env CLOJURIANS_LOG_HOSTNAME "http://localhost"]}
+        :origin #or [#env CLOJURIANS_LOG_HOSTNAME "http://localhost:4983"]}
  :slack {:api-token #env SLACK_API_TOKEN
          :log-dir #env CLOJURIANS_LOG_DIR}
  :message-page {:cache-time #profile {:default 86400

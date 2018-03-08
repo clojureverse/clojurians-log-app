@@ -53,7 +53,7 @@
                    :data/channel-days (queries/channel-days db channel)
                    :data/title (str channel " " date " | Clojurians Slack Log")
                    :data/date date
-                   :data/hostname (get-in config [:http :hostname]))
+                   :data/http-origin (get-in config [:http :origin]))
             views/log-page
             (assoc-in [:response/headers "Cache-Control"] (str "public, max-age: " cache-time))
             (assoc-in [:response/headers "Last-Modified"] (time-util/time->html-ts (jt/zoned-date-time time-util/UTC)))

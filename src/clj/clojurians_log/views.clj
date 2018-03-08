@@ -23,7 +23,7 @@
    [:link {:href "/css/legacy.css", :rel "stylesheet", :type "text/css"}]
    [:link {:href "/css/style.css", :rel "stylesheet", :type "text/css"}]])
 
-(defn log-page-head [{:data/keys [title channel date target-message hostname usernames] :as context}]
+(defn log-page-head [{:data/keys [title channel date target-message http-origin usernames] :as context}]
   (cond-> (page-head context)
     ;; Are we targeting a specific message in the log page?
     ;; If, add tags to enable open graph support.
@@ -35,7 +35,7 @@
                                                         (:channel/name channel)
                                                         date)}]
           [:meta {:property "og:type" :content "website"}]
-          [:meta {:property "og:url" :content (str (url hostname
+          [:meta {:property "og:url" :content (str (url http-origin
                                                         (:channel/name channel)
                                                         date
                                                         (:message/ts target-message)))}]
@@ -93,10 +93,10 @@
          {:href (str "/" name "/" date ".html")}
          [:span [:span.prefix "#"] " " name " (" message-count ")"]]]])]])
 
-(defn- message-history [{:data/keys [messages usernames channel date hostname]}]
+(defn- message-history [{:data/keys [messages usernames channel date]}]
   [:div.message-history
    (for [message messages
-         :let [{:message/keys [user inst user text]} message
+         :let [{:message/keys [user inst user text ts]} message
                {:user/keys [name]
                 :user-profile/keys [image-48]} user]]
 
@@ -106,11 +106,7 @@
      [:div.message {:id (cl.tu/format-inst-id inst)}
       [:a.message_profile-pic {:href "" :style (str "background-image: url(" image-48 ");")}]
       [:a.message_username {:href ""} name]
-      [:span.message_timestamp [:a {:href (->> (url hostname
-                                                    (:channel/name channel)
-                                                    date
-                                                    (:message/ts message))
-                                               str)}
+      [:span.message_timestamp [:a {:href (str/join "/" ["" (:channel/name channel) date ts])}
                                 (cl.tu/format-inst-time inst)]]
       [:span.message_star]
       [:span.message_content [:p (slack-messages/message->hiccup text usernames)]]])])
