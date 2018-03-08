@@ -29,7 +29,8 @@
     ;; If, add tags to enable open graph support.
     ;; This allows external services to generate a preview/summary card of the page.
     (not (nil? target-message))
-    (conj [:meta {:property "og:title" :content (format "@%s in #%s, %s | Clojurians Slack"
+    (conj [:link {:rel "canonical" :href (str "/" (:channel/name channel) "/" date ".html")}]
+          [:meta {:property "og:title" :content (format "@%s in #%s, %s | Clojurians Slack"
                                                         (get-in target-message [:message/user :user/name])
                                                         (:channel/name channel)
                                                         date)}]
