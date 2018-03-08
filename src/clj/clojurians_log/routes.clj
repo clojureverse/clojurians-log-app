@@ -15,25 +15,21 @@
 (defn context [request]
   {:request request})
 
-(defn message-page-might-have-updated?
-  [page-date-str last-fetch-time-ts]
-
+(defn message-page-might-have-updated? [page-date-str last-fetch-time-ts]
   (if (nil? last-fetch-time-ts)
     true
-
-    (let [fetch-date (jt/local-date (jt/zoned-date-time (time-util/html-ts->time last-fetch-time-ts)))
+    (let [fetch-date (-> last-fetch-time-ts
+                         time-util/html-ts->time
+                         jt/zoned-date-time
+                         jt/local-date)
           page-date (jt/local-date time-util/inst-day-formatter page-date-str)]
-      (println (.isEqual fetch-date page-date))
       (.isEqual fetch-date page-date))))
 
-(defn log-route
-  [endpoint request]
-
-  (let [config @(get-in endpoint [:config :value])
-        conn (get-in endpoint [:datomic :conn])
+(defn log-route [endpoint request]
+  (let [config                    @(get-in endpoint [:config :value])
+        conn                      (get-in endpoint [:datomic :conn])
         {:keys [channel date ts]} (:route-params request)
-        cache-time (get-in config [:message-page :cache-time] 0)]
-
+        cache-time                (get-in config [:message-page :cache-time] 0)]
 
     ;; Since we're displaying a log, presumably, all of the content is permanently cachable
     ;; Message page content also most likely have not changed and does not require any processing/page-generation.
@@ -44,10 +40,9 @@
       (-> (ring.util.response/response nil)
           (ring.util.response/status 304))
 
-      (let [db (d/db conn)
+      (let [db       (d/db conn)
             messages (queries/channel-day-messages db channel date)
             user-ids (slack-messages/extract-user-ids messages)]
-
         (-> request
             context
             (assoc :data/channel (queries/channel db channel)
