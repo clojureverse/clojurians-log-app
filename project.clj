@@ -30,7 +30,8 @@
                  [clj-http "3.7.0"]
                  [org.julienxx/clj-slack "0.5.5"]
                  [reloaded.repl "0.2.4"]
-                 [instaparse "1.4.8"]]
+                 [instaparse "1.4.8"]
+                 [com.cemerick/url "0.1.1"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0"]]

@@ -1,5 +1,6 @@
 (ns clojurians-log.views
   (:require [hiccup2.core :as hiccup]
+            [cemerick.url :refer [url]]
             [clojurians-log.time-util :as cl.tu]
             [clojure.string :as str]
             [clojurians-log.slack-messages :as slack-messages]))
@@ -21,6 +22,37 @@
    ;; styling over in clean Garden or Garden+Tachyons.
    [:link {:href "/css/legacy.css", :rel "stylesheet", :type "text/css"}]
    [:link {:href "/css/style.css", :rel "stylesheet", :type "text/css"}]])
+
+(defn log-page-head [{:data/keys [title channel date target-message hostname usernames] :as context}]
+  (cond-> (page-head context)
+    ;; Are we targeting a specific message in the log page?
+    ;; If, add tags to enable open graph support.
+    ;; This allows external services to generate a preview/summary card of the page.
+    (not (nil? target-message))
+    (conj [:link {:rel "canonical" :href (str "/" (:channel/name channel) "/" date ".html")}]
+          [:meta {:property "og:title" :content (format "@%s in #%s, %s | Clojurians Slack"
+                                                        (get-in target-message [:message/user :user/name])
+                                                        (:channel/name channel)
+                                                        date)}]
+          [:meta {:property "og:type" :content "website"}]
+          [:meta {:property "og:url" :content (str (url hostname
+                                                        (:channel/name channel)
+                                                        date
+                                                        (:message/ts target-message)))}]
+          [:meta {:property "og:image" :content (get-in target-message [:message/user :user-profile/image-48])}]
+          [:meta {:property "og:image:width" :content 50}]
+          [:meta {:property "og:image:height" :content 50}]
+          [:meta {:property "og:description" :content
+                   (slack-messages/message->text (:message/text target-message) usernames)}]
+          ;; Add javascript to jump to the targeted message when the page is finished loading
+          [:script (hiccup.util/raw-string
+                    (format
+                     "document.addEventListener(\"DOMContentLoaded\", function(event) {
+                          var element = document.getElementById('%s');
+                          element.classList.add(\"targeted\");
+                          element.scrollIntoView();
+                       });"
+                     (cl.tu/format-inst-id (:message/inst target-message))))])))
 
 (defn channel-day-offset
   "Given a list of [date msg-count] pairs, return `date` of the entry that is
@@ -61,7 +93,7 @@
          {:href (str "/" name "/" date ".html")}
          [:span [:span.prefix "#"] " " name " (" message-count ")"]]]])]])
 
-(defn- message-history [{:data/keys [messages usernames]}]
+(defn- message-history [{:data/keys [messages usernames channel date hostname]}]
   [:div.message-history
    (for [message messages
          :let [{:message/keys [user inst user text]} message
@@ -74,13 +106,18 @@
      [:div.message {:id (cl.tu/format-inst-id inst)}
       [:a.message_profile-pic {:href "" :style (str "background-image: url(" image-48 ");")}]
       [:a.message_username {:href ""} name]
-      [:span.message_timestamp [:a {:href (str "#" (cl.tu/format-inst-id inst))} (cl.tu/format-inst-time inst)]]
+      [:span.message_timestamp [:a {:href (->> (url hostname
+                                                    (:channel/name channel)
+                                                    date
+                                                    (:message/ts message))
+                                               str)}
+                                (cl.tu/format-inst-time inst)]]
       [:span.message_star]
-      [:span.message_content [:p (slack-messages/render-hiccup text usernames)]]])])
+      [:span.message_content [:p (slack-messages/message->hiccup text usernames)]]])])
 
 (defn- log-page-html [context]
   [:html
-   (page-head context)
+   (log-page-head context)
    [:body
     (log-page-header context)
     [:div.main
