@@ -48,6 +48,7 @@
             (assoc :data/channel (queries/channel db channel)
                    :data/channels (queries/channel-list db date)
                    :data/messages messages
+                   :data/thread-messages (queries/channel-thread-messages-of-day db channel date)
                    :data/target-message (some #(when (= (:message/ts %) ts) %) messages)
                    :data/usernames (into {} (queries/user-names db user-ids))
                    :data/channel-days (queries/channel-days db channel)

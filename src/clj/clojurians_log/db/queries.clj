@@ -23,8 +23,28 @@
 (defn- assoc-inst [message]
   (assoc message :message/inst (time-util/ts->inst (:message/ts message))))
 
+(defn channel-thread-messages-of-day
+  "Retrieve all messages for threads that started in the given channel on the given day"
+  [db chan-name day]
+  (->> (d/q '[:find [(pull ?msg [:message/text :message/ts :message/thread-ts {:message/user [:user/name :user-profile/image-48]}]) ...]
+              :in $ ?chan-name ?day [?from-date ?to-date]
+              :where
+              [?msg :message/channel ?chan]
+              [?chan :channel/name ?chan-name]
+
+              [?msg :message/thread-inst ?thread-inst]
+              [(.after ^java.util.Date ?thread-inst ?from-date)]
+              [(.before ^java.util.Date ?thread-inst ?to-date)]]
+            db
+            chan-name
+            day
+            (time-util/day-str->date-interval day))
+       (map assoc-inst)
+       (sort-by :message/inst)
+       (group-by :message/thread-ts)))
+
 (defn channel-day-messages [db chan-name day]
-  (->> (d/q '[:find [(pull ?msg [:message/text :message/ts {:message/user [:user/name :user-profile/image-48]}]) ...]
+  (->> (d/q '[:find [(pull ?msg [:message/text :message/ts :message/thread-ts {:message/user [:user/name :user-profile/image-48]}]) ...]
               :in $ ?chan-name ?day
               :where
               [?msg :message/day ?day]
@@ -34,6 +54,10 @@
             db
             chan-name
             day)
+
+       ;; Remove all thread messages except for the thread parent
+       (remove #(if-let [thread-ts (:message/thread-ts %)]
+                  (not= thread-ts (:message/ts %))))
        (map assoc-inst)
        (sort-by :message/inst)))
 

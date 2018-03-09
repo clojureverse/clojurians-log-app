@@ -93,23 +93,45 @@
          {:href (str "/" name "/" date ".html")}
          [:span [:span.prefix "#"] " " name " (" message-count ")"]]]])]])
 
-(defn- message-history [{:data/keys [messages usernames channel date]}]
-  [:div.message-history
-   (for [message messages
-         :let [{:message/keys [user inst user text ts]} message
-               {:user/keys [name]
-                :user-profile/keys [image-48]} user]]
+(defn- thread-child?
+  "Answers if the `message` is a message within a thread."
+  [{:message/keys [thread-ts ts]:as message}]
+  (and thread-ts (not= ts thread-ts)))
 
-     ;; things in the profile
-     ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
-     ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
-     [:div.message {:id (cl.tu/format-inst-id inst)}
-      [:a.message_profile-pic {:href "" :style (str "background-image: url(" image-48 ");")}]
-      [:a.message_username {:href ""} name]
-      [:span.message_timestamp [:a {:href (str/join "/" ["" (:channel/name channel) date ts])}
-                                (cl.tu/format-inst-time inst)]]
-      [:span.message_star]
-      [:span.message_content [:p (slack-messages/message->hiccup text usernames)]]])])
+(defn- single-message
+  "Returns the hiccup of a single message"
+  [{:data/keys [usernames channel date hostname] :as context}
+   {:message/keys [user inst user text thread-ts ts] :as message}]
+
+  (let [{:user/keys [name]
+         :user-profile/keys [image-48]} user]
+
+      ;; things in the profile
+      ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
+      ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
+      (list [:div.message
+             {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
+             [:a.message_profile-pic {:href "" :style (str "background-image: url(" image-48 ");")}]
+             [:a.message_username {:href ""} name]
+             [:span.message_timestamp [:a {:href (str/join "/" ["" (:channel/name channel) date ts])}]
+                                       (cl.tu/format-inst-time inst)]
+             [:span.message_star]
+             [:span.message_content [:p (slack-messages/message->hiccup text usernames)]]])))
+
+(defn- message-hiccup
+  "Returns either a single message hiccup, or if the given message starts a thread,
+  hiccup of all thread messages in a list"
+  [context message thread-messages]
+
+  (if-let [messages (get thread-messages (:message/ts message))]
+    (for [thread-msg messages]
+      (single-message context thread-msg))
+
+    (single-message context message)))
+
+(defn- message-history [{:data/keys [messages thread-messages] :as context}]
+  [:div.message-history
+   (map #(message-hiccup context % thread-messages) messages)])
 
 (defn- log-page-html [context]
   [:html

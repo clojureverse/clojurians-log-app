@@ -1,6 +1,7 @@
 (ns repl.import
   (:require [clojurians-log.data :refer :all]
             [clojurians-log.db.import :as i]
+            [clojurians-log.time-util :as time-util]
             [clojure.set :as set]
             [clojure.string :as str]
             [datomic.api :as d]
@@ -416,3 +417,42 @@
 
               (some->> msg :previous_message (into {}) (vector :message/key) )
               )
+
+(d/q '[:find (pull ?chan [*]) .
+       :in $ ?chan-name ?day
+       :where
+       [?chan :channel/name ?chan-name]
+       [?msg :message/day ?day]
+       ]
+     (user/db)
+     "datomic"
+     "2018-02-03"
+     )
+
+
+(->> (d/q '[:find [(pull ?msg [*]) ...]
+            :in $ ?chan-name ?day [?interval-start ?interval-end]
+            :where
+
+            [?msg :message/channel ?chan]
+            [?chan :channel/name ?chan-name]
+
+            (or-join [?msg ?day ?interval-start ?interval-end]
+                     ;; Match messages for today
+                     [?msg :message/day ?day]
+
+                     ;; Match threads that started today
+                     (and [?msg :message/thread-inst ?thread-inst]
+                          [(.after ?thread-inst ?interval-start)]
+                          [(.before ?thread-inst ?interval-end)]))
+            ]
+          (user/db)
+          "datomic"
+          "2018-02-07"
+          (->> (time-util/day-interval 2018 02 07)
+               (map #(java.util.Date/from (.toInstant %))))
+          )
+     ;; first
+     count
+     ;; (sort-by :message/ts)
+     )
