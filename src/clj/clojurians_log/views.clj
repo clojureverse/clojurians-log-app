@@ -5,6 +5,15 @@
             [clojure.string :as str]
             [clojurians-log.slack-messages :as slack-messages]))
 
+(defn- thread-child?
+  "Answers if the `message` is a message within a thread."
+  [{:message/keys [thread-ts ts]:as message}]
+  (and thread-ts (not= ts thread-ts)))
+
+(defn- find-message-with-ts
+  [messages ts]
+  (some #(when (= (:message/ts %) ts) %) messages))
+
 (defn page-head [{:data/keys [title channel date]}]
   [:head
    [:meta {:charset "utf-8"}]
@@ -23,17 +32,31 @@
    [:link {:href "/css/legacy.css", :rel "stylesheet", :type "text/css"}]
    [:link {:href "/css/style.css", :rel "stylesheet", :type "text/css"}]])
 
-(defn log-page-head [{:data/keys [title channel date target-message http-origin usernames] :as context}]
+(defn og-title [{:data/keys [title channel date target-message messages usernames thread-messages] :as context}]
+  (cond
+    ;; Is the message part of a thread?
+    (thread-child? target-message)
+    (let [thread-parent (find-message-with-ts messages (:message/thread-ts target-message))]
+      (format "@%s in reply to @%s, in #%s, %s | Clojurians Slack"
+              (get-in target-message [:message/user :user/name])
+              (get-in thread-parent [:message/user :user/name])
+              (:channel/name channel)
+              date))
+
+    :else
+    (format "@%s in #%s, %s | Clojurians Slack"
+            (get-in target-message [:message/user :user/name])
+            (:channel/name channel)
+            date)))
+
+(defn log-page-head [{:data/keys [title channel date target-message http-origin usernames thread-messages] :as context}]
   (cond-> (page-head context)
     ;; Are we targeting a specific message in the log page?
     ;; If, add tags to enable open graph support.
     ;; This allows external services to generate a preview/summary card of the page.
     (not (nil? target-message))
     (conj [:link {:rel "canonical" :href (str "/" (:channel/name channel) "/" date ".html")}]
-          [:meta {:property "og:title" :content (format "@%s in #%s, %s | Clojurians Slack"
-                                                        (get-in target-message [:message/user :user/name])
-                                                        (:channel/name channel)
-                                                        date)}]
+          [:meta {:property "og:title" :content (og-title context)}]
           [:meta {:property "og:type" :content "website"}]
           [:meta {:property "og:url" :content (str (url http-origin
                                                         (:channel/name channel)
@@ -92,11 +115,6 @@
         [:a
          {:href (str "/" name "/" date ".html")}
          [:span [:span.prefix "#"] " " name " (" message-count ")"]]]])]])
-
-(defn- thread-child?
-  "Answers if the `message` is a message within a thread."
-  [{:message/keys [thread-ts ts]:as message}]
-  (and thread-ts (not= ts thread-ts)))
 
 (defn- single-message
   "Returns the hiccup of a single message"

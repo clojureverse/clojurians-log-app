@@ -42,14 +42,15 @@
 
       (let [db       (d/db conn)
             messages (queries/channel-day-messages db channel date)
+            thread-messages (queries/channel-thread-messages-of-day db channel date)
             user-ids (slack-messages/extract-user-ids messages)]
         (-> request
             context
             (assoc :data/channel (queries/channel db channel)
                    :data/channels (queries/channel-list db date)
                    :data/messages messages
-                   :data/thread-messages (queries/channel-thread-messages-of-day db channel date)
-                   :data/target-message (some #(when (= (:message/ts %) ts) %) messages)
+                   :data/thread-messages (group-by :message/thread-ts thread-messages)
+                   :data/target-message (some #(when (= (:message/ts %) ts) %) (apply conj messages thread-messages))
                    :data/usernames (into {} (queries/user-names db user-ids))
                    :data/channel-days (queries/channel-days db channel)
                    :data/title (str channel " " date " | Clojurians Slack Log")

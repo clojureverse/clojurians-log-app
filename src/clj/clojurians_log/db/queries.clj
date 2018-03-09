@@ -40,8 +40,7 @@
             day
             (time-util/day-str->date-interval day))
        (map assoc-inst)
-       (sort-by :message/inst)
-       (group-by :message/thread-ts)))
+       (sort-by :message/inst)))
 
 (defn channel-day-messages [db chan-name day]
   (->> (d/q '[:find [(pull ?msg [:message/text :message/ts :message/thread-ts {:message/user [:user/name :user-profile/image-48]}]) ...]
