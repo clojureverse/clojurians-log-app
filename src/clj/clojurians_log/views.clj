@@ -113,8 +113,8 @@
              {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
              [:a.message_profile-pic {:href "" :style (str "background-image: url(" image-48 ");")}]
              [:a.message_username {:href ""} name]
-             [:span.message_timestamp [:a {:href (str/join "/" ["" (:channel/name channel) date ts])}]
-                                       (cl.tu/format-inst-time inst)]
+             [:span.message_timestamp [:a {:href (str/join "/" ["" (:channel/name channel) date ts])}
+                                       (cl.tu/format-inst-time inst)]]
              [:span.message_star]
              [:span.message_content [:p (slack-messages/message->hiccup text usernames)]]])))
 
@@ -124,8 +124,9 @@
   [context message thread-messages]
 
   (if-let [messages (get thread-messages (:message/ts message))]
-    (for [thread-msg messages]
-      (single-message context thread-msg))
+    (concat (list (single-message context message))
+            (for [thread-msg messages]
+              (single-message context thread-msg)))
 
     (single-message context message)))
 
