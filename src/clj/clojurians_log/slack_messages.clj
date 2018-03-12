@@ -50,7 +50,6 @@
 
   Message is a vector of vectors format returned by mp/parse."
   [message id-names]
-  (pp/pprint message)
   (map (fn [[type & content :as token]]
          (if (= :channel type)
            [:channel (replace-name (into {} content) id-names)]
