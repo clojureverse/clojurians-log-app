@@ -1,0 +1,993 @@
+[[{:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "arthur",
+   :user-profile/real-name-normalized "arthur",
+   :user-profile/avatar-hash "g6acc4764438",
+   :user-profile/email "arthur@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0025-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0025-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0025-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0025-192.png",
+   :user/real-name "arthur",
+   :user/slack-id "U0EL66M19",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0025-512.png",
+   :user-profile/real-name "arthur",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F0180%2Fimg%2Favatars%2Fava_0025-24.png"}
+  {:user-profile/display-name-normalized "tmarble",
+   :user/owner? false,
+   :user/name "tmarble",
+   :user-profile/real-name-normalized "Tom Marble",
+   :user-profile/avatar-hash "g924e827f496",
+   :user-profile/email "tmarble@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/924e827f49662e9da005e503a65368a3.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0015-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/924e827f49662e9da005e503a65368a3.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0015-48.png",
+   :user-profile/display-name "tmarble",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/924e827f49662e9da005e503a65368a3.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0015-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/924e827f49662e9da005e503a65368a3.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0015-192.png",
+   :user/real-name "Tom Marble",
+   :user/slack-id "U0501UWML",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/924e827f49662e9da005e503a65368a3.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0015-512.png",
+   :user-profile/real-name "Tom Marble",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/924e827f49662e9da005e503a65368a3.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0015-24.png"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "arthur",
+   :user-profile/real-name-normalized "arthur",
+   :user-profile/avatar-hash "g6acc4764438",
+   :user-profile/email "arthur@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0025-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0025-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0025-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0025-192.png",
+   :user/real-name "arthur",
+   :user/slack-id "U0EL66M19",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0025-512.png",
+   :user-profile/real-name "arthur",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F0180%2Fimg%2Favatars%2Fava_0025-24.png"}
+  {:user-profile/display-name-normalized "p-himik",
+   :user/owner? false,
+   :user/name "p-himik",
+   :user-profile/real-name-normalized "Eugene Pakhomov",
+   :user-profile/avatar-hash "g273db96a0a8",
+   :user-profile/email "p-himik@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/273db96a0a8dd4e4608179dd96800456.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/273db96a0a8dd4e4608179dd96800456.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-48.png",
+   :user-profile/display-name "p-himik",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/273db96a0a8dd4e4608179dd96800456.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/273db96a0a8dd4e4608179dd96800456.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0019-192.png",
+   :user/real-name "Eugene Pakhomov",
+   :user/slack-id "U2FRKM4TW",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/273db96a0a8dd4e4608179dd96800456.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0019-512.png",
+   :user-profile/real-name "Eugene Pakhomov",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/273db96a0a8dd4e4608179dd96800456.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-24.png"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "darwin",
+   :user-profile/real-name-normalized "darwin",
+   :user-profile/avatar-hash "g79322c2ed80",
+   :user-profile/email "darwin@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-192.png",
+   :user/real-name "darwin",
+   :user/slack-id "U08E3BBST",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-512.png",
+   :user-profile/real-name "darwin",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-24.png"}
+  {:user-profile/display-name-normalized "mv",
+   :user/owner? false,
+   :user/name "mv",
+   :user-profile/real-name-normalized "Mantas Vidutis",
+   :user-profile/avatar-hash "gc59eba68584",
+   :user-profile/email "mv@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/c59eba68584559c616a0caacff7a0e69.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/c59eba68584559c616a0caacff7a0e69.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-48.png",
+   :user-profile/display-name "mv",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/c59eba68584559c616a0caacff7a0e69.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/c59eba68584559c616a0caacff7a0e69.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-192.png",
+   :user/real-name "Mantas Vidutis",
+   :user/slack-id "U0PD452UA",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/c59eba68584559c616a0caacff7a0e69.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-512.png",
+   :user-profile/real-name "Mantas Vidutis",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/c59eba68584559c616a0caacff7a0e69.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-24.png"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "darwin",
+   :user-profile/real-name-normalized "darwin",
+   :user-profile/avatar-hash "g79322c2ed80",
+   :user-profile/email "darwin@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-192.png",
+   :user/real-name "darwin",
+   :user/slack-id "U08E3BBST",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-512.png",
+   :user-profile/real-name "darwin",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-24.png"}
+  {:user-profile/display-name-normalized "p-himik",
+   :user/owner? false,
+   :user/name "p-himik",
+   :user-profile/real-name-normalized "Eugene Pakhomov",
+   :user-profile/avatar-hash "g273db96a0a8",
+   :user-profile/email "p-himik@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/273db96a0a8dd4e4608179dd96800456.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/273db96a0a8dd4e4608179dd96800456.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-48.png",
+   :user-profile/display-name "p-himik",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/273db96a0a8dd4e4608179dd96800456.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/273db96a0a8dd4e4608179dd96800456.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0019-192.png",
+   :user/real-name "Eugene Pakhomov",
+   :user/slack-id "U2FRKM4TW",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/273db96a0a8dd4e4608179dd96800456.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0019-512.png",
+   :user-profile/real-name "Eugene Pakhomov",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/273db96a0a8dd4e4608179dd96800456.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-24.png"}
+  {:user-profile/display-name-normalized "grierson",
+   :user/owner? false,
+   :user/name "grierson",
+   :user-profile/real-name-normalized "Kyle Grierson",
+   :user-profile/avatar-hash "g913f50c24d7",
+   :user-profile/email "grierson@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/913f50c24d72b2ea3f1841d7c5e91436.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0015-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/913f50c24d72b2ea3f1841d7c5e91436.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0015-48.png",
+   :user-profile/display-name "grierson",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/913f50c24d72b2ea3f1841d7c5e91436.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0015-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/913f50c24d72b2ea3f1841d7c5e91436.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0015-192.png",
+   :user/real-name "Kyle Grierson",
+   :user/slack-id "U3G3MBL9H",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/913f50c24d72b2ea3f1841d7c5e91436.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0015-512.png",
+   :user-profile/real-name "Kyle Grierson",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/913f50c24d72b2ea3f1841d7c5e91436.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0015-24.png"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "darwin",
+   :user-profile/real-name-normalized "darwin",
+   :user-profile/avatar-hash "g79322c2ed80",
+   :user-profile/email "darwin@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-192.png",
+   :user/real-name "darwin",
+   :user/slack-id "U08E3BBST",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-512.png",
+   :user-profile/real-name "darwin",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-24.png"}
+  {:user-profile/display-name-normalized "richhuwtaylor",
+   :user/owner? false,
+   :user/name "rich697",
+   :user-profile/real-name-normalized "Rich Taylor",
+   :user-profile/avatar-hash "ge710d21d27d",
+   :user-profile/email "rich697@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/e710d21d27d54c45c34a4144f3ff2083.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0005-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/e710d21d27d54c45c34a4144f3ff2083.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0005-48.png",
+   :user-profile/display-name "richhuwtaylor",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/e710d21d27d54c45c34a4144f3ff2083.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0005-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/e710d21d27d54c45c34a4144f3ff2083.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0005-192.png",
+   :user/real-name "Rich Taylor",
+   :user/slack-id "U8TSN0KFG",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/e710d21d27d54c45c34a4144f3ff2083.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0005-512.png",
+   :user-profile/real-name "Rich Taylor",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/e710d21d27d54c45c34a4144f3ff2083.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0005-24.png"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "darwin",
+   :user-profile/real-name-normalized "darwin",
+   :user-profile/avatar-hash "g79322c2ed80",
+   :user-profile/email "darwin@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-192.png",
+   :user/real-name "darwin",
+   :user/slack-id "U08E3BBST",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-512.png",
+   :user-profile/real-name "darwin",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-24.png"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "mx2000",
+   :user-profile/real-name-normalized "mx2000",
+   :user-profile/avatar-hash "gff769dc62fa",
+   :user-profile/email "mx2000@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/ff769dc62fa36ddeb41ba885d1ba790a.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0024-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/ff769dc62fa36ddeb41ba885d1ba790a.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0024-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/ff769dc62fa36ddeb41ba885d1ba790a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0024-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/ff769dc62fa36ddeb41ba885d1ba790a.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0024-192.png",
+   :user/real-name "mx2000",
+   :user/slack-id "U0ALH6R89",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/ff769dc62fa36ddeb41ba885d1ba790a.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0024-512.png",
+   :user-profile/real-name "mx2000",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/ff769dc62fa36ddeb41ba885d1ba790a.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0024-24.png"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "darwin",
+   :user-profile/real-name-normalized "darwin",
+   :user-profile/avatar-hash "g79322c2ed80",
+   :user-profile/email "darwin@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-192.png",
+   :user/real-name "darwin",
+   :user/slack-id "U08E3BBST",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-512.png",
+   :user-profile/real-name "darwin",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-24.png"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "darwin",
+   :user-profile/real-name-normalized "darwin",
+   :user-profile/avatar-hash "g79322c2ed80",
+   :user-profile/email "darwin@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-192.png",
+   :user/real-name "darwin",
+   :user/slack-id "U08E3BBST",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-512.png",
+   :user-profile/real-name "darwin",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-24.png"}
+  {:user-profile/display-name-normalized "ikitommi",
+   :user/owner? false,
+   :user/name "ikitommi",
+   :user-profile/real-name-normalized "Tommi Reiman",
+   :user-profile/avatar-hash "g5de1105d1b7",
+   :user-profile/email "ikitommi@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0011-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0011-48.png",
+   :user-profile/display-name "ikitommi",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F3654%2Fimg%2Favatars%2Fava_0011-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0011-192.png",
+   :user/real-name "Tommi Reiman",
+   :user/slack-id "U055NJ5CC",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0011-512.png",
+   :user-profile/real-name "Tommi Reiman",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0011-24.png"}
+  {:user-profile/display-name-normalized "danielcompton",
+   :user/owner? false,
+   :user/name "danielcompton",
+   :user-profile/real-name-normalized "Daniel Compton",
+   :user-profile/avatar-hash "ge0d9971908c",
+   :user-profile/email "danielcompton@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-48.png",
+   :user-profile/display-name "danielcompton",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0010-192.png",
+   :user/real-name "Daniel Compton",
+   :user/slack-id "U051KLSJF",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0010-512.png",
+   :user-profile/real-name "Daniel Compton",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-24.png"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "sofra",
+   :user-profile/real-name-normalized "sofra",
+   :user-profile/avatar-hash "gc034686254f",
+   :user-profile/email "sofra@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/c034686254f06cfb99c54d7266f93f9a.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0004-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/c034686254f06cfb99c54d7266f93f9a.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0004-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/c034686254f06cfb99c54d7266f93f9a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0004-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/c034686254f06cfb99c54d7266f93f9a.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0004-192.png",
+   :user/real-name "sofra",
+   :user/slack-id "U093DA4QY",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/c034686254f06cfb99c54d7266f93f9a.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0004-512.png",
+   :user-profile/real-name "sofra",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/c034686254f06cfb99c54d7266f93f9a.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F0180%2Fimg%2Favatars%2Fava_0004-24.png"}
+  {:user-profile/display-name-normalized "ikitommi",
+   :user/owner? false,
+   :user/name "ikitommi",
+   :user-profile/real-name-normalized "Tommi Reiman",
+   :user-profile/avatar-hash "g5de1105d1b7",
+   :user-profile/email "ikitommi@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0011-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0011-48.png",
+   :user-profile/display-name "ikitommi",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F3654%2Fimg%2Favatars%2Fava_0011-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0011-192.png",
+   :user/real-name "Tommi Reiman",
+   :user/slack-id "U055NJ5CC",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0011-512.png",
+   :user-profile/real-name "Tommi Reiman",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0011-24.png"}
+  {:user-profile/display-name-normalized "ikitommi",
+   :user/owner? false,
+   :user/name "ikitommi",
+   :user-profile/real-name-normalized "Tommi Reiman",
+   :user-profile/avatar-hash "g5de1105d1b7",
+   :user-profile/email "ikitommi@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0011-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0011-48.png",
+   :user-profile/display-name "ikitommi",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F3654%2Fimg%2Favatars%2Fava_0011-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0011-192.png",
+   :user/real-name "Tommi Reiman",
+   :user/slack-id "U055NJ5CC",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0011-512.png",
+   :user-profile/real-name "Tommi Reiman",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0011-24.png"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "arthur",
+   :user-profile/real-name-normalized "arthur",
+   :user-profile/avatar-hash "g6acc4764438",
+   :user-profile/email "arthur@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0025-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0025-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0025-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0025-192.png",
+   :user/real-name "arthur",
+   :user/slack-id "U0EL66M19",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0025-512.png",
+   :user-profile/real-name "arthur",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F0180%2Fimg%2Favatars%2Fava_0025-24.png"}
+  {:user-profile/display-name-normalized "dominicm",
+   :user/owner? false,
+   :user/name "dominicm",
+   :user-profile/real-name-normalized "Dominic",
+   :user-profile/avatar-hash "g65f4a8e42b5",
+   :user-profile/email "dominicm@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/65f4a8e42b5cd0b18ef1b23c01e1364b.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/65f4a8e42b5cd0b18ef1b23c01e1364b.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-48.png",
+   :user-profile/display-name "dominicm",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/65f4a8e42b5cd0b18ef1b23c01e1364b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/65f4a8e42b5cd0b18ef1b23c01e1364b.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0019-192.png",
+   :user/real-name "Dominic",
+   :user/slack-id "U09LZR36F",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/65f4a8e42b5cd0b18ef1b23c01e1364b.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0019-512.png",
+   :user-profile/real-name "Dominic",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/65f4a8e42b5cd0b18ef1b23c01e1364b.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-24.png"}
+  {:user-profile/display-name-normalized "danielcompton",
+   :user/owner? false,
+   :user/name "danielcompton",
+   :user-profile/real-name-normalized "Daniel Compton",
+   :user-profile/avatar-hash "ge0d9971908c",
+   :user-profile/email "danielcompton@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-48.png",
+   :user-profile/display-name "danielcompton",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0010-192.png",
+   :user/real-name "Daniel Compton",
+   :user/slack-id "U051KLSJF",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0010-512.png",
+   :user-profile/real-name "Daniel Compton",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-24.png"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "arthur",
+   :user-profile/real-name-normalized "arthur",
+   :user-profile/avatar-hash "g6acc4764438",
+   :user-profile/email "arthur@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0025-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0025-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0025-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0025-192.png",
+   :user/real-name "arthur",
+   :user/slack-id "U0EL66M19",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0025-512.png",
+   :user-profile/real-name "arthur",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/6acc4764438b6f3e80e9645ec8259353.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F0180%2Fimg%2Favatars%2Fava_0025-24.png"}
+  {:user-profile/display-name-normalized "danielcompton",
+   :user/owner? false,
+   :user/name "danielcompton",
+   :user-profile/real-name-normalized "Daniel Compton",
+   :user-profile/avatar-hash "ge0d9971908c",
+   :user-profile/email "danielcompton@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-48.png",
+   :user-profile/display-name "danielcompton",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0010-192.png",
+   :user/real-name "Daniel Compton",
+   :user/slack-id "U051KLSJF",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0010-512.png",
+   :user-profile/real-name "Daniel Compton",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-24.png"}
+  {:user-profile/display-name-normalized "danielcompton",
+   :user/owner? false,
+   :user/name "danielcompton",
+   :user-profile/real-name-normalized "Daniel Compton",
+   :user-profile/avatar-hash "ge0d9971908c",
+   :user-profile/email "danielcompton@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-48.png",
+   :user-profile/display-name "danielcompton",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0010-192.png",
+   :user/real-name "Daniel Compton",
+   :user/slack-id "U051KLSJF",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0010-512.png",
+   :user-profile/real-name "Daniel Compton",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/e0d9971908c46da1f9534933760083c6.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-24.png"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "sofra",
+   :user-profile/real-name-normalized "sofra",
+   :user-profile/avatar-hash "gc034686254f",
+   :user-profile/email "sofra@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/c034686254f06cfb99c54d7266f93f9a.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0004-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/c034686254f06cfb99c54d7266f93f9a.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0004-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/c034686254f06cfb99c54d7266f93f9a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0004-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/c034686254f06cfb99c54d7266f93f9a.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0004-192.png",
+   :user/real-name "sofra",
+   :user/slack-id "U093DA4QY",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/c034686254f06cfb99c54d7266f93f9a.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0004-512.png",
+   :user-profile/real-name "sofra",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/c034686254f06cfb99c54d7266f93f9a.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F0180%2Fimg%2Favatars%2Fava_0004-24.png"}
+  {:user-profile/display-name-normalized "pepe",
+   :user/owner? false,
+   :user/name "pepe",
+   :user-profile/real-name-normalized "Josef",
+   :user-profile/avatar-hash "g2c127dd6156",
+   :user-profile/email "pepe@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/2c127dd6156cec2226da919cd48765af.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0017-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/2c127dd6156cec2226da919cd48765af.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0017-48.png",
+   :user-profile/display-name "pepe",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/2c127dd6156cec2226da919cd48765af.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0017-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/2c127dd6156cec2226da919cd48765af.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0017-192.png",
+   :user/real-name "Josef",
+   :user/slack-id "U0B43TX16",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/2c127dd6156cec2226da919cd48765af.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0017-512.png",
+   :user-profile/real-name "Josef",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/2c127dd6156cec2226da919cd48765af.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F0180%2Fimg%2Favatars%2Fava_0017-24.png"}
+  {:user-profile/display-name-normalized "pepe",
+   :user/owner? false,
+   :user/name "pepe",
+   :user-profile/real-name-normalized "Josef",
+   :user-profile/avatar-hash "g2c127dd6156",
+   :user-profile/email "pepe@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/2c127dd6156cec2226da919cd48765af.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0017-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/2c127dd6156cec2226da919cd48765af.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0017-48.png",
+   :user-profile/display-name "pepe",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/2c127dd6156cec2226da919cd48765af.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0017-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/2c127dd6156cec2226da919cd48765af.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0017-192.png",
+   :user/real-name "Josef",
+   :user/slack-id "U0B43TX16",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/2c127dd6156cec2226da919cd48765af.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0017-512.png",
+   :user-profile/real-name "Josef",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/2c127dd6156cec2226da919cd48765af.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F0180%2Fimg%2Favatars%2Fava_0017-24.png"}
+  {:user-profile/display-name-normalized "ikitommi",
+   :user/owner? false,
+   :user/name "ikitommi",
+   :user-profile/real-name-normalized "Tommi Reiman",
+   :user-profile/avatar-hash "g5de1105d1b7",
+   :user-profile/email "ikitommi@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0011-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0011-48.png",
+   :user-profile/display-name "ikitommi",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F3654%2Fimg%2Favatars%2Fava_0011-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0011-192.png",
+   :user/real-name "Tommi Reiman",
+   :user/slack-id "U055NJ5CC",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0011-512.png",
+   :user-profile/real-name "Tommi Reiman",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/5de1105d1b72989a597f3d5e144bcc2b.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0011-24.png"}
+  {:user-profile/display-name-normalized "adulteratedjedi",
+   :user/owner? true,
+   :user/name "gjnoonan",
+   :user-profile/real-name-normalized "Gavin-John Noonan",
+   :user-profile/avatar-hash "df575fabbfde",
+   :user-profile/email "gjnoonan@example.com",
+   :user-profile/image-32
+   "https://avatars.slack-edge.com/2015-05-20/5001263149_df575fabbfde499b53d0_32.jpg",
+   :user-profile/image-48
+   "https://avatars.slack-edge.com/2015-05-20/5001263149_df575fabbfde499b53d0_48.jpg",
+   :user-profile/display-name "adulteratedjedi",
+   :user-profile/image-72
+   "https://avatars.slack-edge.com/2015-05-20/5001263149_df575fabbfde499b53d0_72.jpg",
+   :user-profile/image-192
+   "https://avatars.slack-edge.com/2015-05-20/5001263149_df575fabbfde499b53d0_72.jpg",
+   :user/real-name "Gavin-John Noonan",
+   :user/slack-id "U03RZGPFT",
+   :user-profile/image-512 "",
+   :user-profile/real-name "Gavin-John Noonan",
+   :user/admin? true,
+   :user-profile/image-24
+   "https://avatars.slack-edge.com/2015-05-20/5001263149_df575fabbfde499b53d0_24.jpg"}
+  {:user-profile/display-name-normalized "malcolmsparks",
+   :user/owner? false,
+   :user/name "malcolmsparks",
+   :user-profile/real-name-normalized "Malcolm Sparks",
+   :user-profile/avatar-hash "bc6653522f69",
+   :user-profile/email "malcolmsparks@example.com",
+   :user-profile/image-32
+   "https://avatars.slack-edge.com/2016-10-08/89111896357_bc6653522f69ac601085_32.jpg",
+   :user-profile/image-48
+   "https://avatars.slack-edge.com/2016-10-08/89111896357_bc6653522f69ac601085_48.jpg",
+   :user-profile/display-name "malcolmsparks",
+   :user-profile/image-72
+   "https://avatars.slack-edge.com/2016-10-08/89111896357_bc6653522f69ac601085_72.jpg",
+   :user-profile/image-192
+   "https://avatars.slack-edge.com/2016-10-08/89111896357_bc6653522f69ac601085_192.jpg",
+   :user/real-name "Malcolm Sparks",
+   :user/slack-id "U050CTFRT",
+   :user-profile/image-512
+   "https://avatars.slack-edge.com/2016-10-08/89111896357_bc6653522f69ac601085_512.jpg",
+   :user-profile/real-name "Malcolm Sparks",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://avatars.slack-edge.com/2016-10-08/89111896357_bc6653522f69ac601085_24.jpg"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "darwin",
+   :user-profile/real-name-normalized "darwin",
+   :user-profile/avatar-hash "g79322c2ed80",
+   :user-profile/email "darwin@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-192.png",
+   :user/real-name "darwin",
+   :user/slack-id "U08E3BBST",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0000-512.png",
+   :user-profile/real-name "darwin",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/79322c2ed80c2d722de8c9d0475198a0.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0000-24.png"}
+  {:user-profile/display-name-normalized "mihaelkonjevic",
+   :user/owner? false,
+   :user/name "mihaelkonjevic",
+   :user-profile/real-name-normalized "Konjevic",
+   :user-profile/avatar-hash "g9976060bfb2",
+   :user-profile/email "mihaelkonjevic@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/9976060bfb26220dd042340394d06b31.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0022-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/9976060bfb26220dd042340394d06b31.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0022-48.png",
+   :user-profile/display-name "mihaelkonjevic",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/9976060bfb26220dd042340394d06b31.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0022-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/9976060bfb26220dd042340394d06b31.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0022-192.png",
+   :user/real-name "Konjevic",
+   :user/slack-id "U050986L9",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/9976060bfb26220dd042340394d06b31.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0022-512.png",
+   :user-profile/real-name "Konjevic",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/9976060bfb26220dd042340394d06b31.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0022-24.png"}]
+ [#:channel{:slack-id "C7YF1SBT3",
+            :name "reitit",
+            :created 1510516757,
+            :creator [:user/slack-id "U055NJ5CC"]}
+  #:channel{:slack-id "C05006WDW",
+            :name "jobs",
+            :created 1432252868,
+            :creator [:user/slack-id "U03RZGPFT"]}
+  #:channel{:slack-id "C0702A7SB",
+            :name "yada",
+            :created 1435604018,
+            :creator [:user/slack-id "U050CTFRT"]}
+  #:channel{:slack-id "C0J01U7MY",
+            :name "dirac",
+            :created 1452213185,
+            :creator [:user/slack-id "U08E3BBST"]}
+  #:channel{:slack-id "C0MDSV2LW",
+            :name "keechma",
+            :created 1455559182,
+            :creator [:user/slack-id "U050986L9"]}]
+ [#:message{:key "C05006WDW--1517522960.000108",
+            :text
+            "ohh and the office is in Redwood City California, most people work remotely some of the time,",
+            :channel [:channel/slack-id "C05006WDW"],
+            :user [:user/slack-id "U0EL66M19"],
+            :ts "1517522960.000108",
+            :day "2018-02-01"}
+  #:message{:key "C05006WDW--1517522980.000026",
+            :text "@arthur are you open to contractors?",
+            :channel [:channel/slack-id "C05006WDW"],
+            :user [:user/slack-id "U0501UWML"],
+            :ts "1517522980.000026",
+            :day "2018-02-01"}
+  #:message{:key "C05006WDW--1517523195.000002",
+            :text
+            "we're looking for long term full time folks. Yummly is a really great place to work and we want to build a long term team (which is very un-silicon-valley i know)",
+            :channel [:channel/slack-id "C05006WDW"],
+            :user [:user/slack-id "U0EL66M19"],
+            :ts "1517523195.000002",
+            :day "2018-02-01"}
+  #:message{:key "C0J01U7MY--1517504557.000172",
+            :text
+            "I'm getting an interesting error:\n```\nError loading dirac.nrepl: java.io.FileNotFoundException: Could not locate com/rpl/specter__init.class or com/rpl/specter.clj on classpath., compiling:(dirac/lib/weasel_server.clj:1:1)\n```",
+            :channel [:channel/slack-id "C0J01U7MY"],
+            :user [:user/slack-id "U2FRKM4TW"],
+            :ts "1517504557.000172",
+            :day "2018-02-01"}
+  #:message{:key "C0J01U7MY--1517504590.000207",
+            :text
+            "aha, I probably forgot to add specter into dirac’s lib dependencies :disappointed:",
+            :channel [:channel/slack-id "C0J01U7MY"],
+            :user [:user/slack-id "U08E3BBST"],
+            :ts "1517504590.000207",
+            :day "2018-02-01"}
+  #:message{:key "C05006WDW--1517616722.000228",
+            :text "Possible remote? Possible contract?",
+            :channel [:channel/slack-id "C05006WDW"],
+            :user [:user/slack-id "U0PD452UA"],
+            :ts "1517616722.000228",
+            :day "2018-02-03"}
+  #:message{:key "C0J01U7MY--1517504623.000550",
+            :text
+            "no specter in deps here: <https://clojars.org/binaryage/dirac>",
+            :channel [:channel/slack-id "C0J01U7MY"],
+            :user [:user/slack-id "U08E3BBST"],
+            :ts "1517504623.000550",
+            :day "2018-02-01"}
+  #:message{:key "C0J01U7MY--1517504629.001046",
+            :text "It has a test scope",
+            :channel [:channel/slack-id "C0J01U7MY"],
+            :user [:user/slack-id "U2FRKM4TW"],
+            :ts "1517504629.001046",
+            :day "2018-02-01"}
+  #:message{:key "C0702A7SB--1517520547.000497",
+            :text "<@U051KLSJF> Thanks",
+            :channel [:channel/slack-id "C0702A7SB"],
+            :user [:user/slack-id "U3G3MBL9H"],
+            :ts "1517520547.000497",
+            :day "2018-02-01"}
+  #:message{:key "C0J01U7MY--1517504646.000695",
+            :text "that is why it worked for me during dev",
+            :channel [:channel/slack-id "C0J01U7MY"],
+            :user [:user/slack-id "U08E3BBST"],
+            :ts "1517504646.000695",
+            :day "2018-02-01"}
+  #:message{:key "C05006WDW--1517590821.000810",
+            :text
+            "Metail are hiring - we're a fashion tech company based in Cambridge letting people try clothing online for the best possible shopping experience. \nWe're big Clojure advocates and use Clojure(Script) across our stack. Our current vacancies are listed on our site:\n<https://metail.com/careers/>",
+            :channel [:channel/slack-id "C05006WDW"],
+            :user [:user/slack-id "U8TSN0KFG"],
+            :ts "1517590821.000810",
+            :day "2018-02-02"}
+  #:message{:key "C0J01U7MY--1517504662.000163",
+            :text "I forgot that I filter deps for clojars lib",
+            :channel [:channel/slack-id "C0J01U7MY"],
+            :user [:user/slack-id "U08E3BBST"],
+            :ts "1517504662.000163",
+            :day "2018-02-01"}
+  #:message{:key "C05006WDW--1517544362.000082",
+            :text "<@U0EL66M19> Are you open to remote employees?",
+            :channel [:channel/slack-id "C05006WDW"],
+            :user [:user/slack-id "U0ALH6R89"],
+            :ts "1517544362.000082",
+            :day "2018-02-02"}
+  #:message{:key "C0J01U7MY--1517504675.000868",
+            :text "for now add com.rpl/specter dep into your project",
+            :channel [:channel/slack-id "C0J01U7MY"],
+            :user [:user/slack-id "U08E3BBST"],
+            :ts "1517504675.000868",
+            :day "2018-02-01"}
+  #:message{:key "C0J01U7MY--1517504691.000503",
+            :text "I will release a new dirac version in few hours",
+            :channel [:channel/slack-id "C0J01U7MY"],
+            :user [:user/slack-id "U08E3BBST"],
+            :ts "1517504691.000503",
+            :day "2018-02-01"}
+  #:message{:key "C7YF1SBT3--1517646767.000018",
+            :text
+            "swagger, frontend &amp; interceptor modules will most likely be not on the first release, so we can ship 0.1.0 out. Drafted things into the docs: <https://metosin.github.io/reitit/interceptors.html> &amp; <https://metosin.github.io/reitit/openapi.html>",
+            :channel [:channel/slack-id "C7YF1SBT3"],
+            :user [:user/slack-id "U055NJ5CC"],
+            :ts "1517646767.000018",
+            :day "2018-02-03"}
+  #:message{:key "C0702A7SB--1517788501.000050",
+            :text
+            "<@U09LZR36F> thanks, have updated my example to show them",
+            :channel [:channel/slack-id "C0702A7SB"],
+            :user [:user/slack-id "U051KLSJF"],
+            :ts "1517788501.000050",
+            :day "2018-02-04"}
+  #:message{:key "C0702A7SB--1517534805.000224",
+            :text
+            "Hi, I am new to yada and having trouble understanding how to use the interceptor-chain from the docs but the docs in that area seem incomplete/incorrect. My service at this point has been just using yada/resource to create resources so I assume it is somehow getting the default interceptor chain when interpreted by Yada. To modify the chain the only way I can see to do it is to wrap the resources in yada/handler to create a chain and then modify it. Is this correct? \n```\n(yada.handler/append-interceptor \n  (yada/handler\n    (yada/resource {:methods {:get {:consumes \"text/plain\" \n                                    :produces \"text/plain\"\n                                    :response (fn [ctx] \"hello\")}}}))\n                   yada.interceptors/return \n                   identity)```",
+            :channel [:channel/slack-id "C0702A7SB"],
+            :user [:user/slack-id "U093DA4QY"],
+            :ts "1517534805.000224",
+            :day "2018-02-02"}
+  #:message{:key "C7YF1SBT3--1517646850.000050",
+            :text
+            "doc polishing, a release blog and some sanity checks and it's out!",
+            :channel [:channel/slack-id "C7YF1SBT3"],
+            :user [:user/slack-id "U055NJ5CC"],
+            :ts "1517646850.000050",
+            :day "2018-02-03"}
+  #:message{:key "C7YF1SBT3--1517647401.000038",
+            :text
+            "Still time to change things, so all ears. Also, ideas for the future are most welcome.",
+            :channel [:channel/slack-id "C7YF1SBT3"],
+            :user [:user/slack-id "U055NJ5CC"],
+            :ts "1517647401.000038",
+            :day "2018-02-03"}
+  #:message{:key "C05006WDW--1517595547.000452",
+            :text
+            "<@U0ALH6R89> for this position were looking for people who can be in the office much of the time, not a distributed team. I live about an hour away and go in once a week. most people are there three or four days a week. It's actually a really cool office and worth working from",
+            :channel [:channel/slack-id "C05006WDW"],
+            :user [:user/slack-id "U0EL66M19"],
+            :ts "1517595547.000452",
+            :day "2018-02-02"}
+  #:message{:key "C0702A7SB--1517559816.000368",
+            :text
+            "I believe there are some keys, append/prepend-interceptor-chain which can do basic modifications",
+            :channel [:channel/slack-id "C0702A7SB"],
+            :user [:user/slack-id "U09LZR36F"],
+            :ts "1517559816.000368",
+            :day "2018-02-02"}
+  #:message{:key "C0702A7SB--1517537794.000244",
+            :text
+            "<@U093DA4QY> not sure if this is the 'official' way to do it, but I tend to walk my route tree when I'm building the routes and assoc the default interceptors, then modify them there",
+            :channel [:channel/slack-id "C0702A7SB"],
+            :user [:user/slack-id "U051KLSJF"],
+            :ts "1517537794.000244",
+            :day "2018-02-02"}
+  #:message{:key "C05006WDW--1517522189.000103",
+            :text
+            "I'm looking for a couple of \"intentional generalists\" who want to do lots of different things (mostly in Clojure) includeing APIs, web-stuff, Automating AWS everything, security sluthing/scanning, basically a little of a lot of things (and as much Scala as you want) \n<https://www.yummly.com/careers> \nspeciically the generalist positions\nSan Francisco Bay Area",
+            :channel [:channel/slack-id "C05006WDW"],
+            :user [:user/slack-id "U0EL66M19"],
+            :ts "1517522189.000103",
+            :day "2018-02-01"}
+  #:message{:key "C0702A7SB--1517537852.000069",
+            :text
+            "```\n(defn update-resources [routes f &amp; args]\n  (walk/postwalk\n    (fn [x]\n      (if (instance? Resource x)\n        (resource (apply f x args))\n        x))\n    routes))\n\n\n(-&gt; [\"\" [(index/index-routes postgres config)]]\n               (update-resources\n                 (fn add-default-interceptors [resource]\n                   (cond-&gt; resource\n                           (not (contains? resource :interceptor-chain)) (assoc :interceptor-chain yada/default-interceptor-chain)\n                           (not (contains? resource :error-interceptor-chain)) (assoc :error-interceptor-chain yada/default-error-interceptor-chain))))\n\n              ...\n               (update-resources append-error-interceptor i/logging\n                 (error-reporters/make-report-error-interceptor reporter))\n               (update-resources yada.handler/append-interceptor sec/security-headers\n                 private-cache-control-headers)\n               (update-resources\n                 ;; Add custom 401 page to tell people to login.\n                 (fn [resource]\n                   (if (some? (yada.util/get* (:responses resource) 401))\n                     resource\n                     (assoc-in resource [:responses 401] custom-401)))))\n```",
+            :channel [:channel/slack-id "C0702A7SB"],
+            :user [:user/slack-id "U051KLSJF"],
+            :ts "1517537852.000069",
+            :day "2018-02-02"}
+  #:message{:key "C0702A7SB--1517537911.000213",
+            :text
+            "This is an area of Yada that I think could be made better",
+            :channel [:channel/slack-id "C0702A7SB"],
+            :user [:user/slack-id "U051KLSJF"],
+            :ts "1517537911.000213",
+            :day "2018-02-02"}
+  #:message{:key "C0702A7SB--1517537964.000041",
+            :text "<@U051KLSJF> interesting, thanks for that",
+            :channel [:channel/slack-id "C0702A7SB"],
+            :user [:user/slack-id "U093DA4QY"],
+            :ts "1517537964.000041",
+            :day "2018-02-02"}
+  #:message{:key "C0J01U7MY--1517560949.000013",
+            :text
+            "It is funny, cause I use Specter in all my projects lately :slightly_smiling_face:. It is one of the best cli library for me.",
+            :channel [:channel/slack-id "C0J01U7MY"],
+            :user [:user/slack-id "U0B43TX16"],
+            :ts "1517560949.000013",
+            :day "2018-02-02"}
+  #:message{:key "C0J01U7MY--1517475201.000016",
+            :text "Canary is back working. Thanks!",
+            :channel [:channel/slack-id "C0J01U7MY"],
+            :user [:user/slack-id "U0B43TX16"],
+            :ts "1517475201.000016",
+            :day "2018-02-01"}]]

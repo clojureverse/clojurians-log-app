@@ -1,4 +1,4 @@
-# Clojurians Log App
+# Clojurians Log App [![CircleCI](https://circleci.com/gh/clojureverse/clojurians-log-app.svg?style=svg)](https://circleci.com/gh/clojureverse/clojurians-log-app)
 
 Clojure web app that serves up Slack chat history. This app was created to
 replace the old scripts that generated the site at

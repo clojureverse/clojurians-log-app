@@ -49,6 +49,12 @@
             (:channel/name channel)
             date)))
 
+(defn fork-me-badge []
+  [:a {:href "https://github.com/clojureverse/clojurians-log-app"}
+   [:img {:style "position: absolute; top: 0; right: 0; border: 0;"
+          :src "https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"
+          :alt "Fork me on GitHub"}]])
+
 (defn log-page-head [{:data/keys [title channel date target-message http-origin usernames] :as context}]
   (cond-> (page-head context)
     ;; Are we targeting a specific message in the log page?
@@ -178,6 +184,7 @@
    (page-head context)
    [:body
     [:div.main
+     (fork-me-badge)
      [:h1 "Channels"]
      [:ul
       (for [{:channel/keys [name]} channels]
