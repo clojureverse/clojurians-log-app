@@ -53,9 +53,7 @@
   [ts]
   (jt/zoned-date-time DateTimeFormatter/RFC_1123_DATE_TIME ts))
 
-(defn day-interval
-  [y m d]
-
+(defn day-interval [y m d]
   (let [start (jt/with-zone
                 (jt/zoned-date-time y m d)
                 UTC)

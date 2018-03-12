@@ -61,6 +61,7 @@
             day)
 
        ;; Remove all thread messages except for the thread parent
+       ;; Note that thread parents do not have a :thread-ts value themselves
        (remove #(if-let [thread-ts (:message/thread-ts %)]
                   (not= thread-ts (:message/ts %))))
        (map assoc-inst)

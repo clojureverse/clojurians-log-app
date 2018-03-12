@@ -140,7 +140,6 @@
   "Returns either a single message hiccup, or if the given message starts a thread,
   hiccup of all thread messages in a list"
   [context message thread-messages]
-
   (if-let [messages (get thread-messages (:message/ts message))]
     (concat (list (single-message context message))
             (for [thread-msg messages]
