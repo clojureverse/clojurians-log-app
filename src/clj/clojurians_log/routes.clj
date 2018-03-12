@@ -97,6 +97,9 @@
      (GET "/:channel/:date.html" request
        (log-route endpoint request))
 
+     (GET "/:channel/:date/:ts" [channel date ts :as request]
+       (log-route endpoint request))
+
      (resources "/"))))
 
 (comment
