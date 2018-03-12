@@ -56,7 +56,7 @@
 
   :cljsbuild {:builds
               [{:id "app"
-                :source-paths ["src/cljs" "src/cljc" "dev"]
+                :source-paths ["src/cljs" "src/cljc" "src/clj" "dev"]
 
                 :figwheel {:on-jsload "clojurians-log.system/reset"}
 

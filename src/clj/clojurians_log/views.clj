@@ -3,7 +3,8 @@
             [cemerick.url :refer [url]]
             [clojurians-log.time-util :as cl.tu]
             [clojure.string :as str]
-            [clojurians-log.slack-messages :as slack-messages]))
+            [clojurians-log.slack-messages :as slack-messages]
+            [clojure.pprint :as pp]))
 
 (defn page-head [{:data/keys [title channel date]}]
   [:head
@@ -80,12 +81,7 @@
    [:div.team-menu [:a {:href "/"} "Clojurians"]]
    [:div.channel-menu
     [:span.channel-menu_name [:span.channel-menu_prefix "#"] (:channel/name channel)]
-    [:span.day-arrows
-     (if-let [prev-date (channel-day-offset channel-days date -1)]
-       [:a {:href (str prev-date ".html")} [:div.day-prev "<"]])
-     date
-     (if-let [next-date (channel-day-offset channel-days date 1)]
-       [:a {:href (str next-date ".html")} [:div.day-next ">"]])]]])
+    [:span.day-arrows]]])
 
 (defn- channel-list [{:data/keys [date channels]}]
   [:div.listings_channels
@@ -99,7 +95,7 @@
          {:href (str "/" name "/" date ".html")}
          [:span [:span.prefix "#"] " " name " (" message-count ")"]]]])]])
 
-(defn- message-history [{:data/keys [messages usernames channel date]}]
+(defn- message-history [{:data/keys [messages usernames channel date channel-names]}]
   [:div.message-history
    (for [message messages
          :let [{:message/keys [user inst user text ts]} message
@@ -115,7 +111,7 @@
       [:span.message_timestamp [:a {:href (str/join "/" ["" (:channel/name channel) date ts])}
                                 (cl.tu/format-inst-time inst)]]
       [:span.message_star]
-      [:span.message_content [:p (slack-messages/message->hiccup text usernames)]]])])
+      [:span.message_content [:p (slack-messages/message->hiccup text usernames channel-names)]]])])
 
 (defn- log-page-html [context]
   [:html

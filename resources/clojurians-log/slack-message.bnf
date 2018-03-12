@@ -1,14 +1,16 @@
-<slack-message> = ( code / reference / emoji / styled / undecorated )*
+<slack-message> = ( code / user / channel / emoji / styled / undecorated )*
 
 <code> = code-block / inline-code
 code-block = <code-block-delimiter> <#"\s*"> #"(?s).*(?=```)" <code-block-delimiter>
 code-block-delimiter = "```"
 inline-code = <"`"> #"[^`]+" <"`">
 
-<reference> = <"<@"> slack-id <">">
-<slack-id> = user-id | channel-id
+<user> = <"<@"> user-id <">">
 user-id = #"U[A-Z0-9]{7,}"
-channel-id = #"C[A-Z0-9]{7,}"
+
+channel = <"<#"> id name? <">">
+id = #"C[A-Z0-9]{7,}"
+name = <"|"> #"[a-zA-Z0-9]{1,}"
 
 emoji = <":"> #"[^:]+" <":">
 

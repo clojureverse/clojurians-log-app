@@ -10,7 +10,8 @@
             [compojure.core :refer [GET routes]]
             [compojure.route :refer [resources]]
             [datomic.api :as d]
-            [ring.util.response :refer [response]]))
+            [ring.util.response :refer [response]]
+            [clojure.pprint :as pp]))
 
 (defn context [request]
   {:request request})
@@ -42,11 +43,18 @@
 
       (let [db       (d/db conn)
             messages (queries/channel-day-messages db channel date)
+            channels (queries/channel-list db date)
+            known-channel-names (slack-messages/known-channels messages channels)
+            missing-channel-names (slack-messages/missing-channels known-channel-names)
             user-ids (slack-messages/extract-user-ids messages)]
         (-> request
             context
             (assoc :data/channel (queries/channel db channel)
-                   :data/channels (queries/channel-list db date)
+                   :data/channels channels
+                   :data/channel-names (if (not-empty missing-channel-names)
+                                         (merge known-channel-names
+                                                (queries/channel-names db missing-channel-names))
+                                         known-channel-names)
                    :data/messages messages
                    :data/target-message (some #(when (= (:message/ts %) ts) %) messages)
                    :data/usernames (into {} (queries/user-names db user-ids))
@@ -87,9 +95,6 @@
 
      ;; https://clojurians-log.clojureverse.org/clojure/2017-11-15.html
      (GET "/:channel/:date.html" request
-       (log-route endpoint request))
-
-     (GET "/:channel/:date/:ts" [channel date ts :as request]
        (log-route endpoint request))
 
      (resources "/"))))

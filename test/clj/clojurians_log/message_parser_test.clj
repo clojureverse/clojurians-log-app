@@ -29,7 +29,7 @@
    (inc code))
 ```
 *what do* _you_ *think* :mindblown:
-please respond in <@C346HE24SD>"]
+please respond in <#C346HE24SD|cursive>"]
       (is (= [[:undecorated "Hey "]
               [:user-id "U4F2A0Z8ER"]
               [:undecorated " here is the "]

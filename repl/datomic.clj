@@ -10,11 +10,11 @@
 ;; - channels
 
 (d/transact (conn) [{:db/ident :message/text
-                   :db/valueType :db.type/string
-                   :db/cardinality :db.cardinality/one}
-                  {:db/ident :message/timestamp
-                   :db/valueType :db.type/string
-                   :db/cardinality :db.cardinality/one}])
+                     :db/valueType :db.type/string
+                     :db/cardinality :db.cardinality/one}
+                    {:db/ident :message/timestamp
+                     :db/valueType :db.type/string
+                     :db/cardinality :db.cardinality/one}])
 
 (d/transact (user/conn) clojurians-log.db.schema/full-schema)
 
@@ -65,7 +65,7 @@
 
 
 
- (data/user "U06F82LES")
+(data/user "U06F82LES")
 {:id "U06F82LES",
  :name "pesterhazy",
  :real_name "Paulus Esterhazy",

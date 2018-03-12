@@ -67,5 +67,5 @@
   (load-slack-data!)
   (run! load-log-file! (log-files))
 
-  (load-demo-data! "/home/arne/github/clojurians-log-demo-data")
-  )
+  (load-demo-data! "/home/arne/github/clojurians-log-demo-data"))
+
