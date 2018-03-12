@@ -32,7 +32,7 @@
    [:link {:href "/css/legacy.css", :rel "stylesheet", :type "text/css"}]
    [:link {:href "/css/style.css", :rel "stylesheet", :type "text/css"}]])
 
-(defn og-title [{:data/keys [title channel date target-message messages usernames thread-messages] :as context}]
+(defn og-title [{:data/keys [title channel date target-message messages usernames] :as context}]
   (cond
     ;; Is the message part of a thread?
     (thread-child? target-message)
@@ -49,7 +49,7 @@
             (:channel/name channel)
             date)))
 
-(defn log-page-head [{:data/keys [title channel date target-message http-origin usernames thread-messages] :as context}]
+(defn log-page-head [{:data/keys [title channel date target-message http-origin usernames] :as context}]
   (cond-> (page-head context)
     ;; Are we targeting a specific message in the log page?
     ;; If, add tags to enable open graph support.
@@ -139,17 +139,17 @@
 (defn- message-hiccup
   "Returns either a single message hiccup, or if the given message starts a thread,
   hiccup of all thread messages in a list"
-  [context message thread-messages]
-  (if-let [messages (get thread-messages (:message/ts message))]
+  [context message]
+  (if-let [children (:message/children message)]
     (concat (list (single-message context message))
-            (for [thread-msg messages]
+            (for [thread-msg children]
               (single-message context thread-msg)))
 
     (single-message context message)))
 
-(defn- message-history [{:data/keys [messages thread-messages] :as context}]
+(defn- message-history [{:data/keys [messages] :as context}]
   [:div.message-history
-   (map #(message-hiccup context % thread-messages) messages)])
+   (map #(message-hiccup context %) messages)])
 
 (defn- log-page-html [context]
   [:html
