@@ -1,0 +1,305 @@
+[[{:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "poernahi",
+   :user-profile/real-name-normalized "Hendrik Poernama",
+   :user-profile/avatar-hash "g5e6b2ef2337",
+   :user-profile/email "poernahi@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/5e6b2ef23370cf9785e710d4f15e620a.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/5e6b2ef23370cf9785e710d4f15e620a.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/5e6b2ef23370cf9785e710d4f15e620a.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/5e6b2ef23370cf9785e710d4f15e620a.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0019-192.png",
+   :user/real-name "Hendrik Poernama",
+   :user/slack-id "U7Q9VAXPT",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/5e6b2ef23370cf9785e710d4f15e620a.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0019-512.png",
+   :user-profile/real-name "Hendrik Poernama",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/5e6b2ef23370cf9785e710d4f15e620a.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0019-24.png"}
+  {:user-profile/display-name-normalized "marshall",
+   :user/owner? false,
+   :user/name "marshall",
+   :user-profile/real-name-normalized "Marshall",
+   :user-profile/avatar-hash "g9fa7f07a1ca",
+   :user-profile/email "marshall@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/9fa7f07a1caada8cbf98f1a9890f3400.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/9fa7f07a1caada8cbf98f1a9890f3400.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-48.png",
+   :user-profile/display-name "marshall",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/9fa7f07a1caada8cbf98f1a9890f3400.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/9fa7f07a1caada8cbf98f1a9890f3400.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0010-192.png",
+   :user/real-name "Marshall",
+   :user/slack-id "U05120CBV",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/9fa7f07a1caada8cbf98f1a9890f3400.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0010-512.png",
+   :user-profile/real-name "Marshall",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/9fa7f07a1caada8cbf98f1a9890f3400.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0010-24.png"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "tomc",
+   :user-profile/real-name-normalized "tomc",
+   :user-profile/avatar-hash "gb818512e93f",
+   :user-profile/email "tomc@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/b818512e93f99d3b9e7622e66161008b.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0001-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/b818512e93f99d3b9e7622e66161008b.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F0180%2Fimg%2Favatars%2Fava_0001-48.png",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/b818512e93f99d3b9e7622e66161008b.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F3654%2Fimg%2Favatars%2Fava_0001-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/b818512e93f99d3b9e7622e66161008b.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0001-192.png",
+   :user/real-name "tomc",
+   :user/slack-id "U0DCKGW0M",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/b818512e93f99d3b9e7622e66161008b.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0001-512.png",
+   :user-profile/real-name "tomc",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/b818512e93f99d3b9e7622e66161008b.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0001-24.png"}
+  {:user-profile/display-name-normalized "jaret",
+   :user/owner? false,
+   :user/name "jaret",
+   :user-profile/real-name-normalized "Jaret Binford",
+   :user-profile/avatar-hash "0a0936c88e37",
+   :user-profile/email "jaret@example.com",
+   :user-profile/image-32
+   "https://avatars.slack-edge.com/2016-09-13/79113484964_0a0936c88e3704ebefeb_32.jpg",
+   :user-profile/image-48
+   "https://avatars.slack-edge.com/2016-09-13/79113484964_0a0936c88e3704ebefeb_48.jpg",
+   :user-profile/display-name "jaret",
+   :user-profile/image-72
+   "https://avatars.slack-edge.com/2016-09-13/79113484964_0a0936c88e3704ebefeb_72.jpg",
+   :user-profile/image-192
+   "https://avatars.slack-edge.com/2016-09-13/79113484964_0a0936c88e3704ebefeb_192.jpg",
+   :user/real-name "Jaret Binford",
+   :user/slack-id "U1QJACBUM",
+   :user-profile/image-512
+   "https://avatars.slack-edge.com/2016-09-13/79113484964_0a0936c88e3704ebefeb_512.jpg",
+   :user-profile/real-name "Jaret Binford",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://avatars.slack-edge.com/2016-09-13/79113484964_0a0936c88e3704ebefeb_24.jpg"}
+  {:user-profile/display-name-normalized "",
+   :user/owner? false,
+   :user/name "hiredman",
+   :user-profile/real-name-normalized "hiredman",
+   :user-profile/avatar-hash "d9d7258ee001",
+   :user-profile/email "hiredman@example.com",
+   :user-profile/image-32
+   "https://avatars.slack-edge.com/2016-03-06/24758922757_d9d7258ee001244aecb3_32.jpg",
+   :user-profile/image-48
+   "https://avatars.slack-edge.com/2016-03-06/24758922757_d9d7258ee001244aecb3_48.jpg",
+   :user-profile/display-name "",
+   :user-profile/image-72
+   "https://avatars.slack-edge.com/2016-03-06/24758922757_d9d7258ee001244aecb3_72.jpg",
+   :user-profile/image-192
+   "https://avatars.slack-edge.com/2016-03-06/24758922757_d9d7258ee001244aecb3_192.jpg",
+   :user/real-name "hiredman",
+   :user/slack-id "U0NCTKEV8",
+   :user-profile/image-512
+   "https://avatars.slack-edge.com/2016-03-06/24758922757_d9d7258ee001244aecb3_512.jpg",
+   :user-profile/real-name "hiredman",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://avatars.slack-edge.com/2016-03-06/24758922757_d9d7258ee001244aecb3_24.jpg"}
+  {:user-profile/display-name-normalized "val_waeselynck",
+   :user/owner? false,
+   :user/name "val_waeselynck",
+   :user-profile/real-name-normalized "Valentin Waeselynck",
+   :user-profile/avatar-hash "75eef8808e2d",
+   :user-profile/email "val_waeselynck@example.com",
+   :user-profile/image-32
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_32.jpg",
+   :user-profile/image-48
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_48.jpg",
+   :user-profile/display-name "val_waeselynck",
+   :user-profile/image-72
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_72.jpg",
+   :user-profile/image-192
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_192.jpg",
+   :user/real-name "Valentin Waeselynck",
+   :user/slack-id "U06GS6P1N",
+   :user-profile/image-512
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_512.jpg",
+   :user-profile/real-name "Valentin Waeselynck",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_24.jpg"}
+  {:user-profile/display-name-normalized "val_waeselynck",
+   :user/owner? false,
+   :user/name "val_waeselynck",
+   :user-profile/real-name-normalized "Valentin Waeselynck",
+   :user-profile/avatar-hash "75eef8808e2d",
+   :user-profile/email "val_waeselynck@example.com",
+   :user-profile/image-32
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_32.jpg",
+   :user-profile/image-48
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_48.jpg",
+   :user-profile/display-name "val_waeselynck",
+   :user-profile/image-72
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_72.jpg",
+   :user-profile/image-192
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_192.jpg",
+   :user/real-name "Valentin Waeselynck",
+   :user/slack-id "U06GS6P1N",
+   :user-profile/image-512
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_512.jpg",
+   :user-profile/real-name "Valentin Waeselynck",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_24.jpg"}
+  {:user-profile/display-name-normalized "jocrau",
+   :user/owner? false,
+   :user/name "jocrau",
+   :user-profile/real-name-normalized "Jochen Rau",
+   :user-profile/avatar-hash "gbd087b4b37d",
+   :user-profile/email "jocrau@example.com",
+   :user-profile/image-32
+   "https://secure.gravatar.com/avatar/bd087b4b37d8bf104362da57ff85ef49.jpg?s=32&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0004-32.png",
+   :user-profile/image-48
+   "https://secure.gravatar.com/avatar/bd087b4b37d8bf104362da57ff85ef49.jpg?s=48&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0004-48.png",
+   :user-profile/display-name "jocrau",
+   :user-profile/image-72
+   "https://secure.gravatar.com/avatar/bd087b4b37d8bf104362da57ff85ef49.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0004-72.png",
+   :user-profile/image-192
+   "https://secure.gravatar.com/avatar/bd087b4b37d8bf104362da57ff85ef49.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0004-192.png",
+   :user/real-name "Jochen Rau",
+   :user/slack-id "U1RU44V6D",
+   :user-profile/image-512
+   "https://secure.gravatar.com/avatar/bd087b4b37d8bf104362da57ff85ef49.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F7fa9%2Fimg%2Favatars%2Fava_0004-512.png",
+   :user-profile/real-name "Jochen Rau",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://secure.gravatar.com/avatar/bd087b4b37d8bf104362da57ff85ef49.jpg?s=24&d=https%3A%2F%2Fa.slack-edge.com%2F0180%2Fimg%2Favatars%2Fava_0004-24.png"}
+  {:user-profile/display-name-normalized "val_waeselynck",
+   :user/owner? false,
+   :user/name "val_waeselynck",
+   :user-profile/real-name-normalized "Valentin Waeselynck",
+   :user-profile/avatar-hash "75eef8808e2d",
+   :user-profile/email "val_waeselynck@example.com",
+   :user-profile/image-32
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_32.jpg",
+   :user-profile/image-48
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_48.jpg",
+   :user-profile/display-name "val_waeselynck",
+   :user-profile/image-72
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_72.jpg",
+   :user-profile/image-192
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_192.jpg",
+   :user/real-name "Valentin Waeselynck",
+   :user/slack-id "U06GS6P1N",
+   :user-profile/image-512
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_512.jpg",
+   :user-profile/real-name "Valentin Waeselynck",
+   :user/admin? false,
+   :user-profile/image-24
+   "https://avatars.slack-edge.com/2017-01-04/123252289397_75eef8808e2d3eea11cf_24.jpg"}
+  {:user-profile/display-name-normalized "adulteratedjedi",
+   :user/owner? true,
+   :user/name "gjnoonan",
+   :user-profile/real-name-normalized "Gavin-John Noonan",
+   :user-profile/avatar-hash "df575fabbfde",
+   :user-profile/email "gjnoonan@example.com",
+   :user-profile/image-32
+   "https://avatars.slack-edge.com/2015-05-20/5001263149_df575fabbfde499b53d0_32.jpg",
+   :user-profile/image-48
+   "https://avatars.slack-edge.com/2015-05-20/5001263149_df575fabbfde499b53d0_48.jpg",
+   :user-profile/display-name "adulteratedjedi",
+   :user-profile/image-72
+   "https://avatars.slack-edge.com/2015-05-20/5001263149_df575fabbfde499b53d0_72.jpg",
+   :user-profile/image-192
+   "https://avatars.slack-edge.com/2015-05-20/5001263149_df575fabbfde499b53d0_72.jpg",
+   :user/real-name "Gavin-John Noonan",
+   :user/slack-id "U03RZGPFT",
+   :user-profile/image-512 "",
+   :user-profile/real-name "Gavin-John Noonan",
+   :user/admin? true,
+   :user-profile/image-24
+   "https://avatars.slack-edge.com/2015-05-20/5001263149_df575fabbfde499b53d0_24.jpg"}]
+ [#:channel{:slack-id "C03RZMDSH",
+            :name "datomic",
+            :created 1425233178,
+            :creator [:user/slack-id "U03RZGPFT"]}]
+ [#:message{:key "C03RZMDSH--1518034517.000637",
+            :text "interesting idea, will test it out",
+            :channel [:channel/slack-id "C03RZMDSH"],
+            :user [:user/slack-id "U7Q9VAXPT"],
+            :ts "1518034517.000637",
+            :day "2018-02-07"}
+  #:message{:day "2018-02-08",
+            :key "C03RZMDSH--1518095027.000404",
+            :channel [:channel/slack-id "C03RZMDSH"],
+            :ts "1518095027.000404",
+            :thread-ts "1518040988.000079",
+            :user [:user/slack-id "U05120CBV"],
+            :thread-inst #inst "2018-02-07T22:03:08.000-00:00",
+            :text
+            "You can use Clojure functions in a rule. I’m not 100% clear on what you’re looking for, but you could, for example, include a clause:\n`[(= ?referencer ?scope)]`"}
+  #:message{:key "C03RZMDSH--1518040988.000079",
+            :text
+            "I have a rule with multiple definitions and one output variable. It looks like:\n    [(references-somewhere ?scope ?referencee ?referencer)\n     [?scope ?a ?referencee]\n     [?a :db/isComponent false]\n     [?a :db/valueType :db.type/ref]]\n   [(references-somewhere ?scope ?referencee ?referencer)\n    [?referencer ?a ?referencee]\n    [?a :db/isComponent false]\n    [?a :db/valueType :db.type/ref]\n    (descendant ?referencer ?scope)]\nI can't figure out what syntax to use in that first definition to indicate that ?referencer should be bound to the value of ?scope. Can someone help me out?",
+            :channel [:channel/slack-id "C03RZMDSH"],
+            :user [:user/slack-id "U0DCKGW0M"],
+            :ts "1518040988.000079",
+            :day "2018-02-07"}
+  #:message{:day "2018-02-08",
+            :key "C03RZMDSH--1518058291.000073",
+            :channel [:channel/slack-id "C03RZMDSH"],
+            :ts "1518058291.000073",
+            :thread-ts "1517995093.000487",
+            :user [:user/slack-id "U1QJACBUM"],
+            :thread-inst #inst "2018-02-07T09:18:13.000-00:00",
+            :text
+            "I know several of our clients with large teams keep their datomic account on an “<mailto:operations@yourdomain.com|operations@yourdomain.com>” shared e-mail.  If you find you need something like that let me know and I can update your technical contact information/issue a password reset."}
+  #:message{:key "C03RZMDSH--1518050129.000168",
+            :text
+            "(as in replace the head of the first rule with that)",
+            :channel [:channel/slack-id "C03RZMDSH"],
+            :user [:user/slack-id "U0NCTKEV8"],
+            :ts "1518050129.000168",
+            :day "2018-02-08"}
+  #:message{:key "C03RZMDSH--1517995093.000487",
+            :text
+            "How do you go about giving your coworkers access to the Peer library without giving them your <http://my.datomic.com|my.datomic.com> credentials?",
+            :channel [:channel/slack-id "C03RZMDSH"],
+            :user [:user/slack-id "U06GS6P1N"],
+            :ts "1517995093.000487",
+            :day "2018-02-07"}
+  #:message{:day "2018-02-08",
+            :key "C03RZMDSH--1518095379.000012",
+            :channel [:channel/slack-id "C03RZMDSH"],
+            :ts "1518095379.000012",
+            :thread-ts "1517995093.000487",
+            :user [:user/slack-id "U06GS6P1N"],
+            :thread-inst #inst "2018-02-07T09:18:13.000-00:00",
+            :text
+            "Thanks <@U1QJACBUM>, the problem I see with that approach is that each time a developer leaves the company I will probably have to change the credentials :s"}
+  #:message{:day "2018-02-06",
+            :key "C03RZMDSH--1517924158.000577",
+            :channel [:channel/slack-id "C03RZMDSH"],
+            :ts "1517924158.000577",
+            :thread-ts "1517920110.000435",
+            :user [:user/slack-id "U1RU44V6D"],
+            :thread-inst #inst "2018-02-06T12:28:30.000-00:00",
+            :text
+            "Can you elaborate a bit on how you would use juxt/tick and how that relates to Datomic? Datomic’s `:db.type/instant` maps to instances of `java.util.Date`. Tick is using `java.time.Instant`which needs to be coerced into `java.util.Date`. If you are interested in using  `tick.interval/Interval`, you would have three options: 1) reference to an entity constructed from the interval, or 2) serialize it as string, or 3) serialize it as bytes (`:db.type/bytes`)."}
+  #:message{:day "2018-02-07",
+            :key "C03RZMDSH--1518008583.000370",
+            :channel [:channel/slack-id "C03RZMDSH"],
+            :ts "1518008583.000370",
+            :thread-ts "1517995093.000487",
+            :user [:user/slack-id "U06GS6P1N"],
+            :thread-inst #inst "2018-02-07T09:18:13.000-00:00",
+            :text
+            "ah nevermind, `bin/maven-install` was really what I was after."}]]

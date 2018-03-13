@@ -69,3 +69,7 @@
                        (.getMonth date)
                        (.getDayOfMonth date))
          (map #(java.util.Date/from (.toInstant %))))))
+
+(defn within-interval [date [interval-start interval-end]]
+  (and (.after date interval-start)
+       (.before date interval-end)))
