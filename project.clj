@@ -31,7 +31,8 @@
                  [org.julienxx/clj-slack "0.5.5"]
                  [reloaded.repl "0.2.4"]
                  [instaparse "1.4.8"]
-                 [com.cemerick/url "0.1.1"]]
+                 [com.cemerick/url "0.1.1"]
+                 [enlive "1.1.6"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0"]]
@@ -125,6 +126,7 @@
                              [lein-doo "0.1.8"]
                              [com.datomic/datomic-free "0.9.5656"]
                              [com.cemerick/pomegranate "1.0.0"]
+                             [vvvvalvalval/scope-capture "0.1.4"]
                              [alembic "0.3.2"]]
 
               :plugins [[lein-figwheel "0.5.15-SNAPSHOT"]

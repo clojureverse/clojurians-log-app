@@ -5,7 +5,7 @@
             [clojure.string :as str]
             [clojurians-log.slack-messages :as slack-messages]))
 
-(defn page-head [{:data/keys [title channel date]}]
+(defn page-head [{:data/keys [title]}]
   [:head
    [:meta {:charset "utf-8"}]
    [:meta {:http-equiv "X-UA-Compatible", :content "IE=edge"}]
