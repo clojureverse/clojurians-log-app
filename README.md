@@ -13,9 +13,19 @@ perfect match for people who want to get started with Clojure open source
 development. Together we can learn from each other, and make this an example of
 good Clojure practices.
 
+## Contributing
+
+All kinds of contributions are welcome, code, documentation, tests, bug reports,
+... We especially welcome first time contributors!
+
 There are still many small things that need doing, have a look at the
 [issues](https://github.com/clojureverse/clojurians-log-app/issues) if you're
 curious to get started.
+
+This project mostly follows the
+[Clojure Community Style Guide](https://github.com/bbatsov/clojure-style-guide),
+but also has some
+[guidelines of its own](https://github.com/clojureverse/clojurians-log-app/blob/master/docs/STYLE.md).
 
 ## Running the app
 
@@ -44,6 +54,31 @@ user=> (load-demo-data! "/path/to/clojurians-log-demo-data")
 ```
 
 You can see it in action at [http://localhost:4983](http://localhost:4983)
+
+## Some tips on development
+
+The code is roughly split in three parts: queries, views, and routes (you can
+think of it as MVC if you like). So the main namespaces to look at are
+
+- clojurians-log.views
+- clojurians-log.routes
+- clojurians-log.db.queries
+
+These are all under `src/clj`.
+
+In `user.clj` you'll find some useful helpers for use during development, so
+have a look at what's there!
+
+
+``` clojure
+user> (db)                               ;; Datomic db
+user> (conn)                             ;; Datomic connection
+user> (add-dependency [foo/bar "1.2.3"]) ;; Add a dependency without having to restart
+user> (reset)                            ;; Reload modified namespaces and restart the app
+user> (reset-all)                        ;; Reload all namespaces and restart the app
+user> (last-request)                     ;; See the last ring request handled
+user> (last-response)                    ;; See the last response the app generated
+```
 
 ## License
 
