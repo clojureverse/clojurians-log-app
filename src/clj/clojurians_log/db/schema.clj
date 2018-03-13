@@ -48,25 +48,29 @@
         :cardinality :db.cardinality/one}])
 
 (def user-schema
-  [{:db/ident       :user/slack-id
-    :db/valueType   :db.type/string
-    :db/cardinality :db.cardinality/one
-    :db/unique      :db.unique/identity}
-   {:db/ident       :user/name
-    :db/valueType   :db.type/string
-    :db/cardinality :db.cardinality/one}
-   {:db/ident       :user/real-name
-    :db/valueType   :db.type/string
-    :db/cardinality :db.cardinality/one}
-   {:db/ident       :user/admin?
-    :db/cardinality :db.cardinality/one
-    :db/valueType   :db.type/boolean}
-   {:db/ident       :user/owner?
-    :db/cardinality :db.cardinality/one
-    :db/valueType   :db.type/boolean}
-   {:db/ident       :user/profile
-    :db/valueType   :db.type/ref
-    :db/cardinality :db.cardinality/one}])
+  [#:db{:ident       :user/slack-id,
+        :valueType   :db.type/string,
+        :cardinality :db.cardinality/one,
+        :unique      :db.unique/identity,
+        :doc         "Internal user identifier used by slack. Alphanumeric, starts with U."}
+   #:db{:ident       :user/name,
+        :valueType   :db.type/string,
+        :cardinality :db.cardinality/one,
+        :unique      :db.unique/identity,
+        :doc         "A user's public handle."}
+   #:db{:ident       :user/real-name,
+        :valueType   :db.type/string,
+        :cardinality :db.cardinality/one}
+   #:db{:ident       :user/admin?,
+        :cardinality :db.cardinality/one,
+        :valueType   :db.type/boolean}
+   #:db{:ident       :user/owner?,
+        :cardinality :db.cardinality/one,
+        :valueType   :db.type/boolean}
+   #:db{:ident       :user/profile,
+        :valueType   :db.type/ref,
+        :cardinality :db.cardinality/one,
+        :doc         "Reference to a user's profile, which contains email, avatar, display name, etc."}])
 
 (def user-profile-schema
   [#:db{:ident       :user-profile/email

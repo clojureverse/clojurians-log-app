@@ -1,6 +1,7 @@
 (ns repl.datomic
   (:require [datomic.api :as d]
             [clojurians-log.data :as data]
+            [clojurians-log.db.queries :as q]
             [clojure.string :as str]))
 
 (defn conn [] (-> reloaded.repl/system :datomic :conn))
@@ -158,3 +159,9 @@
 (time (count (clojurians-log.db.queries/channel-day-messages (user/db) "clojure" "2018-01-01")))
 
 (time (clojurians-log.db.queries/channel-days (user/db) "clojure"))
+
+(q/channel-thread-messages-of-day (db) "clojure" "2018-02-01")
+
+
+(take 100
+      (d/datoms (db) :eavt))
