@@ -24,7 +24,7 @@
            (parse "just_some_snake_case"))))
 
   (testing "putting it together"
-    (let [message "Hey <@U4F2A0Z8ER> here is the `my-ns.core` code ```
+    (let [message "Hey <@U4F2A0Z8ER>: here is the `my-ns.core` code ```
   (let [code 42]
    (inc code))
 ```
@@ -32,7 +32,7 @@
 please respond in <@C346HE24SD>"]
       (is (= [[:undecorated "Hey "]
               [:user-id "U4F2A0Z8ER"]
-              [:undecorated " here is the "]
+              [:undecorated ": here is the "]
               [:inline-code "my-ns.core"]
               [:undecorated " code "]
               [:code-block "(let [code 42]\n   (inc code))\n"]
