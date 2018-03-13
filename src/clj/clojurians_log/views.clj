@@ -82,10 +82,10 @@
     [:span.channel-menu_name [:span.channel-menu_prefix "#"] (:channel/name channel)]
     [:span.day-arrows
      (if-let [prev-date (channel-day-offset channel-days date -1)]
-       [:a {:href (str prev-date ".html")} [:div.day-prev "<"]])
+       [:a {:href (str "/" (:channel/name channel) "/" prev-date ".html")} [:div.day-prev "<"]])
      date
      (if-let [next-date (channel-day-offset channel-days date 1)]
-       [:a {:href (str next-date ".html")} [:div.day-next ">"]])]]])
+       [:a {:href (str "/" (:channel/name channel) "/" next-date ".html")} [:div.day-next ">"]])]]])
 
 (defn- channel-list [{:data/keys [date channels]}]
   [:div.listings_channels
