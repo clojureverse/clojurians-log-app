@@ -10,7 +10,7 @@ inline-code = <"`"> #"[^`]+" <"`">
 user-id = #"U[A-Z0-9]{7,}"
 channel-id = #"C[A-Z0-9]{7,}"
 
-emoji = <":"> #"[^:]+" <":">
+emoji = <":"> #"[^:\s]+" <":">
 
 <styled> = italic | bold
 italic = <"_"> #"[^_]+" <"_">
