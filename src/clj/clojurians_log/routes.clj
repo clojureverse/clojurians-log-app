@@ -6,6 +6,7 @@
             [clojurians-log.views :as views]
             [clojurians-log.slack-messages :as slack-messages]
             [clojurians-log.time-util :as time-util]
+            [clojurians-log.routes-def :refer [routes]]
             [java-time :as jt]
             [compojure.route :refer [resources]]
             [datomic.api :as d]
@@ -95,26 +96,14 @@
         views/channel-page
         response/render)))
 
-(defn- dispatch [endpoint handler-var]
+(defn- dispatch
+  "Used internally to resolve a route-handler symbol (as configured in clojurians-logs.route-defs)
+  into a function, then calling the function with the supplied `request`"
+  [endpoint handler-sym]
   (fn [request]
-    (if (fn? handler-var)
-      (handler-var endpoint request)
-      ((var-get handler-var) endpoint request))))
-
-(def routes
-  ["/" {"healthcheck" (fn [endpoint req]
-                        {:headers {"Content-Type" "text/plain"}
-                         :body "OK"})
-
-        ;; We're using a var instead of supplying a function directly because
-        ;; we don't have to reload this route definition structure everytime a handler function
-        ;; gets re-evaluated/replaced.
-        "" (-> #'index-route (bidi/tag :index))
-
-        [:channel] (-> #'channel-history-route (bidi/tag :channel-history))
-        [:channel "/" :date ".html"] (-> #'log-route (bidi/tag :log-old-url))
-        [:channel "/" :date]         (-> #'log-route (bidi/tag :log))
-        [:channel "/" :date "/" :ts] (-> #'log-route (bidi/tag :log-page-target-message))}])
+    (if (fn? handler-sym)
+      (handler-sym endpoint request)
+      ((var-get (ns-resolve 'clojurians-log.routes handler-sym)) endpoint request))))
 
 (defn home-routes [{:keys [config] :as endpoint}]
   (make-handler routes (partial dispatch endpoint)))

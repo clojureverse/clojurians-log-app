@@ -3,7 +3,9 @@
             [cemerick.url :refer [url]]
             [clojurians-log.time-util :as cl.tu]
             [clojure.string :as str]
-            [clojurians-log.slack-messages :as slack-messages]))
+            [clojurians-log.slack-messages :as slack-messages]
+            [clojurians-log.routes-def :refer [routes]]
+            [bidi.bidi :as bidi]))
 
 (defn- thread-child?
   "Answers if the `message` is a message within a thread."
@@ -61,13 +63,18 @@
     ;; If, add tags to enable open graph support.
     ;; This allows external services to generate a preview/summary card of the page.
     (not (nil? target-message))
-    (conj [:link {:rel "canonical" :href (str "/" (:channel/name channel) "/" date ".html")}]
+    (conj [:link {:rel "canonical" :href (bidi/path-for routes
+                                                        :log
+                                                        :channel (:channel/name channel)
+                                                        :date date)}]
           [:meta {:property "og:title" :content (og-title context)}]
           [:meta {:property "og:type" :content "website"}]
           [:meta {:property "og:url" :content (str (url http-origin
-                                                        (:channel/name channel)
-                                                        date
-                                                        (:message/ts target-message)))}]
+                                                        (bidi/path-for routes
+                                                                       :log-target-message
+                                                                       :channel (:channel/name channel)
+                                                                       :date date
+                                                                       :ts (:message/ts target-message))))}]
           [:meta {:property "og:image" :content (get-in target-message [:message/user :user-profile/image-48])}]
           [:meta {:property "og:image:width" :content 50}]
           [:meta {:property "og:image:height" :content 50}]
@@ -105,10 +112,18 @@
     [:span.channel-menu_name [:span.channel-menu_prefix "#"] (:channel/name channel)]
     [:span.day-arrows
      (if-let [prev-date (channel-day-offset channel-days date -1)]
-       [:a {:href (str "/" (:channel/name channel) "/" prev-date ".html")} [:div.day-prev "<"]])
+       [:a {:href (bidi/path-for routes
+                                  :log
+                                  :channel (:channel/name channel)
+                                  :date prev-date)}
+        [:div.day-prev "<"]])
      date
      (if-let [next-date (channel-day-offset channel-days date 1)]
-       [:a {:href (str "/" (:channel/name channel) "/" next-date ".html")} [:div.day-next ">"]])]]])
+       [:a {:href (bidi/path-for routes
+                                 :log
+                                 :channel (:channel/name channel)
+                                 :date next-date)}
+        [:div.day-next ">"]])]]])
 
 (defn- channel-list [{:data/keys [date channels]}]
   [:div.listings_channels
@@ -119,7 +134,10 @@
       [:li.channel
        [:span.channel_name
         [:a
-         {:href (str "/" name "/" date ".html")}
+         {:href (bidi/path-for routes
+                               :log
+                               :channel name
+                               :date date)}
          [:span [:span.prefix "#"] " " name " (" message-count ")"]]]])]])
 
 (defn- single-message
@@ -137,7 +155,11 @@
              {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
              [:a.message_profile-pic {:href "" :style (str "background-image: url(" image-48 ");")}]
              [:a.message_username {:href ""} name]
-             [:span.message_timestamp [:a {:href (str/join "/" ["" (:channel/name channel) date ts])}
+             [:span.message_timestamp [:a {:href (bidi/path-for routes
+                                                                :log-target-message
+                                                                :channel (:channel/name channel)
+                                                                :date date
+                                                                :ts ts)}
                                        (cl.tu/format-inst-time inst)]]
              [:span.message_star]
              [:span.message_content [:p (slack-messages/message->hiccup text usernames)]]])))
@@ -177,7 +199,11 @@
      [:h1 "Channel: #" channel-name]
      [:ul
       (for [[day cnt] days]
-        [:li [:a {:href (str "/" channel-name "/" day ".html")} day " (" cnt ")"]])]]]])
+        [:li [:a {:href (bidi/path-for routes
+                                       :log
+                                       :channel channel-name
+                                       :date day)}
+              day " (" cnt ")"]])]]]])
 
 (defn- channel-list-page-html [{:data/keys [channels] :as context}]
   [:html
@@ -189,7 +215,10 @@
      [:ul
       (for [{:channel/keys [name]} channels]
         [:li
-         [:a {:href (str "/" name)} "# " name]])]]]])
+         [:a {:href (bidi/path-for routes
+                                   :channel-history
+                                   :channel name)}
+          "# " name]])]]]])
 
 (defn log-page [context]
   (assoc context :response/html (log-page-html context)))
