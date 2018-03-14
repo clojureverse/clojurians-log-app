@@ -32,7 +32,8 @@
                  [reloaded.repl "0.2.4"]
                  [instaparse "1.4.8"]
                  [com.cemerick/url "0.1.1"]
-                 [enlive "1.1.6"]]
+                 [enlive "1.1.6"]
+                 [bidi "2.1.3"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0"]]

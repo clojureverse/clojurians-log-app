@@ -7,10 +7,11 @@
             [clojurians-log.slack-messages :as slack-messages]
             [clojurians-log.time-util :as time-util]
             [java-time :as jt]
-            [compojure.core :refer [GET routes]]
             [compojure.route :refer [resources]]
             [datomic.api :as d]
-            [ring.util.response :refer [response]]))
+            [ring.util.response :refer [response]]
+            [bidi.ring :as bidi.r :refer (make-handler)]
+            [bidi.bidi :as bidi]))
 
 (defn context [request]
   {:request request})
@@ -70,40 +71,53 @@
             (assoc-in [:response/headers "Last-Modified"] (time-util/time->html-ts (jt/zoned-date-time time-util/UTC)))
             response/render)))))
 
+(defn- db-from-endpoint [endpoint]
+  (->> (get-in endpoint [:datomic :conn])
+       (d/db)))
+
+(defn index-route [endpoint request]
+  (let [db (db-from-endpoint endpoint)]
+    (-> request
+        context
+        (assoc :data/title "Clojurians Slack Log"
+               :data/channels (queries/channel-list db))
+        views/channel-list-page
+        response/render)))
+
+(defn channel-history-route [endpoint request]
+  (let [db (db-from-endpoint endpoint)
+        {:keys [channel]} (:route-params request)]
+    (-> request
+        context
+        (assoc :data/title (str "Clojurians Slack Log | " channel)
+               :data/days (queries/channel-days db channel)
+               :data/channel-name channel)
+        views/channel-page
+        response/render)))
+
+(defn- dispatch [endpoint handler-var]
+  (fn [request]
+    (if (fn? handler-var)
+      (handler-var endpoint request)
+      ((var-get handler-var) endpoint request))))
+
+(def routes
+  ["/" {"healthcheck" (fn [endpoint req]
+                        {:headers {"Content-Type" "text/plain"}
+                         :body "OK"})
+
+        ;; We're using a var instead of supplying a function directly because
+        ;; we don't have to reload this route definition structure everytime a handler function
+        ;; gets re-evaluated/replaced.
+        "" (-> #'index-route (bidi/tag :index))
+
+        [:channel] (-> #'channel-history-route (bidi/tag :channel-history))
+        [:channel "/" :date ".html"] (-> #'log-route (bidi/tag :log-old-url))
+        [:channel "/" :date]         (-> #'log-route (bidi/tag :log))
+        [:channel "/" :date "/" :ts] (-> #'log-route (bidi/tag :log-page-target-message))}])
+
 (defn home-routes [{:keys [config] :as endpoint}]
-  (let [conn (get-in endpoint [:datomic :conn])]
-    (routes
-     (GET "/healthcheck" _
-       {:headers {"Content-Type" "text/plain"}
-        :body "OK"})
-
-     (GET "/" request
-       (let [db (d/db conn)]
-         (-> request
-             context
-             (assoc :data/title "Clojurians Slack Log"
-                    :data/channels (queries/channel-list db))
-             views/channel-list-page
-             response/render)))
-
-     (GET "/:channel" [channel :as request]
-       (let [db (d/db conn)]
-         (-> request
-             context
-             (assoc :data/title (str "Clojurians Slack Log | " channel)
-                    :data/days (queries/channel-days db channel)
-                    :data/channel-name channel)
-             views/channel-page
-             response/render)))
-
-     ;; https://clojurians-log.clojureverse.org/clojure/2017-11-15.html
-     (GET "/:channel/:date.html" request
-       (log-route endpoint request))
-
-     (GET "/:channel/:date/:ts" [channel date ts :as request]
-       (log-route endpoint request))
-
-     (resources "/"))))
+  (make-handler routes (partial dispatch endpoint)))
 
 (comment
   (data/load-channel-messages {:request {:params {:channel "clojure" :year "2017" :month "01" :day "01"}}}))
