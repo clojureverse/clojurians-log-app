@@ -6,9 +6,10 @@
   (:require [bidi.bidi :as bidi]))
 
 (def routes
-  ["/" {"healthcheck" (fn [endpoint req]
-                        {:headers {"Content-Type" "text/plain"}
-                         :body "OK"})
+  ["/" {"healthcheck" (-> (fn [endpoint req]
+                            {:headers {"Content-Type" "text/plain"}
+                             :body "OK"})
+                          (bidi/tag :health-check))
 
         ;; Note that the symbol here needs to match some var that clojure-log.routes has access to.
         ;; When dispatching on the route, the symbol will be resolved symbol->var->func.

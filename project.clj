@@ -128,7 +128,10 @@
                              [com.datomic/datomic-free "0.9.5656"]
                              [com.cemerick/pomegranate "1.0.0"]
                              [vvvvalvalval/scope-capture "0.1.4"]
-                             [alembic "0.3.2"]]
+                             [alembic "0.3.2"]
+                             [cheshire "5.8.0"]
+                             [ring/ring-mock "0.3.2"]
+                             [hickory "0.7.1"]]
 
               :plugins [[lein-figwheel "0.5.15-SNAPSHOT"]
                         [lein-doo "0.1.8"]
