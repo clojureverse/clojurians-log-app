@@ -11,7 +11,7 @@
             [compojure.route :refer [resources]]
             [datomic.api :as d]
             [ring.util.response :refer [response]]
-            [bidi.ring :as bidi.r :refer (make-handler)]
+            [bidi.ring]
             [bidi.bidi :as bidi]))
 
 (defn context [request]
@@ -106,7 +106,7 @@
       ((var-get (ns-resolve 'clojurians-log.routes handler-sym)) endpoint request))))
 
 (defn home-routes [{:keys [config] :as endpoint}]
-  (make-handler routes (partial dispatch endpoint)))
+  (bidi.ring/make-handler routes (partial dispatch endpoint)))
 
 (comment
   (data/load-channel-messages {:request {:params {:channel "clojure" :year "2017" :month "01" :day "01"}}}))

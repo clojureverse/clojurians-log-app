@@ -113,9 +113,9 @@
     [:span.day-arrows
      (if-let [prev-date (channel-day-offset channel-days date -1)]
        [:a {:href (bidi/path-for routes
-                                  :log
-                                  :channel (:channel/name channel)
-                                  :date prev-date)}
+                                 :log
+                                 :channel (:channel/name channel)
+                                 :date prev-date)}
         [:div.day-prev "<"]])
      date
      (if-let [next-date (channel-day-offset channel-days date 1)]
