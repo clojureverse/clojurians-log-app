@@ -130,7 +130,8 @@
                              [alembic "0.3.2"]]
 
               :plugins [[lein-figwheel "0.5.15-SNAPSHOT"]
-                        [lein-doo "0.1.8"]]
+                        [lein-doo "0.1.8"]
+                        [com.jakemccrary/lein-test-refresh "0.22.0"]]
 
               :source-paths ["dev"]
               :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}}

@@ -1,5 +1,6 @@
 (ns clojurians-log.time-util
   (:require [java-time :as jt]
+            [java-time.local :as jt.l]
             [clojure.string :as str])
   (:import [java.time Instant]
            [java.time.format DateTimeFormatter]))
@@ -51,3 +52,24 @@
 (defn html-ts->time
   [ts]
   (jt/zoned-date-time DateTimeFormatter/RFC_1123_DATE_TIME ts))
+
+(defn day-interval [y m d]
+  (let [start (jt/with-zone
+                (jt/zoned-date-time y m d)
+                UTC)
+        end (jt/plus start (jt/days 1))]
+    [start end]))
+
+(defn day-str->date-interval
+  "Returns [from-date to-date] that brackets the given `day`.
+  By using this range, we can check if another date is within this day."
+  [day-str]
+  (let [date (jt.l/local-date inst-day-formatter day-str)]
+    (->> (day-interval (.getYear date)
+                       (.getMonth date)
+                       (.getDayOfMonth date))
+         (map #(java.util.Date/from (.toInstant %))))))
+
+(defn within-interval [date [interval-start interval-end]]
+  (and (.after date interval-start)
+       (.before date interval-end)))

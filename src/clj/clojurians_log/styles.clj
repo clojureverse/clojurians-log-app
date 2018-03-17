@@ -22,4 +22,6 @@
    [:div.day-prev (assoc small-square-button
                          :margin-right "0.3rem")]
    [:div.day-next (assoc small-square-button
-                         :margin-left "0.3rem")]])
+                         :margin-left "0.3rem")]]
+
+  [:.message.thread-msg {:margin-left "1rem"}])

@@ -15,3 +15,13 @@ A number of quiet channels, to test cases where a channel does not have messages
 on a given day, for days 2018-02-01 through 2018-02-04.
 
 `#jobs`, `#keechma`, `#reitit`, `#yada`, `#dirac`
+
+## `threaded-messages.edn`
+
+Messages from `#datomic` specifically for testing thread message retrieval.
+
+In particular, it contains:
+- 2 threads from 2018-02-07
+- a thread message from 2018-02-06
+- a non-threaded message from 2018-02-07
+- a non-threaded message from 2018-02-08

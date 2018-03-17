@@ -25,6 +25,16 @@
           page-date (jt/local-date time-util/inst-day-formatter page-date-str)]
       (.isEqual fetch-date page-date))))
 
+(defn- merge-thread-messages
+  "Attach thread messages as :message/children to their parent message"
+  [messages thread-messages]
+  (let [messages-by-thread-ts (group-by :message/thread-ts thread-messages)]
+    (map (fn[msg]
+           (if-let [children (get messages-by-thread-ts (:message/ts msg))]
+             (assoc msg :message/children children)
+             msg))
+         messages)))
+
 (defn log-route [endpoint request]
   (let [config                    @(get-in endpoint [:config :value])
         conn                      (get-in endpoint [:datomic :conn])
@@ -42,13 +52,14 @@
 
       (let [db       (d/db conn)
             messages (queries/channel-day-messages db channel date)
+            thread-messages (queries/channel-thread-messages-of-day db channel date)
             user-ids (slack-messages/extract-user-ids messages)]
         (-> request
             context
             (assoc :data/channel (queries/channel db channel)
                    :data/channels (queries/channel-list db date)
-                   :data/messages messages
-                   :data/target-message (some #(when (= (:message/ts %) ts) %) messages)
+                   :data/messages (merge-thread-messages messages thread-messages)
+                   :data/target-message (some #(when (= (:message/ts %) ts) %) (apply conj messages thread-messages))
                    :data/usernames (into {} (queries/user-names db user-ids))
                    :data/channel-days (queries/channel-days db channel)
                    :data/title (str channel " " date " | Clojurians Slack Log")

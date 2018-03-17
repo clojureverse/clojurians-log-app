@@ -27,6 +27,14 @@
           :valueType   :db.type/instant
           :cardinality :db.cardinality/one
           :doc         "Same as :message/ts, but parsed to java.util.Date. This is lossy: Date has milisecond precision, ts has microseconds."}
+   #:db{:ident       :message/thread-ts
+        :valueType   :db.type/string
+        :cardinality :db.cardinality/one
+        :doc         "Thread parent message timestamp (seconds since epoch up to 6 decimals). Stored as string because it is used by slack as a kind of identifier. Unique per channel."}
+   #:db{:ident       :message/thread-inst
+        :valueType   :db.type/instant
+        :cardinality :db.cardinality/one
+        :doc         "Same as :message/thread-ts, but parsed to java.util.Date. This is lossy: Date has milisecond precision, ts has microseconds."}
    #:db{:ident       :message/day
         :valueType   :db.type/string
         :cardinality :db.cardinality/one

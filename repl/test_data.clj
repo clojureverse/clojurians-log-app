@@ -78,3 +78,53 @@
                           [user-data
                            chan-data
                            msg-data]))))
+
+
+(defn thread-messages-by-ids [db channels msg-ids]
+  (->> (d/q '[:find [(pull ?msg [:db/id
+                                 :message/key
+                                 :message/text
+                                 {:message/channel [:channel/slack-id]}
+                                 {:message/user [:user/slack-id]}
+                                 :message/ts
+                                 :message/day
+                                 :message/thread-ts
+                                 :message/thread-inst]) ...]
+              :in $ [?chans ...] [?msg-id ...]
+              :where
+              [?chan :channel/name ?chans]
+              [?msg  :message/channel ?chan]
+              (or [?msg :message/ts ?msg-id]
+                  [?msg :message/thread-ts ?msg-id])]
+            db
+            channels
+            msg-ids)
+       (map #(update % :message/user first))
+       (map #(update % :message/channel first))))
+
+
+(defn dissoc-db-id [data]
+  (mapv (fn [m]
+          (dissoc (into {} m) :db/id))
+        data))
+
+
+;; threaded-messages
+(let [db (db)
+      channels #{"datomic"}
+      ids ["1517995093.000487" ;; thread 1 parent
+           "1518040988.000079" ;; thread 2 parent
+           "1518034517.000637" ;; non-threaded message
+           "1518050129.000168" ;; random message from another day
+           "1517924158.000577" ;; random thread message belonging to another day
+           ]
+      chan-data (channel-data db channels)
+      msg-data  (thread-messages-by-ids db channels ids)
+      user-data (user-data db (concat (map (comp last :message/user) msg-data)
+                                      (map (comp last :channel/creator) chan-data)))]
+  (->> (mapv dissoc-db-id
+             [user-data
+              chan-data
+              msg-data])
+       (pprint-str)
+       (spit "resources/clojurians-log/test-data/threaded-messages.edn")))
