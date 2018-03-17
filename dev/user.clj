@@ -11,7 +11,8 @@
             [ring.middleware.cookies :as cookies]
             [ring.middleware.session.store :as session-store]
             [system.components.middleware :refer [new-middleware]]
-            [datomic.api :as d]))
+            [datomic.api :as d]
+            [sc.api]))
 
 (defn dev-system []
   (let [config (config :dev)]
@@ -66,14 +67,20 @@
 (defn db []
   (d/db (conn)))
 
-(defn add-dependency [dep-vec]
-  (require 'cemerick.pomegranate)
-  ((resolve 'cemerick.pomegranate/add-dependencies)
-   :coordinates [dep-vec]
-   :repositories (merge @(resolve 'cemerick.pomegranate.aether/maven-central)
-                        {"clojars" "https://clojars.org/repo"})))
+(defmacro add-dependency
+  "Add a dependency at runtime, e.g. (add-dependency [enlive \"1.1.6\"])"
+  [dep-vec]
+  `(do
+     (require 'cemerick.pomegranate)
+     (cemerick.pomegranate/add-dependencies
+      :coordinates ['~dep-vec]
+      :repositories (assoc cemerick.pomegranate.aether/maven-central
+                           "clojars" "https://clojars.org/repo"))))
 
 (defn update-cache-time! [new-cache-time]
   "Changes how long to ask http clients to cache each of the messages pages"
-  (swap! (get-in system [:config :value]) update-in [:message-page :cache-time] (constantly new-cache-time))
+  (swap! (get-in system [:config :value])
+         update-in
+         [:message-page :cache-time]
+         (constantly new-cache-time))
   true)
