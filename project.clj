@@ -32,7 +32,8 @@
                  [reloaded.repl "0.2.4"]
                  [instaparse "1.4.8"]
                  [com.cemerick/url "0.1.1"]
-                 [enlive "1.1.6"]]
+                 [enlive "1.1.6"]
+                 [bidi "2.1.3"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0"]]
@@ -127,7 +128,10 @@
                              [com.datomic/datomic-free "0.9.5656"]
                              [com.cemerick/pomegranate "1.0.0"]
                              [vvvvalvalval/scope-capture "0.1.4"]
-                             [alembic "0.3.2"]]
+                             [alembic "0.3.2"]
+                             [cheshire "5.8.0"]
+                             [ring/ring-mock "0.3.2"]
+                             [hickory "0.7.1"]]
 
               :plugins [[lein-figwheel "0.5.15-SNAPSHOT"]
                         [lein-doo "0.1.8"]
