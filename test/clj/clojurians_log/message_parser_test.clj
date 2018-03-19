@@ -68,7 +68,10 @@ please respond in <@C346HE24SD>"]
     (is (= [[:emoji "thumbsup"]]
            (parse2 ":thumbsup:")))
     (is (= [[:undecorated "just_some_snake_case"]]
-           (parse2 "just_some_snake_case"))))
+           (parse2 "just_some_snake_case")))
+    (is (= [[:url "https://google.com"]]
+           (parse2 "<https://google.com>"))))
+
 
   (testing "putting it together"
     (let [message "Hey <@U4F2A0Z8ER>: here is the `my-ns.core` code ```

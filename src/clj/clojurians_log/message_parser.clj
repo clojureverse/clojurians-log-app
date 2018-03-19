@@ -43,6 +43,7 @@
   {:code-block #"```(?s:(.*?))```"
    :inline-code #"`(.*?)`"
    :reference #"<((?:#C|@U)[A-Z0-9]{7,})(?:\|(.*?))?>"
+   :url #"<((?:http|https):.*?)>"
    :emoji #":(.*?):"
    :italic #"\b_(.*?)_"
    :bold #"\*(.*?)\*"
