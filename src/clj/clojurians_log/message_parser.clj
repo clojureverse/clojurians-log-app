@@ -125,9 +125,7 @@
                    :finally
                    (conj (match->token match)))))))))
 
-(defn parse-pattern
-  [pattern-k message]
-
+(defn parse-with-pattern [pattern-k message]
   (let [pattern (get message-patterns pattern-k)]
     (re-seq-pos pattern message)))
 
