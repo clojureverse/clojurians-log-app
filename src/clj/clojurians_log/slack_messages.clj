@@ -68,7 +68,7 @@
   [message usernames]
   [:p (map segment->hiccup
            (-> message
-               (mp/parse)
+               (mp/parse2)
                (replace-ids-names usernames)))])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
