@@ -57,6 +57,8 @@ please respond in <@C346HE24SD>"]
            (parse2 "<@U4F2A0Z8ER>")))
     (is (= [[:channel-id "C4F2A26SGSHBW"]]
            (parse2 "<#C4F2A26SGSHBW>")))
+    (is (= [[:channel-id "C03S1L9DN" "clojurescript"]]
+           (parse2 "<#C03S1L9DN|clojurescript>"))))
     (is (= [[:inline-code "DateTime"]]
            (parse2 "`DateTime`")))
     (is (= [[:code-block "(some clojure code)"]]
