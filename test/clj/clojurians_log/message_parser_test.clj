@@ -70,7 +70,10 @@ please respond in <@C346HE24SD>"]
     (is (= [[:undecorated "just_some_snake_case"]]
            (parse2 "just_some_snake_case")))
     (is (= [[:url "https://google.com"]]
-           (parse2 "<https://google.com>"))))
+           (parse2 "<https://google.com>")))
+    (is (= [[:undecorated "from: "]
+            [:url "https://google.com"]]
+           (parse2 "from: <https://google.com>")))
 
 
   (testing "putting it together"
