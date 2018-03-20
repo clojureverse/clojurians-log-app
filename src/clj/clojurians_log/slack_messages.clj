@@ -63,6 +63,9 @@
 (defmethod segment->hiccup :italic [[type content]]
   [:i content])
 
+(defmethod segment->hiccup :url [[type content]]
+  [:a {:href content} content])
+
 (defn message->hiccup
   "Parse slack markup and convert to hiccup."
   [message usernames]
