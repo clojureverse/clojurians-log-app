@@ -88,6 +88,16 @@
     [(:type match) (or (nth (:matches match) 1)
                        (:match match))]))
 
+(defn- replace-html-entities
+  "Replace `&amp;`, `&lt;`, and `&gt;` with \"&\", \"<\", and \">\".
+
+  This seems equired as per https://api.slack.com/docs/message-formatting"
+  [message]
+  (-> message
+      (str/replace #"&amp;" "&")
+      (str/replace #"&lt;" "<")
+      (str/replace #"&gt;" ">")))
+
 (defn parse2 [message]
   (let [matches (->> (match-all-patterns message-patterns message)
                      (sort match-compare))]
@@ -108,7 +118,7 @@
         ;; If there are no more matches in the rest of the message,
         ;; mark the rest of the message as undecorated.
         (empty? matches)
-        (conj result [:undecorated (subs message cursor)])
+        (conj result [:undecorated (replace-html-entities (subs message cursor))])
 
         ;; If the starting location of the match is less than the current cursor,
         ;; this means we already came across a better/larger match previously.
@@ -122,7 +132,7 @@
                  (rest matches)
                  (cond-> result
                    (> (:start match) cursor)
-                   (conj [:undecorated (subs message cursor (:start match))])
+                   (conj [:undecorated (replace-html-entities (subs message cursor (:start match)))])
                    :finally
                    (conj (match->token match)))))))))
 

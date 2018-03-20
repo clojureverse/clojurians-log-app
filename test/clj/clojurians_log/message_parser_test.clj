@@ -76,6 +76,8 @@ please respond in <@C346HE24SD>"]
     (is (= [[:undecorated "from: "]
             [:url "https://google.com"]]
            (parse2 "from: <https://google.com>")))
+    (is (= [[:undecorated "&<>"]]
+           (parse2 "&amp;&lt;&gt;")))
 
 
   (testing "putting it together"
