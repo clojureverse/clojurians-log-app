@@ -51,8 +51,10 @@
 (defmethod segment->hiccup :user [[type content]]
   [:span.username "@" (:user-name content)])
 
-(defmethod segment->hiccup :channel-id [[type content]]
-  [:i "#" content])
+(defmethod segment->hiccup :channel-id [[type content name]]
+  [:i "#" (if-not (empty? name)
+            name
+            content)])
 
 (defmethod segment->hiccup :emoji [[type content]]
   [:span.emoji ":" content ":"])
@@ -93,8 +95,10 @@
 (defmethod segment->text :user [[type content]]
   (str "@" (:user-name content)))
 
-(defmethod segment->text :channel-id [[type content]]
-  (str "#" content))
+(defmethod segment->text :channel-id [[type content name]]
+  (str "#" (if-not (empty? name)
+             name
+             content)))
 
 (defmethod segment->text :emoji [[type content]]
   (str ":" content ":"))
