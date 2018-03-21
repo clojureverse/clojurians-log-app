@@ -6,7 +6,7 @@
 (defrecord DatomicSchema [datomic]
   component/Lifecycle
   (start [this]
-    (d/transact (:conn datomic) schema/full-schema))
+    @(d/transact (:conn datomic) schema/full-schema))
   (stop [this]))
 
 (defn new-datomic-schema []

@@ -14,18 +14,25 @@
             [datomic.api :as d]
             [sc.api]))
 
-(defn dev-system []
-  (let [config (config :dev)]
-    (alter-var-root #'app/config (constantly config))
-    (-> (app/prod-system config)
-        (ring-history/inject-ring-history)
-        (assoc :middleware (new-middleware {:middleware (clojurians-log.config/middleware-stack :dev)})
-               :figwheel-system (fw-sys/figwheel-system (fw-config/fetch-config))
-               :css-watcher (fw-sys/css-watcher {:watch-paths ["resources/public/css"]})
-               :garden-watcher (new-garden-watcher ['clojurians-log.styles])
-               #_#_:browse-url (browse-url/new-browse-url-component (str "http://localhost:" (get-in config [:http :port])))))))
+(defn dev-system [config]
+  (alter-var-root #'app/config (constantly config))
+  (-> (app/prod-system config)
 
-(reloaded.repl/set-init! #(dev-system))
+      ;; Track requests/responses so you can inspect them with
+      ;; (last-request) / (last-response)
+      (ring-history/inject-ring-history)
+
+      ;; Inject Figwheel and the Garden stylesheet watcher, only used for CSS at
+      ;; the moment
+      (assoc :figwheel-system (fw-sys/figwheel-system (fw-config/fetch-config))
+             :css-watcher     (fw-sys/css-watcher {:watch-paths ["resources/public/css"]})
+             :garden-watcher  (new-garden-watcher ['clojurians-log.styles]))
+
+      ;; Call `home-routes` on every request, so REPL-invoked changes show up
+      ;; immediately
+      (update-in [:routes :routes-fn] #(fn [endpoint] (fn [req] ((% endpoint) req))))))
+
+(reloaded.repl/set-init! #(dev-system (config :dev)))
 
 (defn cljs-repl []
   (fw-sys/cljs-repl (:figwheel-system system)))
@@ -79,8 +86,7 @@
 
 (defn update-cache-time! [new-cache-time]
   "Changes how long to ask http clients to cache each of the messages pages"
-  (swap! (get-in system [:config :value])
-         update-in
-         [:message-page :cache-time]
-         (constantly new-cache-time))
-  true)
+  (reloaded.repl/set-init! #(dev-system (config :dev {:cache-time new-cache-time})))
+  (clear)
+  (go)
+  :resumed)

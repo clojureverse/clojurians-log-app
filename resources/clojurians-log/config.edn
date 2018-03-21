@@ -3,6 +3,6 @@
         :origin #or [#env CLOJURIANS_LOG_HOSTNAME "http://localhost:4983"]}
  :slack {:api-token #env SLACK_API_TOKEN
          :log-dir #env CLOJURIANS_LOG_DIR}
- :message-page {:cache-time #profile {:default 86400
-                                      :dev 0
-                                      :test 0}}}
+ :cache-time #profile {:default 86400
+                       :dev 0
+                       :test 0}}

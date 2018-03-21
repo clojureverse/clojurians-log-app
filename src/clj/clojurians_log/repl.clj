@@ -8,7 +8,8 @@
             [clojurians-log.data :as data]
             [clojure.java.io :as io]
             [datomic.api :as d]
-            [clojure.tools.reader.edn :as edn]))
+            [clojure.tools.reader.edn :as edn]
+            [clojurians-log.db.schema :as schema]))
 
 (defn conn
   "Reach into the system for the datomic connection.
@@ -16,6 +17,9 @@
   Not 100% kosher but remember this is not production code as such."
   []
   (get-in (app/system) [:datomic :conn]))
+
+(defn load-schema! []
+  @(d/transact (conn) schema/full-schema))
 
 (defn load-slack-data!
   "Import Slack users and Channels."

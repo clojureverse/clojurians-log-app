@@ -18,25 +18,18 @@
 (defn system []
   reloaded.repl/system)
 
-(defrecord ValueComponent [value]
-  component/Lifecycle
-  (start [component] component)
-  (stop [component] component))
-
-(defn prod-system [{:keys [datomic http] :as config}]
+(defn prod-system [{:keys [datomic http cache-time] :as config}]
   (component/system-map
-   :config     (->ValueComponent (atom config))
-   :routes     (-> (new-endpoint (fn [endpoint]
-                                   (fn [request]
-                                     ((home-routes endpoint) request))))
-                   (component/using [:datomic :config]))
-   :middleware (new-middleware {:middleware (clojurians-log.config/middleware-stack :prod)})
-   :handler    (-> (new-handler)
-                   (component/using [:routes :middleware]))
-   :http       (-> (new-web-server (:port http))
-                   (component/using [:handler]))
-   :server-info (server-info (:port http))
-   :datomic (new-datomic-db (:uri datomic))
+   :routes         (-> (new-endpoint home-routes)
+                       (assoc :http-origin (get-in config [:http :origin]))
+                       (component/using [:datomic]))
+   :middleware     (new-middleware (select-keys config [:middleware]))
+   :handler        (-> (new-handler)
+                       (component/using [:routes :middleware]))
+   :http           (-> (new-web-server (:port http))
+                       (component/using [:handler]))
+   :server-info    (server-info (:port http))
+   :datomic        (new-datomic-db (:uri datomic))
    :datomic-schema (-> (new-datomic-schema)
                        (component/using [:datomic]))))
 
