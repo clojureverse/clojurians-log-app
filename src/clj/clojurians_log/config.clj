@@ -30,24 +30,27 @@
                :content-types true
                :default-charset "utf-8"}})
 
-(defn middleware-stack [config]
-  {:prod [[wrap-defaults site-defaults]
-          wrap-with-logger
-          wrap-gzip
-          [wrap-cache-control (:cache-time config)]
-          prone/wrap-exceptions]
-   :dev [[wrap-file "dev-target/public"]
-         [wrap-defaults site-defaults]
-         wrap-with-logger
-         wrap-gzip
-         [wrap-cache-control (:cache-time config)]
-         prone/wrap-exceptions]})
+(defn add-middleware [config]
+  (let [profile (::profile config)
+        dev?    (= :dev profile)]
+    (assoc config
+           :middleware
+           (cond-> [[wrap-defaults site-defaults]
+                    wrap-with-logger
+                    wrap-gzip
+                    [wrap-cache-control (:cache-time config)]]
+             dev? (into [[wrap-file "dev-target/public"]
+                         prone/wrap-exceptions])))))
 
 (defn config-file []
   (io/resource "clojurians-log/config.edn"))
 
+(defn read-config [file profile]
+  (assoc (aero/read-config file {:profile profile})
+         ::profile profile))
+
 (defn config [profile & [defaults]]
-  (let [config (-> (config-file)
-                   (aero/read-config {:profile profile})
-                   (merge defaults))]
-     (assoc config :middleware (get (middleware-stack config) profile))))
+  (-> (config-file)
+      (read-config profile)
+      (merge defaults)
+      (add-middleware)))

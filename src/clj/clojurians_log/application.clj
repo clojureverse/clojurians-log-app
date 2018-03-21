@@ -34,9 +34,10 @@
                        (component/using [:datomic]))))
 
 (defn -main [& [config-file]]
-  (let [conf (if (and config-file (.exists (io/file config-file)))
-               (config/config (io/file config-file) :prod)
-               (config/config :prod))]
+  (let [conf (config/config :prod
+                            (if (and config-file (.exists (io/file config-file)))
+                              (config/read-config (io/file config-file) :prod)
+                              {}))]
     (alter-var-root #'config (constantly conf))
     (reloaded.repl/set-init! #(prod-system conf))
     (reloaded.repl/go)))
