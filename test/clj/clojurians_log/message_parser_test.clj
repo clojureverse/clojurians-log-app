@@ -157,3 +157,23 @@ please respond in <#C346HE24SD>"]
               [:undecorated "\nplease respond in "]
               [:channel-id "C346HE24SD"]]
              (parse2 message))))))
+
+;; Try out Slack message parsing at
+;; https://api.slack.com/docs/messages/builder?msg=%7B%22text%22%3A%22xx1_%20*basic*%60%22%7D
+(deftest parse-test
+  (are [x y] (= y (parse2 x))
+    "basic"              [[:undecorated "basic"]]
+    "*bold*"             [[:bold "bold"]]
+    "basic *bold* basic" [[:undecorated "basic "] [:bold "bold"] [:undecorated " basic"]]
+    "basic *basic"       [[:undecorated "basic *basic"]]
+    "_italic_"           [[:italic "italic"]]
+    "xx _italic_ xx"     [[:undecorated "xx "] [:italic "italic"] [:undecorated " xx"]]
+    "xx_oops_"           [[:undecorated "xx_oops_"]]
+    ;; "xx1`*basic*`"       [[:undecorated "xx1`*basic*`"]]
+    ;; "xx1_`*basic*`"      [[:undecorated "xx1_"] [:inline-code "*basic*"]]
+    ;; "xx1_ *basic*`"      ["xx1_ *basic*`"]
+    ;; "> foo *_bar_*"      [[:blockquote "foo " [:bold [:italic "bar"]]]]
+    ;; ">foo *_bar_*"       [[:blockquote "foo " [:bold [:italic "bar"]]]]
+    ;; ">>foo *_bar_*"      [[:blockquote ">foo " [:bold [:italic "bar"]]]]
+    ;; "> >foo *_bar_*"     ["> >foo " [:bold [:italic "bar"]]]
+    ))

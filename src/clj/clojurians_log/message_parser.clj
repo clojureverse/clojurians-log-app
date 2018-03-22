@@ -45,7 +45,7 @@
 
 (def message-patterns
   {:code-block #"```(?s:(.*?))```"
-   :inline-code #"`(.*?)`"
+   :inline-code #"(?<!\w)`(.*?)`"
    :reference #"<((?:#C|@U)[A-Z0-9]{7,})(?:\|(.*?))?>"
    :url #"<((?:http|https):.*?)>"
    :emoji #"(?<!\w):(\w*?):"
