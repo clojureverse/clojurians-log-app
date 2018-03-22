@@ -69,6 +69,10 @@ please respond in <@C346HE24SD>"]
            (parse2 "_hello_")))
     (is (= [[:emoji "thumbsup"]]
            (parse2 ":thumbsup:")))
+    (is (= [[:bold "hi!"] [:undecorated " "] [:emoji "smiles"]]
+           (parse2 "*hi!* :smiles:")))
+    (is (= [[:undecorated "12:34:56:78:90:12:34:56:78:90:12:34:56:78:90:12"]]
+           (parse2 "12:34:56:78:90:12:34:56:78:90:12:34:56:78:90:12")))
     (is (= [[:strike-through "strike-through"]]
            (parse2 "~strike-through~")))
     (is (= [[:undecorated "just_some_snake_case"]]

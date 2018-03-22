@@ -48,7 +48,7 @@
    :inline-code #"`(.*?)`"
    :reference #"<((?:#C|@U)[A-Z0-9]{7,})(?:\|(.*?))?>"
    :url #"<((?:http|https):.*?)>"
-   :emoji #":(\w*?):"
+   :emoji #"(?<!\w):(\w*?):"
    :italic #"\b_(.*?)_"
    :bold #"\*(.*?)\*"
    :strike-through #"~(.*?)~"})
