@@ -58,7 +58,7 @@ please respond in <@C346HE24SD>"]
     (is (= [[:channel-id "C4F2A26SGSHBW"]]
            (parse2 "<#C4F2A26SGSHBW>")))
     (is (= [[:channel-id "C03S1L9DN" "clojurescript"]]
-           (parse2 "<#C03S1L9DN|clojurescript>"))))
+           (parse2 "<#C03S1L9DN|clojurescript>")))
     (is (= [[:inline-code "DateTime"]]
            (parse2 "`DateTime`")))
     (is (= [[:code-block "(some clojure code)"]]
@@ -69,6 +69,8 @@ please respond in <@C346HE24SD>"]
            (parse2 "_hello_")))
     (is (= [[:emoji "thumbsup"]]
            (parse2 ":thumbsup:")))
+    (is (= [[:strike-through "strike-through"]]
+           (parse2 "~strike-through~")))
     (is (= [[:undecorated "just_some_snake_case"]]
            (parse2 "just_some_snake_case")))
     (is (= [[:url "https://google.com"]]
@@ -77,8 +79,55 @@ please respond in <@C346HE24SD>"]
             [:url "https://google.com"]]
            (parse2 "from: <https://google.com>")))
     (is (= [[:undecorated "&<>"]]
-           (parse2 "&amp;&lt;&gt;")))
+           (parse2 "&amp;&lt;&gt;"))))
 
+  (testing "nested regions"
+    ;; Basic case
+    (is (= [[:bold "hello"]]
+           (parse2 "*hello*")))
+
+    ;; two unrelated regions
+    (is (= [[:italic "hello"] [:undecorated " "] [:bold "world"]]
+           (parse2 "_hello_ *world*")))
+
+    ;; single nested case
+    (is (= [[:italic [:bold "hello"]]]
+           (parse2 "_*hello*_")))
+
+    ;; undecorated text outside regions
+    (is (= [[:bold "hello"] [:undecorated " world again"]]
+           (parse2 "*hello* world again")))
+
+    (is (= [[:undecorated "hello "] [:bold "world"] [:undecorated " again"]]
+           (parse2 "hello *world* again")))
+
+    (is (= [[:undecorated "hello world "] [:bold "again"]]
+           (parse2 "hello world *again*")))
+
+    ;; undecorated text inside regions
+    (is (= [[:italic [[:bold "hello"] [:undecorated " world"]]]]
+           (parse2 "_*hello* world_")))
+
+    (is (= [[:italic [[:undecorated "hello "] [:bold "world"]]]]
+           (parse2 "_hello *world*_")))
+
+    (is (= [[:italic [[:bold "hello"] [:undecorated " world again"]]]]
+           (parse2 "_*hello* world again_")))
+
+    (is (= [[:italic [[:undecorated "hello "] [:bold "world"] [:undecorated " again"]]]]
+           (parse2 "_hello *world* again_")))
+
+    (is (= [[:italic [[:undecorated "hello world "] [:bold "again"]]]]
+           (parse2 "_hello world *again*_")))
+
+    ;; Two nested regions
+    (is (= [[:italic [[:bold "hello"] [:undecorated " "] [:strike-through "world"]]]]
+           (parse2 "_*hello* ~world~_"))))
+
+  (testing "No nested regions inside a code block"
+    (is (= [[:undecorated "Some text "]
+            [:code-block "some code <#C03S1L9DN|clojurescript>"]]
+           (parse2 "Some text ```some code <#C03S1L9DN|clojurescript>```"))))
 
   (testing "putting it together"
     (let [message "Hey <@U4F2A0Z8ER>: here is the `my-ns.core` code ```
