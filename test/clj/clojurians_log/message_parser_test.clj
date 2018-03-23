@@ -175,6 +175,5 @@ please respond in <#C346HE24SD>"]
     "xx1_ *basic*`"      [[:undecorated "xx1_ *basic*`"]]
     "> foo *_bar_*"      [[:blockquote [[:undecorated "foo "] [:bold [:italic "bar"]]]]]
     ">foo *_bar_*"       [[:blockquote [[:undecorated "foo "] [:bold [:italic "bar"]]]]]
-    ">>foo *_bar_*"      [[:blockquote [[:undecorated">foo "] [:bold [:italic "bar"]]]]]
-    ;; "> >foo *_bar_*"     ["> >foo " [:bold [:italic "bar"]]]
-    ))
+    ">>foo *_bar_*"      [[:blockquote [[:undecorated ">foo "] [:bold [:italic "bar"]]]]]
+    "> >foo *_bar_*"     [[:undecorated "> >foo "] [:bold [:italic "bar"]]]))
