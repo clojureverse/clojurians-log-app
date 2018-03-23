@@ -177,4 +177,5 @@ please respond in <#C346HE24SD>"]
     ">foo *_bar_*"       [[:blockquote [[:undecorated "foo "] [:bold [:italic "bar"]]]]]
     ">>foo *_bar_*"      [[:blockquote [[:undecorated ">foo "] [:bold [:italic "bar"]]]]]
     "> >foo *_bar_*"     [[:undecorated "> >foo "] [:bold [:italic "bar"]]]
-    ">>>a\nmultiline\nquote" [[:blockquote "a\nmultiline\nquote"]]))
+    ">>>a\nmultiline\nquote" [[:blockquote "a\nmultiline\nquote"]]
+    "<http://google.com|Google>" [[:url "http://google.com" "Google"]]))

@@ -46,7 +46,7 @@
    :inline-code #"(?<=^|_|\s)`(.*?)`"
    :blockquote #"^>>>(?s:(.*))$|^>(?!\s>)\s?(.*)(?:$|\R)"
    :reference #"<((?:#C|@U)[A-Z0-9]{7,})(?:\|(.*?))?>"
-   :url #"<((?:http|https):.*?)>"
+   :url #"<((?:http|https):[^|]*?)(?:\|(.*?))?>"
    :emoji #"(?<!\w):(\w*?):"
    :italic #"\b_(.*?)_"
    :bold #"(?<![a-zA-Z0-9`])\*(.*?)\*(?![a-zA-Z0-9`])"
@@ -100,6 +100,12 @@
                        \U :user-id
                        \C :channel-id)]
       (cond-> [ref-type (subs ref 1)]
+        (not (empty? name))
+        (conj name)))
+
+    :url
+    (let [[_ url name] (:matches match)]
+      (cond-> [:url url]
         (not (empty? name))
         (conj name)))
 
