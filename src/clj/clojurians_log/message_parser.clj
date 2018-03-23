@@ -31,17 +31,15 @@
 
 (defn re-seq-pos [pattern string]
   (let [m (re-matcher pattern string)]
-    ((fn step []
-       (when (.find m)
-         (cons (cond-> {:start (.start m) :end (.end m) :match (.group m)}
-                 (> (.groupCount m) 0)
-                 (-> (assoc :matches
-                            (re-groups m))
-                     (assoc :extents
-                            (into []
-                             (for [group-idx (range (inc (.groupCount m)))]
-                               {:start (.start m group-idx) :end (.end m group-idx)})))))
-               (lazy-seq (step))))))))
+    (for [n (range) :while (.find m)]
+      (cond-> {:start (.start m) :end (.end m) :match (.group m)}
+        (> (.groupCount m) 0)
+        (-> (assoc :matches
+                   (re-groups m))
+            (assoc :extents
+                   (into []
+                         (for [group-idx (range (inc (.groupCount m)))]
+                           {:start (.start m (int group-idx)) :end (.end m (int group-idx))}))))))))
 
 (def message-patterns
   {:code-block #"```(?s:(.*?))```"
@@ -53,11 +51,15 @@
    :bold #"(?<![a-zA-Z0-9`])\*(.*?)\*(?![a-zA-Z0-9`])"
    :strike-through #"~(.*?)~"})
 
-(defn match-all-patterns [message-patterns message]
+(defn match-all-patterns
+  "Matches the `message` against all patterns in `message-patterns`.
+  A list of match results is returned, each item has a :type key with the
+  name of the pattern that produced the result."
+  [message-patterns message]
   (apply concat
          (for [[pattern-k pattern] message-patterns]
            (if-let [result (re-seq-pos pattern message)]
-             (map #(assoc % :type pattern-k) result)))))
+             (doall (map #(assoc % :type pattern-k) result))))))
 
 (defn- match-compare [m1 m2]
   ;; Order matches such that...
