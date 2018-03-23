@@ -45,12 +45,12 @@
 
 (def message-patterns
   {:code-block #"```(?s:(.*?))```"
-   :inline-code #"(?<!\w)`(.*?)`"
+   :inline-code #"(?<=^|_|\s)`(.*?)`"
    :reference #"<((?:#C|@U)[A-Z0-9]{7,})(?:\|(.*?))?>"
    :url #"<((?:http|https):.*?)>"
    :emoji #"(?<!\w):(\w*?):"
    :italic #"\b_(.*?)_"
-   :bold #"\*(.*?)\*"
+   :bold #"(?<![a-zA-Z0-9`])\*(.*?)\*(?![a-zA-Z0-9`])"
    :strike-through #"~(.*?)~"})
 
 (defn match-all-patterns [message-patterns message]
