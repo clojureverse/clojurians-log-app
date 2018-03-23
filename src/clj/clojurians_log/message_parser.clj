@@ -44,13 +44,27 @@
 (def message-patterns
   {:code-block #"```(?s:(.*?))```"
    :inline-code #"(?<=^|_|\s)`(.*?)`"
-   :blockquote #"^>(?!\s>)\s?(.*)$"
+   :blockquote #"^>>>(?s:(.*))$|^>(?!\s>)\s?(.*)(?:$|\R)"
    :reference #"<((?:#C|@U)[A-Z0-9]{7,})(?:\|(.*?))?>"
    :url #"<((?:http|https):.*?)>"
    :emoji #"(?<!\w):(\w*?):"
    :italic #"\b_(.*?)_"
    :bold #"(?<![a-zA-Z0-9`])\*(.*?)\*(?![a-zA-Z0-9`])"
    :strike-through #"~(.*?)~"})
+
+(defn remove-item-at-index [v n]
+  (into (subvec v 0 n) (subvec v (inc n))))
+
+(defn- fix-blockquote-match [match]
+  "Fix up :blockquote matches
+  So that both single line and multiline matches
+  have their contents and extents sitting at [:matches 1] and [:extents 1]"
+  (if-not (and (= (:type match) :blockquote)
+               (nil? (get-in match [:matches 1])))
+    match
+    (-> match
+        (update :matches remove-item-at-index 1)
+        (update :extents remove-item-at-index 1))))
 
 (defn match-all-patterns
   "Matches the `message` against all patterns in `message-patterns`.
@@ -220,6 +234,7 @@
 
 (defn parse2 [message]
   (let [matches (->> (match-all-patterns message-patterns message)
+                     (map fix-blockquote-match)
                      (sort match-compare))]
 
     ;; (clojure.pprint/pprint matches)
