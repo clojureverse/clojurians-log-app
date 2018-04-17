@@ -95,3 +95,10 @@
          [?user :user/name ?username]]
        db
        names))
+
+(defn channel-id-map [db]
+  (into {}
+        (d/q '[:find ?slack-id ?chan
+               :where
+               [?chan :channel/slack-id ?slack-id]]
+             db)))

@@ -3,6 +3,7 @@
             [clj-slack.channels :as slack-channels]
             [datomic.api :as d]
             [clojurians-log.db.import :as import]
+            [clojurians-log.db.queries :as queries]
             [clojurians-log.application :as cl-app]))
 
 (defn conn []
@@ -20,4 +21,10 @@
     @(d/transact conn (mapv import/user->tx users))))
 
 (defn import-channels! [conn]
-  @(d/transact conn (mapv import/channel->tx (channels))))
+  (let [channel->db-id (queries/channel-id-map (d/db conn))
+        channels       (mapv import/channel->tx (channels))]
+    @(d/transact conn (map (fn [{slack-id :channel/slack-id :as ch}]
+                             (if-let [db-id (channel->db-id slack-id)]
+                               (assoc ch :db/id db-id)
+                               ch))
+                           channels))))

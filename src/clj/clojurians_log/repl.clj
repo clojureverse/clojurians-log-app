@@ -4,6 +4,7 @@
   instance, or sys admins seeding the production system with data."
   (:require [clojurians-log.application :as app]
             [clojurians-log.slack-api :as slack]
+            [clojurians-log.db.queries :as q]
             [clojurians-log.db.import :as import]
             [clojurians-log.data :as data]
             [clojure.java.io :as io]
