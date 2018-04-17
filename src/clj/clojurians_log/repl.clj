@@ -4,6 +4,7 @@
   instance, or sys admins seeding the production system with data."
   (:require [clojurians-log.application :as app]
             [clojurians-log.slack-api :as slack]
+            [clojurians-log.db.queries :as q]
             [clojurians-log.db.import :as import]
             [clojurians-log.data :as data]
             [clojure.java.io :as io]
@@ -32,7 +33,13 @@
   "Import Slack users and Channels."
   []
   (slack/import-users! (conn))
-  (slack/import-channels! (conn)))
+  (let [channel->db-id (q/channel-id-map (d/db (conn)))
+        channels       (mapv import/channel->tx (slack/channels))]
+    (d/transact (conn) (map (fn [{slack-id :channel/slack-id :as ch}]
+                              (if-let [db-id (channel->db-id slack-id)]
+                                (assoc ch :db/id db-id)
+                                ch))
+                            channels))))
 
 (defn log-files
   "List all files in the given log directory.

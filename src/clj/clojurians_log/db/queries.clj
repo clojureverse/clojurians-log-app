@@ -123,8 +123,14 @@
        (map assoc-inst)
        (sort-by :message/inst)))
 
-(comment
+(defn channel-id-map [db]
+  (into {}
+        (d/q '[:find ?slack-id ?chan
+               :where
+               [?chan :channel/slack-id ?slack-id]]
+             db)))
 
+(comments
  (let [channel "datomic"
        day "2015-06-04"
        messages (time-util/time-with-label "channel-day-messages" (channel-day-messages (user/db) channel day))
@@ -132,7 +138,4 @@
        thread-msgs2 (time-util/time-with-label "thread-messages-fast" (thread-messages (user/db)
                                                                                        (map #(:message/ts %) messages)))]
    (println "result1 count:" (count thread-msgs1))
-   (println "result2 count:" (count thread-msgs2))
-   )
-
- )
+   (println "result2 count:" (count thread-msgs2))))
