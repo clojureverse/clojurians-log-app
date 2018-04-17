@@ -25,18 +25,22 @@
 
 (defmethod event->tx nil [{:keys [ts text channel user thread_ts] :as message}]
   (when-not (= \D (first channel)) ;; ignore direct messages
-    (let [inst (time-util/ts->inst ts)]
-      (cond-> #:message {:key (message-key message)
-                         :ts ts
-                         #_#_:inst (jt/to-java-date inst)
-                         :day (time-util/format-inst-day inst)
-                         :text text
-                         :channel [:channel/slack-id channel]
-                         :user [:user/slack-id user]}
+    (let [inst    (time-util/ts->inst ts)
+          message #:message {:key      (message-key message)
+                             :ts       ts
+                             #_#_:inst (jt/to-java-date inst)
+                             :day      (time-util/format-inst-day inst)
+                             :text     text
+                             :channel  [:channel/slack-id channel]
+                             :user     [:user/slack-id user]}]
 
-              (not (nil? thread_ts))
-              (merge #:message {:thread-ts thread_ts
-                                :thread-inst (jt/to-java-date (time-util/ts->inst thread_ts))})))))
+      (if (nil? thread_ts)
+        message
+        (let [thread-inst (time-util/ts->inst thread_ts)]
+          (merge message
+                 #:message{:thread-ts   thread_ts
+                           :thread-inst (jt/to-java-date thread-inst)
+                           :day         (time-util/format-inst-day thread-inst)}))))))
 
 (defmethod event->tx "message_deleted" [{:keys [deleted_ts channel] :as message}]
   [:db.fn/retractEntity [:message/key (message-key {:channel channel :ts deleted_ts})]])
