@@ -167,7 +167,9 @@
   [stack match]
   (let [stack-top (last stack)]
     (if (or (= (:type stack-top) :code-block)
-            (= (:type stack-top) :inline-code))
+            (= (:type stack-top) :inline-code)
+            (= (:type stack-top) :url)
+            (= (:type stack-top) :emoji))
       false
       true)))
 
