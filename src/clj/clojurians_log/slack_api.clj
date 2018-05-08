@@ -18,7 +18,6 @@
 (defn import-users!
   ([conn]
    (import-users! conn (users)))
-
   ([conn users]
    (doseq [users (partition-all 1000 users)]
      @(d/transact conn (mapv import/user->tx users)))))
@@ -26,6 +25,5 @@
 (defn import-channels!
   ([conn]
    (import-channels! conn (channels)))
-
   ([conn channels]
    @(d/transact conn (mapv import/channel->tx channels))))
