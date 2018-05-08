@@ -15,9 +15,15 @@
 (defn channels []
   (:channels (slack-channels/list (conn))))
 
-(defn import-users! [conn]
-  (doseq [users (partition-all 1000 (users))]
-    @(d/transact conn (mapv import/user->tx users))))
+(defn import-users!
+  ([conn]
+   (import-users! conn (users)))
+  ([conn users]
+   (doseq [users (partition-all 1000 users)]
+     @(d/transact conn (mapv import/user->tx users)))))
 
-(defn import-channels! [conn]
-  @(d/transact conn (mapv import/channel->tx (channels))))
+(defn import-channels!
+  ([conn]
+   (import-channels! conn (channels)))
+  ([conn channels]
+   @(d/transact conn (mapv import/channel->tx channels))))

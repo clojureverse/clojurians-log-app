@@ -10,6 +10,17 @@
             [datomic.api :as d]
             [clojure.tools.reader.edn :as edn]))
 
+(defn read-edn [filepath]
+  (-> filepath
+      slurp
+      edn/read-string))
+
+(defn write-edn [filepath data]
+  (with-open [w (clojure.java.io/writer filepath)]
+    (binding [*print-length* false
+              *out* w]
+      (pr data))))
+
 (defn conn
   "Reach into the system for the datomic connection.
 
@@ -61,6 +72,27 @@
   @(d/transact (conn) (edn/read-string (slurp (str directory "/channels.edn"))))
   (run! load-log-file! (log-files directory)))
 
+(defn load-demo-data2!
+  "Load the demo data (users, channels, messages)."
+  [directory]
+  (if-not (conn)
+    (println "Can't find Datomic connection. Make sure the system is up and running with (user/go).")
+    (do
+      (println "Importing users.edn")
+      (doseq [users (->> "/users.edn"
+                         (str directory)
+                         read-edn
+                         (partition-all 1000))]
+        (slack/import-users! (conn) users))
+
+      (println "Importing channels.edn")
+      (slack/import-channels! (conn) (->> "/channels.edn"
+                                          (str directory)
+                                          read-edn))
+
+      (println "Import messages")
+      (run! load-log-file! (log-files directory)))))
+
 (comment
   ;; nc localhost 50505
   (use 'clojurians-log.repl)
@@ -68,4 +100,10 @@
   (run! load-log-file! (log-files))
 
   (load-demo-data! "/home/arne/github/clojurians-log-demo-data")
+
+
+  (do
+    (write-edn "users.edn" (slack/users))
+    (write-edn "channels.edn" (slack/channels)))
+
   )

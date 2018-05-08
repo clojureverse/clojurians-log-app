@@ -178,4 +178,6 @@ please respond in <#C346HE24SD>"]
     ">>foo *_bar_*"      [[:blockquote [[:undecorated ">foo "] [:bold [:italic "bar"]]]]]
     "> >foo *_bar_*"     [[:undecorated "> >foo "] [:bold [:italic "bar"]]]
     ">>>a\nmultiline\nquote" [[:blockquote "a\nmultiline\nquote"]]
-    "<http://google.com|Google>" [[:url "http://google.com" "Google"]]))
+    "<http://google.com|Google>" [[:url "http://google.com" "Google"]]
+    "<https://clojure.org/reference/multimethods#_isa_based_dispatch>" [[:url "https://clojure.org/reference/multimethods#_isa_based_dispatch"]]
+    ))
