@@ -148,21 +148,22 @@
   (let [{:user/keys [name]
          :user-profile/keys [image-48]} user]
 
-      ;; things in the profile
-      ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
-      ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
-      (list [:div.message
-             {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
-             [:a.message_profile-pic {:href "" :style (str "background-image: url(" image-48 ");")}]
-             [:a.message_username {:href ""} name]
-             [:span.message_timestamp [:a {:href (bidi/path-for routes
-                                                                :log-target-message
-                                                                :channel (:channel/name channel)
-                                                                :date date
-                                                                :ts ts)}
-                                       (cl.tu/format-inst-time inst)]]
-             [:span.message_star]
-             [:span.message_content [:p (slack-messages/message->hiccup text usernames)]]])))
+    ;; things in the profile
+    ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
+    ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
+    (list [:div.message
+           {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
+           [:a.message_profile-pic {:href "" :style (str "background-image: url(" image-48 ");")}]
+           [:a.message_username {:href ""} name]
+           [:span.message_timestamp [:a {:rel "nofollow"
+                                         :href (bidi/path-for routes
+                                                              :log-target-message
+                                                              :channel (:channel/name channel)
+                                                              :date date
+                                                              :ts ts)}
+                                     (cl.tu/format-inst-time inst)]]
+           [:span.message_star]
+           [:span.message_content [:p (slack-messages/message->hiccup text usernames)]]])))
 
 (defn- message-hiccup
   "Returns either a single message hiccup, or if the given message starts a thread,
