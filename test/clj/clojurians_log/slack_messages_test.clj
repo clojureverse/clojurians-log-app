@@ -7,6 +7,18 @@
          (extract-user-ids
           [{:message/text "Hello <@ABC123>, how's <@ABC345|jonny> doing?"}]))))
 
+(deftest test-nested-styled-segment
+  (is (= (clojurians-log.slack-messages/segment->hiccup
+          [:strike-through
+           [[:undecorated "you can use "]
+            [:bold "::stest/opts"]
+            [:undecorated " and it’ll work"]]])
+
+         [:del
+          ["you can use "
+           [:b "::stest/opts"]
+           " and it’ll work"]])))
+
 (deftest test-render-hiccup
   (let [message "*Hey* <@U4F2A0Z8ER> how are things?"
         user-lookup {"U4F2A0Z8ER" "xandrews"}]
