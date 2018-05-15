@@ -35,6 +35,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hiccup
 
+(defn- content-has-child-segments? [content]
+  (and (vector? content)
+       (vector? (first content))))
+
+(defn- transform-children-or-ident [f content]
+  (if (content-has-child-segments? content)
+    (map f content)
+    content))
+
 (defmulti segment->hiccup
   "Convert a single parsed segment of the form [type content] to hiccup."
   first)
@@ -60,10 +69,13 @@
   [:span.emoji ":" content ":"])
 
 (defmethod segment->hiccup :bold [[type content]]
-  [:b content])
+  [:b (transform-children-or-ident segment->hiccup content)])
 
 (defmethod segment->hiccup :italic [[type content]]
-  [:i content])
+  [:i (transform-children-or-ident segment->hiccup content)])
+
+(defmethod segment->hiccup :strike-through [[type content :as segment]]
+  [:del (transform-children-or-ident segment->hiccup content)])
 
 (defmethod segment->hiccup :url [[type content]]
   [:a {:href content} content])
