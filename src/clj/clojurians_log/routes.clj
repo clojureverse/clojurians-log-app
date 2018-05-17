@@ -56,21 +56,27 @@
             messages (queries/channel-day-messages db channel date)
             thread-messages (queries/channel-thread-messages-of-day db channel date)
             user-ids (slack-messages/extract-user-ids messages)]
-        (-> request
-            context
-            (assoc :data/channel (queries/channel db channel)
-                   :data/channels (queries/channel-list db date)
-                   :data/messages (merge-thread-messages messages thread-messages)
-                   :data/target-message (some #(when (= (:message/ts %) ts) %) (apply conj messages thread-messages))
-                   :data/usernames (into {} (queries/user-names db user-ids))
-                   :data/channel-days (queries/channel-days db channel)
-                   :data/title (str channel " " date " | Clojurians Slack Log")
-                   :data/date date
-                   :data/http-origin (get-in config [:http :origin]))
-            views/log-page
-            (assoc-in [:response/headers "Cache-Control"] (str "public, max-age: " cache-time))
-            (assoc-in [:response/headers "Last-Modified"] (time-util/time->html-ts (jt/zoned-date-time time-util/UTC)))
-            response/render)))))
+
+        (if (empty? messages)
+          (-> (ring.util.response/response "Oops! No messages here!")
+              (ring.util.response/content-type "text/html; charset=utf-8")
+              (ring.util.response/status 404))
+
+          (-> request
+              context
+              (assoc :data/channel (queries/channel db channel)
+                     :data/channels (queries/channel-list db date)
+                     :data/messages (merge-thread-messages messages thread-messages)
+                     :data/target-message (some #(when (= (:message/ts %) ts) %) (apply conj messages thread-messages))
+                     :data/usernames (into {} (queries/user-names db user-ids))
+                     :data/channel-days (queries/channel-days db channel)
+                     :data/title (str channel " " date " | Clojurians Slack Log")
+                     :data/date date
+                     :data/http-origin (get-in config [:http :origin]))
+              views/log-page
+              (assoc-in [:response/headers "Cache-Control"] (str "public, max-age: " cache-time))
+              (assoc-in [:response/headers "Last-Modified"] (time-util/time->html-ts (jt/zoned-date-time time-util/UTC)))
+              response/render))))))
 
 (defn- db-from-endpoint [endpoint]
   (->> (get-in endpoint [:datomic :conn])
