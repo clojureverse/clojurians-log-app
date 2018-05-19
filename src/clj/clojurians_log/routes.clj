@@ -54,7 +54,7 @@
 
       (let [db       (d/db conn)
             messages (queries/channel-day-messages db channel date)
-            thread-messages (queries/channel-thread-messages-of-day db channel date)
+            thread-messages (queries/thread-messages db (map #(:message/ts %) messages))
             user-ids (slack-messages/extract-user-ids messages)]
 
         (if (empty? messages)
