@@ -117,7 +117,7 @@
        (map assoc-inst)
        (sort-by :message/inst)))
 
-(comments
+(comment
 
  (let [channel "datomic"
        day "2015-06-04"
