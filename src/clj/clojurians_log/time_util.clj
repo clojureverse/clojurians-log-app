@@ -73,3 +73,11 @@
 (defn within-interval [date [interval-start interval-end]]
   (and (.after date interval-start)
        (.before date interval-end)))
+
+(defmacro time-with-label
+  "Evaluates expr, prints the execution time with the supplied `label`, returns the value of expr."
+  [label expr]
+  `(let [start# (. System (nanoTime))
+         ret# ~expr]
+     (prn (str ~label ": " (/ (double (- (. System (nanoTime)) start#)) 1000000.0) " msecs"))
+     ret#))

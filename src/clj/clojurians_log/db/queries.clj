@@ -95,3 +95,38 @@
          [?user :user/name ?username]]
        db
        names))
+
+(defn message-by-ts [db ts]
+  (d/q '[:find (pull ?msg [*]) .
+         :in $ ?ts
+         :where
+         [?msg :message/ts ?ts]]
+       db
+       ts))
+
+(defn thread-messages
+  "Retrieve all child messages for the given parent threads"
+  [db parent-tss]
+  (->> (d/q {:find [pull-message-pattern]
+             :in '[$ [?parent-ts ...]]
+             :where '[[?msg  :message/thread-ts ?parent-ts]]
+             }
+            db
+            parent-tss)
+
+       (map assoc-inst)
+       (sort-by :message/inst)))
+
+(comments
+
+ (let [channel "datomic"
+       day "2015-06-04"
+       messages (time-util/time-with-label "channel-day-messages" (channel-day-messages (user/db) channel day))
+       thread-msgs1 (time-util/time-with-label "thread-messages" (channel-thread-messages-of-day (user/db) channel day))
+       thread-msgs2 (time-util/time-with-label "thread-messages-fast" (thread-messages (user/db)
+                                                                                       (map #(:message/ts %) messages)))]
+   (println "result1 count:" (count thread-msgs1))
+   (println "result2 count:" (count thread-msgs2))
+   )
+
+ )
