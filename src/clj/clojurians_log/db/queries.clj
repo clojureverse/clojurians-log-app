@@ -67,6 +67,12 @@
        (map assoc-inst)
        (sort-by :message/inst)))
 
+(defn reverse-compare
+  "Compares in the reverse order to clojure.core/compare.
+  Used to reverse result ordering."
+  [x y]
+  (compare y x))
+
 (defn channel-days [db chan-name]
   (->> (d/q '[:find ?day (count ?msg)
               :in $ ?chan-name
@@ -76,7 +82,7 @@
               [?msg :message/day ?day]]
             db
             chan-name)
-       (sort-by first)))
+       (sort-by first reverse-compare)))
 
 (defn channel [db name]
   (d/q '[:find (pull ?chan [*]) .
