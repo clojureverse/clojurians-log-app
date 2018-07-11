@@ -29,6 +29,7 @@
            :message/ts
            :message/thread-ts
            {:message/user [:user/name
+                           :user/slack-id
                            :user-profile/image-48]}])
     ...])
 

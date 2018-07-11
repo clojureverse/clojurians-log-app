@@ -145,7 +145,7 @@
   [{:data/keys [usernames channel date hostname] :as context}
    {:message/keys [user inst user text thread-ts ts] :as message}]
 
-  (let [{:user/keys [name]
+  (let [{:user/keys [name slack-id]
          :user-profile/keys [image-48]} user]
 
     ;; things in the profile
@@ -153,8 +153,8 @@
     ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
     (list [:div.message
            {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
-           [:a.message_profile-pic {:href "" :style (str "background-image: url(" image-48 ");")}]
-           [:a.message_username {:href ""} name]
+           [:a.message_profile-pic {:href (str "https://clojurians.slack.com/team/" slack-id) :style (str "background-image: url(" image-48 ");")}]
+           [:a.message_username {:href (str "https://clojurians.slack.com/team/" slack-id)} name]
            [:span.message_timestamp [:a {:rel "nofollow"
                                          :href (bidi/path-for routes
                                                               :log-target-message
