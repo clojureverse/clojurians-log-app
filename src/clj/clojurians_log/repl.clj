@@ -57,7 +57,7 @@
 
 (defn load-log-file! [file]
   (println (str file))
-  (let [msgs (data/event-seq file)
+  (let [msgs (filter #(= (:type %) "message") (data/event-seq file))
         events (keep import/event->tx msgs)]
     (doseq [event events]
       @(d/transact-async (conn) [event]))))
@@ -101,7 +101,7 @@
       (run! load-log-file! (log-files directory)))))
 
 (comment
-  ;; nc localhost 50505
+  ;; rlwrap nc localhost 50505
   (use 'clojurians-log.repl)
   (load-slack-data!)
   (run! load-log-file! (log-files))
