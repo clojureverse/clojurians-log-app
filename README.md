@@ -6,7 +6,7 @@ replace the old scripts that generated the site at
 app isn't live yet, but you can see it in action at
 [clojurians-log-staging.clojureverse.org](http://clojurians-log-staging.clojureverse.org).
 
-Besides serving its utalitarian function of serving logs, this also serves as an
+Besides serving its utilitarian function of serving logs, this also serves as an
 example open-source Clojure web app. It's small enough to easily understand and
 contribute to, while at the same time having a real-world use. This makes it a
 perfect match for people who want to get started with Clojure open source
