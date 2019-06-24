@@ -9,7 +9,8 @@
             [clojurians-log.data :as data]
             [clojure.java.io :as io]
             [datomic.api :as d]
-            [clojure.tools.reader.edn :as edn]))
+            [clojure.tools.reader.edn :as edn]
+            [clojure.string :as str]))
 
 (defn read-edn [filepath]
   (-> filepath
@@ -100,11 +101,19 @@
       (println "Import messages")
       (run! load-log-file! (log-files directory)))))
 
+(defn load-from [date]
+  (->> (log-files)
+       (drop-while #(not (str/starts-with? (.getName %) date)))
+       (run! load-log-file!)))
+
 (comment
   ;; rlwrap nc localhost 50505
   (use 'clojurians-log.repl)
   (load-slack-data!)
+  (load-from "2016-08-04")
   (run! load-log-file! (log-files))
+
+
 
   (load-demo-data! "/home/arne/github/clojurians-log-demo-data")
 
