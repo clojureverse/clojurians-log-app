@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cd /var/clojure_app
+cp rtmbot/logs/* logs/logs
+cd logs
+./sync
+{
+  echo "(require 'clojurians-log.repl)"
+  echo "(load-slack-data!)"
+  git diff-tree --no-commit-id --name-only -r HEAD | grep logs/201 | xargs -n 1 printf '(clojurians-log.repl/load-log-file! (clojure.java.io/file "'$(pwd)'/%s"))\n'
+} | nc localhost 50505
+sudo systemctl restart clojure_app
