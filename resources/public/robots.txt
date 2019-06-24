@@ -1,0 +1,11 @@
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: SemrushBot-SA
+Disallow: /
+
+User-agent: dotbot
+Disallow: /
+
+User-agent: linkdexbot/2.0
+Disallow: /

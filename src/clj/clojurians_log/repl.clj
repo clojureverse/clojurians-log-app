@@ -4,11 +4,13 @@
   instance, or sys admins seeding the production system with data."
   (:require [clojurians-log.application :as app]
             [clojurians-log.slack-api :as slack]
+            [clojurians-log.db.queries :as q]
             [clojurians-log.db.import :as import]
             [clojurians-log.data :as data]
             [clojure.java.io :as io]
             [datomic.api :as d]
-            [clojure.tools.reader.edn :as edn]))
+            [clojure.tools.reader.edn :as edn]
+            [clojure.string :as str]))
 
 (defn read-edn [filepath]
   (-> filepath
@@ -32,7 +34,13 @@
   "Import Slack users and Channels."
   []
   (slack/import-users! (conn))
-  (slack/import-channels! (conn)))
+  (let [channel->db-id (q/channel-id-map (d/db (conn)))
+        channels       (mapv import/channel->tx (slack/channels))]
+    (d/transact (conn) (map (fn [{slack-id :channel/slack-id :as ch}]
+                              (if-let [db-id (channel->db-id slack-id)]
+                                (assoc ch :db/id db-id)
+                                ch))
+                            channels))))
 
 (defn log-files
   "List all files in the given log directory.
@@ -50,7 +58,7 @@
 
 (defn load-log-file! [file]
   (println (str file))
-  (let [msgs (data/event-seq file)
+  (let [msgs (filter #(= (:type %) "message") (data/event-seq file))
         events (keep import/event->tx msgs)]
     (doseq [event events]
       @(d/transact-async (conn) [event]))))
@@ -93,11 +101,19 @@
       (println "Import messages")
       (run! load-log-file! (log-files directory)))))
 
+(defn load-from [date]
+  (->> (log-files)
+       (drop-while #(not (str/starts-with? (.getName %) date)))
+       (run! load-log-file!)))
+
 (comment
-  ;; nc localhost 50505
+  ;; rlwrap nc localhost 50505
   (use 'clojurians-log.repl)
   (load-slack-data!)
+  (load-from "2016-08-04")
   (run! load-log-file! (log-files))
+
+
 
   (load-demo-data! "/home/arne/github/clojurians-log-demo-data")
 

@@ -29,6 +29,7 @@
            :message/ts
            :message/thread-ts
            {:message/user [:user/name
+                           :user/slack-id
                            :user-profile/image-48]}])
     ...])
 
@@ -123,16 +124,19 @@
        (map assoc-inst)
        (sort-by :message/inst)))
 
-(comment
+(defn channel-id-map [db]
+  (into {}
+        (d/q '[:find ?slack-id ?chan
+               :where
+               [?chan :channel/slack-id ?slack-id]]
+             db)))
 
- (let [channel "datomic"
-       day "2015-06-04"
-       messages (time-util/time-with-label "channel-day-messages" (channel-day-messages (user/db) channel day))
-       thread-msgs1 (time-util/time-with-label "thread-messages" (channel-thread-messages-of-day (user/db) channel day))
-       thread-msgs2 (time-util/time-with-label "thread-messages-fast" (thread-messages (user/db)
-                                                                                       (map #(:message/ts %) messages)))]
-   (println "result1 count:" (count thread-msgs1))
-   (println "result2 count:" (count thread-msgs2))
-   )
-
- )
+(doseq [v [#'clojurians-log.db.queries/user-names
+           #'clojurians-log.db.queries/channel-thread-messages-of-day
+           #'clojurians-log.db.queries/channel
+           #'clojurians-log.db.queries/channel-id-map
+           #'clojurians-log.db.queries/channel-list
+           #'clojurians-log.db.queries/channel-days
+           #'clojurians-log.db.queries/channel-day-messages
+           #'datomic.api/db]]
+  (alter-var-root v (fn [f] (memoize f))))

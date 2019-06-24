@@ -16,9 +16,7 @@
             :nested true
             :keywordize true}
    :cookies true
-   :session {:store session-store
-             :flash true
-             :cookie-attrs {:http-only true :same-site :strict}}
+   :session false
    :security {:anti-forgery true
               :xss-protection {:enable? true :mode :block}
               :frame-options :sameorigin
