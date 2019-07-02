@@ -131,6 +131,7 @@
                [?chan :channel/slack-id ?slack-id]]
              db)))
 
+#_
 (doseq [v [#'clojurians-log.db.queries/user-names
            #'clojurians-log.db.queries/channel-thread-messages-of-day
            #'clojurians-log.db.queries/channel

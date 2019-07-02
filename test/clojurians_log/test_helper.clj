@@ -23,14 +23,17 @@
   (doseq [tx txs]
     @(d/transact conn tx)))
 
+(defn test-conn []
+  (let [url (str "datomic:mem:" (gensym "test_db"))]
+    (d/create-database url)
+    (doto (d/connect url)
+      transact-schema)))
+
 (defn test-db
   ([]
    (test-db "two-channels-two-days"))
   ([fixture-name]
-   (let [url  (str "datomic:mem:" (gensym "test_db"))
-         _    (d/create-database url)
-         conn (d/connect url)]
-     (transact-schema conn)
+   (let [conn (test-conn)]
      (transact-txs conn (slurp-fixture fixture-name))
      [conn (d/db conn)])))
 

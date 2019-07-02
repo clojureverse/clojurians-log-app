@@ -8,6 +8,7 @@
 (def routes
   ["/" {"healthcheck" (-> (fn [endpoint req]
                             {:headers {"Content-Type" "text/plain"}
+                             :status 200
                              :body "OK"})
                           (bidi/tag :health-check))
 

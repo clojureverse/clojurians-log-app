@@ -37,7 +37,7 @@
       ;; TODO Some urls responds quite slowly (around 500ms)
       (doseq [url urls
               :let [response (ring-handler (mock/request :get url))]]
-        (= (:status response) 200)))))
+        (is (= (:status response) 200) url)))))
 
 (deftest log-page-test
   (let [log-page (-> {:data/date "2018-01-02"

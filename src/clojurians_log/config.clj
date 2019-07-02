@@ -28,15 +28,10 @@
                :default-charset "utf-8"}})
 
 (def middleware-stack
-  {:prod [[wrap-defaults site-defaults]
-          wrap-with-logger
-          wrap-gzip
-          prone/wrap-exceptions]
-   :dev [[wrap-file "dev-target/public"]
-         [wrap-defaults site-defaults]
-         wrap-with-logger
-         wrap-gzip
-         prone/wrap-exceptions]})
+  [[wrap-defaults site-defaults]
+   wrap-with-logger
+   wrap-gzip
+   prone/wrap-exceptions])
 
 (defn config
   ([file profile]

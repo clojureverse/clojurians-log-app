@@ -30,7 +30,7 @@
                                    (fn [request]
                                      ((home-routes endpoint) request))))
                    (component/using [:datomic :config]))
-   :middleware (new-middleware {:middleware (clojurians-log.config/middleware-stack :prod)})
+   :middleware (new-middleware {:middleware clojurians-log.config/middleware-stack})
    :handler    (-> (new-handler)
                    (component/using [:routes :middleware]))
    :http       (-> (new-web-server (:port http))

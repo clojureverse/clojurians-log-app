@@ -2,8 +2,6 @@
   (:require [clojurians-log.application :as app]
             [clojurians-log.config :as config :refer [config]]
             [clojurians-log.repl :as repl]
-            [figwheel-sidecar.config :as fw-config]
-            [figwheel-sidecar.system :as fw-sys]
             [garden-watcher.core :refer [new-garden-watcher]]
             [lambdaisland.repl-tools.browse-url :as browse-url]
             [lambdaisland.repl-tools.ring-history :as ring-history]
@@ -19,16 +17,11 @@
     (alter-var-root #'app/config (constantly config))
     (-> (app/prod-system config)
         (ring-history/inject-ring-history)
-        (assoc :middleware (new-middleware {:middleware (clojurians-log.config/middleware-stack :dev)})
-               :figwheel-system (fw-sys/figwheel-system (fw-config/fetch-config))
-               :css-watcher (fw-sys/css-watcher {:watch-paths ["resources/public/css"]})
-               :garden-watcher (new-garden-watcher ['clojurians-log.styles])
-               #_#_:browse-url (browse-url/new-browse-url-component (str "http://localhost:" (get-in config [:http :port])))))))
+        (assoc :garden-watcher (new-garden-watcher ['clojurians-log.styles])
+               ;;:browse-url (browse-url/new-browse-url-component (str "http://localhost:" (get-in config [:http :port])))
+               ))))
 
 (reloaded.repl/set-init! #(dev-system))
-
-(defn cljs-repl []
-  (fw-sys/cljs-repl (:figwheel-system system)))
 
 ;; Set up aliases so they don't accidentally
 ;; get scrubbed from the namespace declaration

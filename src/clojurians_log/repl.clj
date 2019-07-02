@@ -56,7 +56,11 @@
         (remove #(.isDirectory %))
         sort)))
 
-(defn load-log-file! [file]
+(defn load-log-file!
+  "Import a single log file. This assumes all channels and users referenced in the
+  log file already exist, either by importing directly from Slack (production)
+  or from EDN files (demo data)."
+  [file]
   (println (str file))
   (let [msgs (filter #(= (:type %) "message") (data/event-seq file))
         events (keep import/event->tx msgs)]
@@ -78,40 +82,21 @@
                        (partition-all 1000))]
       @(d/transact (conn) users)))
   @(d/transact (conn) (edn/read-string (slurp (str directory "/channels.edn"))))
-  (run! load-log-file! (log-files directory)))
+  (run! load-log-file! (log-files (java.io.File. directory "logs"))))
 
-(defn load-demo-data2!
-  "Load the demo data (users, channels, messages)."
-  [directory]
-  (if-not (conn)
-    (println "Can't find Datomic connection. Make sure the system is up and running with (user/go).")
-    (do
-      (println "Importing users.edn")
-      (doseq [users (->> "/users.edn"
-                         (str directory)
-                         read-edn
-                         (partition-all 1000))]
-        (slack/import-users! (conn) users))
-
-      (println "Importing channels.edn")
-      (slack/import-channels! (conn) (->> "/channels.edn"
-                                          (str directory)
-                                          read-edn))
-
-      (println "Import messages")
-      (run! load-log-file! (log-files directory)))))
-
-(defn load-from [date]
+(defn load-from
+  "Load log files starting from a certain date (a string like \"2019-05-20\")"
+  [date]
   (->> (log-files)
-       (drop-while #(not (str/starts-with? (.getName %) date)))
+       (drop-while #(not (clojure.string/starts-with? (.getName %) date)))
        (run! load-log-file!)))
 
 (comment
   ;; rlwrap nc localhost 50505
   (use 'clojurians-log.repl)
   (load-slack-data!)
-  (load-from "2016-08-04")
   (run! load-log-file! (log-files))
+  (load-from "2016-08-04")
 
 
 
