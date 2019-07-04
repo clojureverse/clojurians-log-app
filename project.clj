@@ -16,7 +16,7 @@
                  [environ "1.1.0"]
                  [com.stuartsierra/component "0.4.0"]
                  [org.danielsz/system "0.4.3"]
-                 [org.clojure/tools.namespace "0.3.0"]
+                 [org.clojure/tools.namespace "0.3.0" :exclusions [org.clojure/java.classpath]]
                  [http-kit "2.3.0"]
                  [lambdaisland/garden-watcher "0.3.3"]
                  [hiccup "2.0.0-alpha1"]
