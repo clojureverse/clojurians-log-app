@@ -51,7 +51,8 @@
   ;; (browser-repl) live.
   :repl-options {:init-ns user}
 
-  :aliases {"garden" ["run" "-m" "garden-watcher.main" "clojurians-log.styles"]
+  :aliases {"prep" ["garden"] ;; used by the deployment script
+            "garden" ["run" "-m" "garden-watcher.main" "clojurians-log.styles"]
             "test" ["run" "-m" "kaocha.runner"]}
 
   :profiles {:dev
