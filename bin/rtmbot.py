@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Script that logs slack messages to text files. Configure with a "rtmbot.conf"
 # text file like this
