@@ -14,58 +14,31 @@
 import sys
 sys.dont_write_bytecode = True
 
-import glob
 import yaml
 import json
 import os
 import sys
-import time
 import logging
 
-from datetime import date
-from json import dumps
+import datetime
 import codecs
 
-from slackclient import SlackClient
+import slack
 
-def process_message(data):
-    with codecs.open(date.today().strftime('logs/%Y-%m-%d.txt'), 'ab', 'utf-8') as f:
-        # print(dumps(data))
-        f.write(dumps(data))
+@slack.RTMClient.run_on(event='message')
+def process_message(**payload):
+    logging.info('got a message')
+    data = payload['data']
+    with codecs.open(datetime.date.today().strftime('logs/%Y-%m-%d.txt'), 'ab', 'utf-8') as f:
+        f.write(json.dumps(data))
         f.write("\n")
-
-class RtmBot(object):
-    def __init__(self, token):
-        self.last_ping = 0
-        self.token = token
-        self.slack_client = None
-    def connect(self):
-        """Convenience method that creates Server instance"""
-        self.slack_client = SlackClient(self.token)
-        self.slack_client.rtm_connect()
-    def start(self):
-        self.connect()
-        while True:
-            for reply in self.slack_client.rtm_read():
-                self.input(reply)
-            self.autoping()
-            time.sleep(.1)
-    def autoping(self):
-        #hardcode the interval to 3 seconds
-        now = int(time.time())
-        if now > self.last_ping + 3:
-            self.slack_client.server.ping()
-            self.last_ping = now
-    def input(self, data):
-        if "type" in data and not data["type"] in {"pong", "user_typing", "hello"}:
-            process_message(data)
 
 def main_loop():
     if "LOGFILE" in config:
         logging.basicConfig(filename=config["LOGFILE"], level=logging.INFO, format='%(asctime)s %(message)s')
-    logging.info(directory)
+    logging.info('rtmbot started in ' + directory)
     try:
-        bot.start()
+        rtm_client.start()
     except KeyboardInterrupt:
         sys.exit(0)
     except:
@@ -78,13 +51,11 @@ if __name__ == "__main__":
                                 directory
                                 ))
 
-    config = yaml.load(file('rtmbot.conf', 'r'))
-    bot = RtmBot(config["SLACK_TOKEN"])
-    site_plugins = []
-    files_currently_downloading = []
-    job_hash = {}
+    config = yaml.load(open('rtmbot.conf', 'r'))
+    slack_token = config["SLACK_TOKEN"]
+    rtm_client = slack.RTMClient(token=slack_token)
 
-    if config.has_key("DAEMON"):
+    if "DAEMON" in config:
         if config["DAEMON"]:
             import daemon
             with daemon.DaemonContext():
