@@ -29,6 +29,7 @@ import slack
 def process_message(**payload):
     logging.info('got a message')
     data = payload['data']
+    data['type'] = 'message'
     with codecs.open(datetime.date.today().strftime('logs/%Y-%m-%d.txt'), 'ab', 'utf-8') as f:
         f.write(json.dumps(data))
         f.write("\n")
@@ -42,7 +43,7 @@ def main_loop():
     except KeyboardInterrupt:
         sys.exit(0)
     except:
-        logging.exception('OOPS')
+        logging.exception('Caught rtmbot exception.')
 
 if __name__ == "__main__":
     directory = os.path.dirname(sys.argv[0])
