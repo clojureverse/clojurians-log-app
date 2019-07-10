@@ -5,7 +5,6 @@
 #
 #     SLACK_TOKEN: "xox-...."
 #     LOGFILE: /var/log/slackbot.log
-#     DAEMON: True
 #
 # Will create files like logs/2018-03-10.txt, containing one JSON object per
 # line, for each event. Will log all events received from the Slack RTM API
@@ -55,10 +54,4 @@ if __name__ == "__main__":
     config = yaml.load(open('rtmbot.conf', 'r'))
     slack_token = config["SLACK_TOKEN"]
     rtm_client = slack.RTMClient(token=slack_token)
-
-    if "DAEMON" in config:
-        if config["DAEMON"]:
-            import daemon
-            with daemon.DaemonContext():
-                main_loop()
     main_loop()
