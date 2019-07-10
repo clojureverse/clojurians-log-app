@@ -36,7 +36,7 @@ def process_message(**payload):
 def main_loop():
     if "LOGFILE" in config:
         logging.basicConfig(filename=config["LOGFILE"], level=logging.INFO, format='%(asctime)s %(message)s')
-    logging.info('rtmbot started in ' + directory)
+    logging.info('rtmbot started')
     try:
         rtm_client.start()
     except KeyboardInterrupt:
@@ -45,12 +45,6 @@ def main_loop():
         logging.exception('Caught rtmbot exception.')
 
 if __name__ == "__main__":
-    directory = os.path.dirname(sys.argv[0])
-    if not directory.startswith('/'):
-        directory = os.path.abspath("{}/{}".format(os.getcwd(),
-                                directory
-                                ))
-
     config = yaml.load(open('rtmbot.conf', 'r'))
     slack_token = config["SLACK_TOKEN"]
     rtm_client = slack.RTMClient(token=slack_token)
