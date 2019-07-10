@@ -7,15 +7,13 @@
 #     LOGFILE: /var/log/slackbot.log
 #
 # Will create files like logs/2018-03-10.txt, containing one JSON object per
-# line, for each event. Will log all events received from the Slack RTM API
-# except for "pong", "hello", and "user_typing".
+# line, for each event. Will log all type=message events received from the Slack RTM API
 
 import sys
 sys.dont_write_bytecode = True
 
 import yaml
 import json
-import os
 import sys
 import logging
 
