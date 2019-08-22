@@ -98,6 +98,14 @@
        (drop-while #(not (clojure.string/starts-with? (.getName %) date)))
        (run! load-log-file!)))
 
+(def file->tx
+  "Transducer which consumes files and produces transaction data"
+  (comp (mapcat #(import/lines-reducible (io/reader %)))
+        (map json/read-json)
+        (filter #(= (:type %) "message"))
+        (keep import/event->tx)
+        (import/partition-messages 64)))
+
 (defn load-files! [files]
   (let [tx-ch (async/chan 100)
         file-ch (async/chan 100)
@@ -124,14 +132,6 @@
 
     (async/pipeline-blocking 10 tx-ch file->tx file-ch)
     [counter done?]))
-
-(def file->tx
-  "Transducer which consumes files and produces transaction data"
-  (comp (mapcat #(import/lines-reducible (io/reader %)))
-        (map json/read-json)
-        (filter #(= (:type %) "message"))
-        (keep import/event->tx)
-        (import/partition-messages 64)))
 
 
 (comment
