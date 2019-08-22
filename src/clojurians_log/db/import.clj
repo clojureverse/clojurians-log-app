@@ -1,6 +1,7 @@
 (ns clojurians-log.db.import
   (:require [clojurians-log.time-util :as time-util]
-            [java-time :as jt]))
+            [java-time :as jt])
+  (:import java.io.BufferedReader))
 
 (defn message-key
   "Message unique identifier.
@@ -77,3 +78,59 @@
              :name name
              :created created
              :creator [:user/slack-id creator]})
+
+(defn lines-reducible [^BufferedReader rdr]
+  (reify clojure.lang.IReduceInit
+    (reduce [this f init]
+      (try
+        (loop [state init]
+          (if (reduced? state)
+            state
+            (if-let [line (.readLine rdr)]
+              (recur (f state line))
+              state)))
+        (finally (.close rdr))))))
+
+(defn partition-messages
+  "Transducer which chunks message events into partitions, so they can be
+  transacted, but avoiding inconsitent transactions by never having the same
+  message key twice in the same partition. Retraction events are always given
+  their own one-element partition."
+  [partition-size]
+  (fn [rf]
+    (let [part (volatile! (transient []))
+          part-keys (volatile! (transient #{}))
+          flush (fn [acc]
+                  (when (> (count @part) 0)
+                    (rf acc (persistent! @part))
+                    (vreset! part (transient []))
+                    (vreset! part-keys (transient #{}))))
+          append (fn [msg]
+                   (conj! @part msg)
+                   (conj! @part-keys (:message/key msg)))]
+      (fn
+        ([]
+         (rf))
+        ([acc]
+         (flush acc)
+         (rf acc))
+        ([acc x]
+         (cond
+           (vector? x)
+           (do (flush acc)
+               (rf acc [x]))
+
+           (contains? @part-keys (:message/key x))
+           (do
+             (flush acc)
+             (append x)
+             (when (= (count @part) partition-size)
+               (flush acc))
+             acc)
+
+           :else
+           (do
+             (append x)
+             (when (= (count @part) partition-size)
+               (flush acc))
+             acc)))))))

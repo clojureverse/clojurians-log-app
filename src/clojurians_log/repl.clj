@@ -10,7 +10,14 @@
             [clojure.java.io :as io]
             [datomic.api :as d]
             [clojure.tools.reader.edn :as edn]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [clojure.core.async :as async :refer [>!! <! >! go-loop go <!!]]
+            [clojure.data.json :as json]))
+
+(Thread/setDefaultUncaughtExceptionHandler
+ (reify Thread$UncaughtExceptionHandler
+	 (uncaughtException [_ thread throwable]
+		 (println (.getMessage throwable)))))
 
 (defn read-edn [filepath]
   (-> filepath
@@ -91,11 +98,53 @@
        (drop-while #(not (clojure.string/starts-with? (.getName %) date)))
        (run! load-log-file!)))
 
+(defn load-files! [files]
+  (let [tx-ch (async/chan 100)
+        file-ch (async/chan 100)
+        conn  (conn)
+        counter (volatile! 0)
+        done? (promise)]
+
+    (doseq [_ (range 10)]
+      (async/thread
+        (if-let [tx-data (<!! tx-ch)]
+          (if tx-data
+            (do
+              (try
+                @(d/transact conn tx-data)
+                (vswap! counter inc)
+                (catch Exception e
+                  (println e)))
+              (recur))
+            (deliver done? :done)))))
+
+    (go-loop [[f & files] files]
+      (>! file-ch f)
+      (recur files))
+
+    (async/pipeline-blocking 10 tx-ch file->tx file-ch)
+    [counter done?]))
+
+(def file->tx
+  "Transducer which consumes files and produces transaction data"
+  (comp (mapcat #(import/lines-reducible (io/reader %)))
+        (map json/read-json)
+        (filter #(= (:type %) "message"))
+        (keep import/event->tx)
+        (import/partition-messages 64)))
+
+
 (comment
   ;; rlwrap nc localhost 50505
   (use 'clojurians-log.repl)
   (load-slack-data!)
+  (def [counter done?] (load-files! (log-files)))
+
+
+  ;; old way (slower)
   (run! load-log-file! (log-files))
+
+  ;; incremental
   (load-from "2016-08-04")
 
 
