@@ -104,16 +104,18 @@
         (map json/read-json)
         (filter #(= (:type %) "message"))
         (keep import/event->tx)
-        (import/partition-messages 64)))
+        (import/partition-messages 100)))
 
-(defn load-files! [files]
+(defn load-files!
+  "Bulk import a set of files (e.g. from (log-files)), uses multiple threads to speed things up"
+  [files]
   (let [tx-ch (async/chan 100)
         file-ch (async/chan 100)
         conn  (conn)
         counter (volatile! 0)
         done? (promise)]
 
-    (doseq [_ (range 10)]
+    (doseq [_ (range 20)]
       (async/thread
         (if-let [tx-data (<!! tx-ch)]
           (if tx-data
@@ -138,7 +140,7 @@
   ;; rlwrap nc localhost 50505
   (use 'clojurians-log.repl)
   (load-slack-data!)
-  (def [counter done?] (load-files! (log-files)))
+  (def result (load-files! (log-files)))
 
 
   ;; old way (slower)
