@@ -101,39 +101,71 @@
 (def file->tx
   "Transducer which consumes files and produces transaction data"
   (comp (mapcat #(import/lines-reducible (io/reader %)))
-        (map json/read-json)
+        (keep #(try
+                 (json/read-json %)
+                 (catch Throwable e
+                   (println "Error decoding JSON: " %)
+                   (println e)
+                   nil)))
         (filter #(= (:type %) "message"))
-        (keep import/event->tx)
-        (import/partition-messages 100)))
+        (keep import/event->tx)))
+
+(def tx-thread-count
+  "The number of threads to use for processing transactions"
+  20)
+
+(def tx-size
+  "The maximum number of events to process in a single transaction."
+  100)
+
+(defn msg-topic
+  "Make sure the same message key is always processed by the same thread, so
+  retractions and edits are performed in order."
+  [msg]
+  (let [mod-hash #(mod (.hashCode %) tx-thread-count)]
+    (mod-hash
+     (if (vector? msg)
+       (second (second msg))
+       (:message/key msg)))))
 
 (defn load-files!
   "Bulk import a set of files (e.g. from (log-files)), uses multiple threads to speed things up"
   [files]
-  (let [tx-ch (async/chan 100)
+  (let [tx-chs (into [] (repeatedly tx-thread-count
+                                    #(async/chan 100 (import/partition-messages tx-size))))
         file-ch (async/chan 100)
+        pubsub-ch (async/chan 100)
+        pubsub (async/pub pubsub-ch msg-topic)
         conn  (conn)
         counter (volatile! 0)
         done? (promise)]
 
-    (doseq [_ (range 20)]
+    (doseq [tx-ch tx-chs]
       (async/thread
-        (if-let [tx-data (<!! tx-ch)]
-          (if tx-data
+        (loop [tx-data (<!! tx-ch)]
+          (if (nil? tx-data)
+            (deliver done? :done)
             (do
               (try
                 @(d/transact conn tx-data)
                 (vswap! counter inc)
                 (catch Exception e
                   (println e)))
-              (recur))
-            (deliver done? :done)))))
+              (recur (<!! tx-ch)))))))
 
     (go-loop [[f & files] files]
       (>! file-ch f)
-      (recur files))
+      (if (seq files)
+        (recur files)
+        (async/close! file-ch)))
 
-    (async/pipeline-blocking 10 tx-ch file->tx file-ch)
+    (doseq [i (range tx-thread-count)]
+      (async/sub pubsub i (get tx-chs i)))
+
+    (async/pipeline-blocking 10 pubsub-ch file->tx file-ch true)
+
     [counter done?]))
+
 
 
 (comment
@@ -141,7 +173,8 @@
   (use 'clojurians-log.repl)
   (load-slack-data!)
   (def result (load-files! (log-files)))
-
+  @(second result)
+  result
 
   ;; old way (slower)
   (run! load-log-file! (log-files))
