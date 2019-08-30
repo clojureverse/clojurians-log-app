@@ -24,7 +24,7 @@
   ;; about
   nil)
 
-(defmethod event->tx nil [{:keys [ts text channel user thread_ts] :as message}]
+(defn message->tx [{:keys [ts text channel user thread_ts] :as message}]
   (when-not (= \D (first channel)) ;; ignore direct messages
     (let [inst    (time-util/ts->inst ts)
           message #:message {:key      (message-key message)
@@ -43,11 +43,19 @@
                            :thread-inst (jt/to-java-date thread-inst)
                            :day         (time-util/format-inst-day thread-inst)}))))))
 
+(defmethod event->tx nil [message]
+  (message->tx message))
+
 (defmethod event->tx "message_deleted" [{:keys [deleted_ts channel] :as message}]
   [:db.fn/retractEntity [:message/key (message-key {:channel channel :ts deleted_ts})]])
 
 (defmethod event->tx "message_changed" [{:keys [message channel]}]
   (event->tx (assoc message :channel channel)))
+
+;; Thread replies which are copied to the channel. For now we only include them
+;; in the thread.
+(defmethod event->tx "thread_broadcast" [message]
+  (message->tx message))
 
 (defn user->tx [{:keys [id name real_name is_admin is_owner profile]}]
   (let [{:keys [image_512 email first_name real_name_normalized image_48 image_192
