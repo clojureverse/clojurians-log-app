@@ -99,7 +99,8 @@
     (map vector (range) $)
     (some (fn [[index a-date]] index) $)
     (+ $ offset)
-    (nth channel-days $ nil)))
+    (nth channel-days $ nil)
+    (first $)))
 
 (defn- log-page-header [{:data/keys [channel date channel-days]}]
   [:div.header
@@ -188,14 +189,14 @@
       [:div.listings_direct-messages]]
      (message-history context)]]])
 
-(defn- channel-page-html [{:data/keys [days channel-name] :as context}]
+(defn- channel-page-html [{:data/keys [channel-days channel-name] :as context}]
   [:html
    (page-head context)
    [:body
     [:div.main
      [:h1 "Channel: #" channel-name]
      [:ul
-      (for [[day cnt] days]
+      (for [[day cnt] channel-days]
         [:li [:a {:href (bidi/path-for routes
                                        :log
                                        :channel channel-name

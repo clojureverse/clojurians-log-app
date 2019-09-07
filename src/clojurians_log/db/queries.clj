@@ -102,8 +102,7 @@
     (some->> chan-name
              chan-name->id
              chan-day-cnt
-             keys
-             (sort reverse-compare))))
+             (sort-by first reverse-compare))))
 
 (defn channel [db name]
   (d/q '[:find (pull ?chan [*]) .
