@@ -2,23 +2,46 @@
   (:require [datomic.api :as d]
             [clojurians-log.time-util :as time-util]))
 
+(defonce !indexes (atom {}))
+
+(defn channels-dates-msgcounts [db]
+  (d/q '[:find ?slack-id ?chan-name ?day (count ?msg)
+         :in $
+         :where
+         [?chan :channel/slack-id ?slack-id]
+         [?chan :channel/name ?chan-name]
+         [?msg :message/channel ?chan]
+         [?msg :message/day ?day]]
+       db))
+
+(defn build-indexes [db]
+  (let [cdm (channels-dates-msgcounts db)]
+    (reduce
+     (fn [acc [slack-id chan-name day msgcount]]
+       (-> acc
+           (assoc-in [:chan-day-cnt slack-id day] msgcount)
+           (assoc-in [:day-chan-cnt day slack-id] msgcount)
+           (assoc-in [:chan-id->name slack-id] chan-name)
+           (assoc-in [:chan-name->id chan-name] slack-id)))
+     {}
+     cdm)))
+
+(defn build-indexes! [db]
+  (reset! !indexes (build-indexes db)))
+
 (defn channel-list
   ([db]
-   (->> (d/q '[:find [(pull ?chan [:channel/slack-id :channel/name]) ...]
-               :in $
-               :where
-               [?msg :message/channel ?chan]]
-             db)
+   (->> (map (fn [[id name]]
+               {:channel/slack-id id
+                :channel/name name})
+             (:chan-id->name @!indexes))
         (sort-by :channel/name)))
   ([db day]
-   (->> (d/q '[:find (pull ?chan [:channel/slack-id :channel/name]) (count ?msg)
-               :in $ ?day
-               :where
-               [?msg :message/day ?day]
-               [?msg :message/channel ?chan]]
-             db
-             day)
-        (map #(assoc (first %) :channel/message-count (last %))))))
+   (let [{:keys [day-chan-cnt chan-id->name]} @!indexes]
+     (for [[ch-id cnt] (get day-chan-cnt day)]
+       #:channel{:slack-id ch-id
+                 :name (chan-id->name ch-id)
+                 :message-count cnt}))))
 
 (defn- assoc-inst [message]
   (assoc message :message/inst (time-util/ts->inst (:message/ts message))))
@@ -75,15 +98,12 @@
   (compare y x))
 
 (defn channel-days [db chan-name]
-  (->> (d/q '[:find ?day (count ?msg)
-              :in $ ?chan-name
-              :where
-              [?chan :channel/name ?chan-name]
-              [?msg :message/channel ?chan]
-              [?msg :message/day ?day]]
-            db
-            chan-name)
-       (sort-by first reverse-compare)))
+  (let [{:keys [chan-day-cnt chan-name->id]} @!indexes]
+    (some->> chan-name
+             chan-name->id
+             chan-day-cnt
+             keys
+             (sort reverse-compare))))
 
 (defn channel [db name]
   (d/q '[:find (pull ?chan [*]) .
@@ -94,22 +114,14 @@
        name))
 
 (defn user-names
-  [db names]
+  [db ids]
   (d/q '[:find ?id ?username
          :in $ [?id ...]
          :where
          [?user :user/slack-id ?id]
          [?user :user/name ?username]]
        db
-       names))
-
-(defn message-by-ts [db ts]
-  (d/q '[:find (pull ?msg [*]) .
-         :in $ ?ts
-         :where
-         [?msg :message/ts ?ts]]
-       db
-       ts))
+       ids))
 
 (defn thread-messages
   "Retrieve all child messages for the given parent threads"

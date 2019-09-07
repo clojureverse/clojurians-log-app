@@ -173,22 +173,45 @@
   (use 'clojurians-log.repl)
   (load-slack-data!)
   (def result (load-files! (log-files)))
-  @(second result)
   result
+
+  (def result (load-files! (drop 1508 (log-files))))
+
+  (while (not (realized? (second result)))
+    (println (java.util.Date.) "\t" @(first result))
+    (Thread/sleep 5000))
 
   ;; old way (slower)
   (run! load-log-file! (log-files))
 
   ;; incremental
-  (load-from "2016-08-04")
+  (load-from "2019-08-23")
 
 
 
   (load-demo-data! "/home/arne/github/clojurians-log-demo-data")
-
+  (build-indexes! (d/db (conn)))
 
   (do
     (write-edn "users.edn" (slack/users))
     (write-edn "channels.edn" (slack/channels)))
 
-  )
+  (time
+   (do
+     (time (clojurians-log.db.queries/channel-day-messages db "clojurescript" "2018-02-04"))
+     (time (clojurians-log.db.queries/thread-messages db '("1517722327.000023" "1517722363.000043" "1517722613.000012" "1517724278.000043" "1517724340.000044" "1517724770.000024" "1517724836.000023" "1517725105.000054")))
+     (time (clojurians-log.db.queries/channel db "clojurescript"))
+     (time (clojurians-log.db.queries/channel-list db "2018-02-04"))
+     (time (clojurians-log.db.queries/user-names db #{"U2TUBBPNU"}))
+     (time (clojurians-log.db.queries/channel-days db "clojurescript"))
+
+     nil)
+
+   "Elapsed time: 18.166254 msecs"
+   "Elapsed time: 631.458841 msecs"
+   "Elapsed time: 1.568807 msecs"
+   "Elapsed time: 16.425878 msecs"
+   "Elapsed time: 1.126005 msecs"
+   "Elapsed time: 1535.355001 msecs"
+   "Elapsed time: 2205.20762 msecs"
+   ))

@@ -95,15 +95,11 @@
   `offset` positions away. Returns nil if the applying the offset goes out of
   bounds."
   [channel-days today offset]
-
   (as-> channel-days $
     (map vector (range) $)
-    (some (fn [[index [a-date msg-count]]] (when (and (= a-date today)
-                                                     (not (zero? msg-count)))
-                                            index)) $)
+    (some (fn [[index a-date]] index) $)
     (+ $ offset)
-    (nth channel-days $ nil)
-    (first $)))
+    (nth channel-days $ nil)))
 
 (defn- log-page-header [{:data/keys [channel date channel-days]}]
   [:div.header
