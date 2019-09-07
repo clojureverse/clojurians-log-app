@@ -32,16 +32,17 @@
 (defn channel-list
   ([db]
    (->> (map (fn [[id name]]
-               {:channel/slack-id id
-                :channel/name name})
+               #:channel{:slack-id id
+                         :name name})
              (:chan-id->name @!indexes))
         (sort-by :channel/name)))
   ([db day]
    (let [{:keys [day-chan-cnt chan-id->name]} @!indexes]
-     (for [[ch-id cnt] (get day-chan-cnt day)]
-       #:channel{:slack-id ch-id
-                 :name (chan-id->name ch-id)
-                 :message-count cnt}))))
+     (->> (for [[ch-id cnt] (get day-chan-cnt day)]
+            #:channel{:slack-id ch-id
+                      :name (chan-id->name ch-id)
+                      :message-count cnt})
+          (sort-by :channel/name)))))
 
 (defn- assoc-inst [message]
   (assoc message :message/inst (time-util/ts->inst (:message/ts message))))
