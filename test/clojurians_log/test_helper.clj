@@ -1,6 +1,7 @@
 (ns clojurians-log.test-helper
   (:require [clojure.java.io :as io]
             [clojurians-log.db.schema :as schema]
+            [clojurians-log.db.queries :as queries]
             [clojurians-log.xml2hiccup :as x2h]
             [datomic.api :as d]
             [net.cgrand.enlive-html :as enlive]
@@ -35,7 +36,9 @@
   ([fixture-name]
    (let [conn (test-conn)]
      (transact-txs conn (slurp-fixture fixture-name))
-     [conn (d/db conn)])))
+     (let [db (d/db conn)]
+       (queries/build-indexes! db)
+       [conn (d/db conn)]))))
 
 (defn html->hiccup [html]
   (-> html
@@ -64,8 +67,10 @@
       (assoc-in [:datomic :uri] (str "datomic:mem:" (gensym "test_db")))
       (dissoc :http)               ;; don't actually start a http server
       (dissoc :server-info)        ;; silence http server startup message
-      component/start-system))     ;; start the whole system
+      component/start-system))
 
 (defn system-load-fixture! [system fixture-name]
   (transact-txs (system-db-conn system)
-                (slurp-fixture fixture-name)))
+                (slurp-fixture fixture-name))
+  (queries/build-indexes! (system-db system))
+  nil)

@@ -9,15 +9,15 @@
 (deftest channel-list-test
   (testing "without arg - return all channels"
     (let [[conn db] (test-db)]
-      (is (= (channel-list db)
-             [#:channel{:slack-id "C03S1KBA2", :name "clojure"}
-              #:channel{:slack-id "C03S1L9DN", :name "clojurescript"}]))))
+      (is (= [#:channel{:slack-id "C03S1KBA2", :name "clojure"}
+              #:channel{:slack-id "C03S1L9DN", :name "clojurescript"}]
+             (channel-list db)))))
 
   (testing "returns only channels with messages on the given day, includes message-count"
     (let [[conn db] (test-db "quiet-channels")]
-      (is (= (channel-list db "2018-02-03")
-             [#:channel{:slack-id "C7YF1SBT3", :name "reitit", :message-count 3}
-              #:channel{:slack-id "C05006WDW", :name "jobs", :message-count 1}])))))
+      (is (= [#:channel{:slack-id "C05006WDW", :name "jobs", :message-count 1}
+              #:channel{:slack-id "C7YF1SBT3", :name "reitit", :message-count 3}]
+             (channel-list db "2018-02-03"))))))
 
 (deftest threaded-messages-test
   (let [[conn db] (test-db "threaded-messages")
@@ -50,15 +50,15 @@
     ;; The following tests should hold given the contents of threaded-messages.edn
     ;; To see how the data was generated, see repl/test_data.clj.
     (testing "returns messages for the expected threads"
-      (is (= parents-ts
-             #{"1517995093.000487" "1518040988.000079"}))
+      (is (= #{"1517995093.000487" "1518040988.000079"}
+             parents-ts))
 
       ;; Does not contain message for threads not starting on the target date
       (is (not (contains? parents-ts "1517924158.000577"))))
 
     (testing "returns the expected messages"
-      (is (= thread-messages-ts
-             #{"1518008583.000370" "1518058291.000073" "1518095027.000404" "1518095379.000012"}))
+      (is (= #{"1518008583.000370" "1518058291.000073" "1518095027.000404" "1518095379.000012"}
+             thread-messages-ts))
 
       ;; Should exclude non-threaded message from the same day
       (is (not (contains? thread-messages-ts "1518034517.000637")))

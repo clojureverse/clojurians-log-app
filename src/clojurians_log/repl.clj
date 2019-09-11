@@ -205,13 +205,13 @@
      (time (clojurians-log.db.queries/user-names db #{"U2TUBBPNU"}))
      (time (clojurians-log.db.queries/channel-days db "clojurescript"))
 
-     nil)
+     nil))
 
-   "Elapsed time: 18.166254 msecs"
-   "Elapsed time: 631.458841 msecs"
-   "Elapsed time: 1.568807 msecs"
-   "Elapsed time: 16.425878 msecs"
-   "Elapsed time: 1.126005 msecs"
-   "Elapsed time: 1535.355001 msecs"
-   "Elapsed time: 2205.20762 msecs"
-   ))
+  "Elapsed time: 18.166254 msecs"
+  "Elapsed time: 631.458841 msecs"
+  "Elapsed time: 1.568807 msecs"
+  "Elapsed time: 16.425878 msecs"
+  "Elapsed time: 1.126005 msecs"
+  "Elapsed time: 1535.355001 msecs"
+  "Elapsed time: 2205.20762 msecs"
+  )

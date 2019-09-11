@@ -9,8 +9,8 @@
 
 (deftest page-head-test
   (testing "It renders the page title"
-    (is (= (html-select-1 (page-head {:data/title "Hello, world"}) [:head :title])
-           [:title "Hello, world"]))))
+    (is (= [:title "Hello, world"]
+           (html-select-1 (page-head {:data/title "Hello, world"}) [:head :title])))))
 
 (deftest routes-test
   (testing "All known routes should return http ok (200)"
@@ -37,7 +37,7 @@
       ;; TODO Some urls responds quite slowly (around 500ms)
       (doseq [url urls
               :let [response (ring-handler (mock/request :get url))]]
-        (is (= (:status response) 200) url)))))
+        (is (= 200 (:status response)) url)))))
 
 (deftest log-page-test
   (let [log-page (-> {:data/date "2018-01-02"
@@ -49,10 +49,10 @@
                      :response/html)]
 
     (testing "It links to the front page and to prev/next days"
-      (is (= (html-select log-page [:a])
-             [[:a {:href "/"} "Clojurians"]
+      (is (= [[:a {:href "/"} "Clojurians"]
               [:a {:href "/clojure/2018-01-01"} [:div.day-prev "<"]]
-              [:a {:href "/clojure/2018-01-03"} [:div.day-next ">"]]]))))
+              [:a {:href "/clojure/2018-01-03"} [:div.day-next ">"]]]
+             (html-select log-page [:a])))))
 
   (let [system (h/test-system)
 
