@@ -21,7 +21,7 @@ patches.
 Maintainers merge correct patches. These people are currently maintainers.
 
 - Arne Brasseur (@plexus)
-- Ryan (@rgm)
+- Ryan McCuaig (@rgm)
 
 ## Admins
 
