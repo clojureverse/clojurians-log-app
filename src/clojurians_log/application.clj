@@ -4,6 +4,7 @@
             [system.components.endpoint :refer [new-endpoint]]
             [clojurians-log.components.server-info :refer [server-info]]
             [clojurians-log.components.datomic-schema :refer [new-datomic-schema]]
+            [clojurians-log.components.indexer :refer [new-indexer]]
             [system.components.handler :refer [new-handler]]
             [system.components.middleware :refer [new-middleware]]
             [system.components.http-kit :refer [new-web-server]]
@@ -38,7 +39,9 @@
    :server-info (server-info (:port http))
    :datomic (new-datomic-db (:uri datomic))
    :datomic-schema (-> (new-datomic-schema)
-                       (component/using [:datomic]))))
+                       (component/using [:datomic]))
+   :indexer (-> (new-indexer)
+                (component/using [:datomic]))))
 
 (defn -main [& [config-file]]
   (let [conf (if (and config-file (.exists (io/file config-file)))

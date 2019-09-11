@@ -30,7 +30,8 @@
    #:db{:ident       :message/thread-ts
         :valueType   :db.type/string
         :cardinality :db.cardinality/one
-        :doc         "Thread parent message timestamp (seconds since epoch up to 6 decimals). Stored as string because it is used by slack as a kind of identifier. Unique per channel."}
+        :doc         "Thread parent message timestamp (seconds since epoch up to 6 decimals). Stored as string because it is used by slack as a kind of identifier. Unique per channel."
+        :index       true}
    #:db{:ident       :message/thread-inst
         :valueType   :db.type/instant
         :cardinality :db.cardinality/one

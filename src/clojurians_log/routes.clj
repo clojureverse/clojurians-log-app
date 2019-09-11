@@ -97,7 +97,7 @@
     (-> request
         context
         (assoc :data/title (str "Clojurians Slack Log | " channel)
-               :data/days (queries/channel-days db channel)
+               :data/channel-days (queries/channel-days db channel)
                :data/channel-name channel)
         views/channel-page
         response/render)))

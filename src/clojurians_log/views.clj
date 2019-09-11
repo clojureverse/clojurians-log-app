@@ -95,12 +95,12 @@
   `offset` positions away. Returns nil if the applying the offset goes out of
   bounds."
   [channel-days today offset]
-
   (as-> channel-days $
     (map vector (range) $)
-    (some (fn [[index [a-date msg-count]]] (when (and (= a-date today)
-                                                     (not (zero? msg-count)))
-                                            index)) $)
+    (some (fn [[index [a-date]]]
+            (when (= today a-date)
+              index))
+          $)
     (+ $ offset)
     (nth channel-days $ nil)
     (first $)))
@@ -192,14 +192,14 @@
       [:div.listings_direct-messages]]
      (message-history context)]]])
 
-(defn- channel-page-html [{:data/keys [days channel-name] :as context}]
+(defn- channel-page-html [{:data/keys [channel-days channel-name] :as context}]
   [:html
    (page-head context)
    [:body
     [:div.main
      [:h1 "Channel: #" channel-name]
      [:ul
-      (for [[day cnt] days]
+      (for [[day cnt] channel-days]
         [:li [:a {:href (bidi/path-for routes
                                        :log
                                        :channel channel-name
