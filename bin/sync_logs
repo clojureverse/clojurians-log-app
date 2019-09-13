@@ -6,7 +6,7 @@ SOCKET_REPL="nc -N localhost 50505"
 
 {
     echo "(require 'clojurians-log.repl)"
-    echo "(load-slack-data!)"
+    echo "(clojurians-log.repl/load-slack-data!)"
 } | $SOCKET_REPL
 
 cd /var/clojure_app/logs
