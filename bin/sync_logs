@@ -1,12 +1,26 @@
 #!/bin/bash
 
-cd /var/clojure_app
-cp rtmbot/logs/* logs/logs
-cd logs
-./sync
+set -e
+
+SOCKET_REPL="nc -N localhost 50505"
+
 {
-  echo "(require 'clojurians-log.repl)"
-  echo "(load-slack-data!)"
-  git diff-tree --no-commit-id --name-only -r HEAD | grep logs/201 | xargs -n 1 printf '(clojurians-log.repl/load-log-file! (clojure.java.io/file "'$(pwd)'/%s"))\n'
-} | nc localhost 50505
-sudo systemctl restart clojure_app
+    echo "(require 'clojurians-log.repl)"
+    echo "(load-slack-data!)"
+} | $SOCKET_REPL
+
+cd /var/clojure_app/logs
+
+prev=""
+for f in `ls *.txt | sort`; do
+    echo '(clojurians-log.repl/load-log-file! (clojure.java.io/file "'$(pwd)'/'${f}'")) (println "OK!")\n' | $SOCKET_REPL | grep 'OK!'
+    # Don't commit the current day yet, as it's still incomplete
+    if [[ ! -z "${prev}" ]]; then
+      mv -f "${prev}" logs
+      git add "logs/${prev}"
+      git commit -m "Import ${prev}"
+      git log -1 --stat
+      git push
+    fi
+    prev="${f}"
+done
