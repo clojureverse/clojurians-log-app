@@ -7,6 +7,8 @@
             [clojurians-log.routes-def :refer [routes]]
             [bidi.bidi :as bidi]))
 
+(def origin "https://clojurians-log.clojureverse.org")
+
 (defn- thread-child?
   "Answers if the `message` is a message within a thread."
   [{:message/keys [thread-ts ts]:as message}]
@@ -59,16 +61,14 @@
 
 (defn log-page-head [{:data/keys [title channel date target-message http-origin usernames] :as context}]
   (cond-> (page-head context)
+    ;; Always add a canonical rel
+    :-> (conj [:link {:rel "canonical" :href (str origin (bidi/path-for routes :log :channel (:channel/name channel) :date date))}])
+
     ;; Are we targeting a specific message in the log page?
     ;; If, add tags to enable open graph support.
     ;; This allows external services to generate a preview/summary card of the page.
-    (not (nil? target-message))
-    (conj [:link {:rel "canonical" :href (bidi/path-for routes
-                                                        :log-target-message
-                                                        :channel (:channel/name channel)
-                                                        :date date
-                                                        :ts (:message/ts target-message))}]
-          [:meta {:property "og:title" :content (og-title context)}]
+    (some? target-message)
+    (conj [:meta {:property "og:title" :content (og-title context)}]
           [:meta {:property "og:type" :content "website"}]
           [:meta {:property "og:url" :content (str (url http-origin
                                                         (bidi/path-for routes

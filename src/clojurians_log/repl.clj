@@ -166,7 +166,11 @@
 
     [counter done?]))
 
-
+(comment
+  ;; Load https://github.com/clojureverse/clojurians-log-demo-data
+  (load-demo-data! "/home/arne/github/clojurians-log-demo-data")
+  (q/build-indexes! (d/db (conn)))
+  )
 
 (comment
   ;; rlwrap nc localhost 50505
@@ -187,10 +191,6 @@
   ;; incremental
   (load-from "2019-08-23")
 
-
-
-  (load-demo-data! "/home/arne/github/clojurians-log-demo-data")
-  (build-indexes! (d/db (conn)))
 
   (do
     (write-edn "users.edn" (slack/users))
