@@ -15,6 +15,7 @@ patches.
 - Andre R. (@rauhs)
 - Jonathan Chen (@dijonkitchen)
 - Daniel Compton (@danielcompton)
+- Daw-Ran Liou (@dawran6)
 
 ## Maintainers
 
