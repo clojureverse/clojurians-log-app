@@ -64,9 +64,10 @@
     ;; This allows external services to generate a preview/summary card of the page.
     (not (nil? target-message))
     (conj [:link {:rel "canonical" :href (bidi/path-for routes
-                                                        :log
+                                                        :log-target-message
                                                         :channel (:channel/name channel)
-                                                        :date date)}]
+                                                        :date date
+                                                        :ts (:message/ts target-message))}]
           [:meta {:property "og:title" :content (og-title context)}]
           [:meta {:property "og:type" :content "website"}]
           [:meta {:property "og:url" :content (str (url http-origin
@@ -79,7 +80,7 @@
           [:meta {:property "og:image:width" :content 50}]
           [:meta {:property "og:image:height" :content 50}]
           [:meta {:property "og:description" :content
-                   (slack-messages/message->text (:message/text target-message) usernames)}]
+                  (slack-messages/message->text (:message/text target-message) usernames)}]
           ;; Add javascript to jump to the targeted message when the page is finished loading
           [:script (hiccup.util/raw-string
                     (format
