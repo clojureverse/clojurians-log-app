@@ -240,7 +240,7 @@
       (>= cursor (:end stack-top))
       false)))
 
-(defn parse2 [message]
+(defn parse2-inner [message]
   (let [matches (->> (match-all-patterns message-patterns message)
                      (map fix-blockquote-match)
                      (sort match-compare))]
@@ -248,11 +248,11 @@
     ;; (clojure.pprint/pprint matches)
 
     ;; Loop starting from the beginning of the message string...
-    (loop [iteration 0
+    (loop [iteration   0
            last-cursor 0
-           matches matches
-           stack []
-           result []]
+           matches     matches
+           stack       []
+           result      []]
 
       ;; (newline)
       ;; (println (str "vvvvvvvvvvvvvv Loop start " iteration " vvvvvvvvvvvvvv"))
@@ -265,17 +265,17 @@
       ;; (println ">> result")
       ;; (clojure.pprint/pprint result)
 
-      (let [item (first matches)
-            cursor (:start item) ;; Cursor is always the starting position of the item being processed
+      (let [item      (first matches)
+            cursor    (:start item) ;; Cursor is always the starting position of the item being processed
             stack-top (last stack)]
         (cond
           ;; Completed processing for all matches?
           (empty? matches)
-          (let [msg-len (count message)
+          (let [msg-len                  (count message)
                 ;; _ (clojure.pprint/pprint stack)
                 [new-stack token cursor] (collapse-match-stack message stack msg-len)
-                _ (assert (empty? new-stack))
-                cursor (or cursor 0)
+                _                        (assert (empty? new-stack))
+                cursor                   (or cursor 0)
                 ;; _ (println "result: " (type result))
                 ;; _ (clojure.pprint/pprint result)
                 ]
@@ -312,6 +312,18 @@
                         (not= last-cursor cursor))
                    (conj (extract-undecorated-text message last-cursor cursor)))))))))
 
+(defn parse2
+  "Parse markdown message into hiccup.
+
+  Return the un-parsed message if any error happens."
+  [message]
+  (try
+    (parse2-inner message)
+    (catch Exception ex
+      (println "Failed to parse message:" message)
+      #_(.printStackTrace ex)
+      [[:undecorated message]])))
+
 (defn parse-with-pattern [pattern-k message]
   (let [pattern (get message-patterns pattern-k)]
     (re-seq-pos pattern message)))
@@ -330,4 +342,14 @@
                doall))
     nil)
 
-)
+  (let [data (clojurians-log.db.queries/channel-day-messages (user/db) "clojure" "2018-02-02")]
+    (->> data
+         (map #(parse2 (:message/text %)))
+         doall))
+
+  (with-redefs-fn {#'parse2-inner (fn [_] (throw (ex-info "error" {})))}
+    (fn [] (let [data (clojurians-log.db.queries/channel-day-messages (user/db) "clojure" "2018-02-02")]
+            (->> data
+                 (map #(parse2 (:message/text %)))
+                 doall))))
+  )
