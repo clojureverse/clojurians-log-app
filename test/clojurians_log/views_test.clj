@@ -50,8 +50,8 @@
 
     (testing "It links to the front page and to prev/next days"
       (is (= [[:a {:href "/"} "Clojurians"]
-              [:a {:href "/clojure/2018-01-01"} [:div.day-prev "<"]]
-              [:a {:href "/clojure/2018-01-03"} [:div.day-next ">"]]]
+              [:a {:href "/clojure/2018-01-03"} [:div.day-prev "<"]]
+              [:a {:href "/clojure/2018-01-01"} [:div.day-next ">"]]]
              (html-select log-page [:a])))))
 
   (let [system (h/test-system)
