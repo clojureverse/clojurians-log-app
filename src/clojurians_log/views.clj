@@ -112,18 +112,18 @@
    [:div.channel-menu
     [:span.channel-menu_name [:span.channel-menu_prefix "#"] (:channel/name channel)]
     [:span.day-arrows
-     (if-let [prev-date (channel-day-offset channel-days date -1)]
+     (when-let [past-date (channel-day-offset channel-days date 1)]
        [:a {:href (bidi/path-for routes
                                  :log
                                  :channel (:channel/name channel)
-                                 :date prev-date)}
+                                 :date past-date)}
         [:div.day-prev "<"]])
      date
-     (if-let [next-date (channel-day-offset channel-days date 1)]
+     (when-let [future-date (channel-day-offset channel-days date -1)]
        [:a {:href (bidi/path-for routes
                                  :log
                                  :channel (:channel/name channel)
-                                 :date next-date)}
+                                 :date future-date)}
         [:div.day-next ">"]])]]])
 
 (defn- channel-list [{:data/keys [date channels]}]
