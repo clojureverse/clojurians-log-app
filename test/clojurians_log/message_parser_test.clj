@@ -20,6 +20,12 @@
            (parse "_hello_")))
     (is (= [[:emoji "thumbsup"]]
            (parse ":thumbsup:")))
+    (is (= [[:emoji "+1"]]
+           (parse ":+1:")))
+    (is (= [[:emoji "-1"]]
+           (parse ":-1:")))
+    (is (= [[:emoji "e-mail"]]
+           (parse ":e-mail:")))
     (is (= [[:undecorated "just_some_snake_case"]]
            (parse "just_some_snake_case"))))
 
@@ -69,6 +75,12 @@ please respond in <@C346HE24SD>"]
            (parse2 "_hello_")))
     (is (= [[:emoji "thumbsup"]]
            (parse2 ":thumbsup:")))
+    (is (= [[:emoji "+1"]]
+           (parse2 ":+1:")))
+    (is (= [[:emoji "-1"]]
+           (parse2 ":-1:")))
+    (is (= [[:emoji "e-mail"]]
+           (parse2 ":e-mail:")))
     (is (= [[:bold "hi!"] [:undecorated " "] [:emoji "smiles"]]
            (parse2 "*hi!* :smiles:")))
     (is (= [[:undecorated "12:34:56:78:90:12:34:56:78:90:12:34:56:78:90:12"]]
