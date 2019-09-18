@@ -136,7 +136,7 @@
 
     (and (token? tok1)
          (not (token? tok2)))
-    (apply conj [tok1] tok2)
+    (into [tok1] tok2)
 
     (and (not (token? tok1))
          (token? tok2))
@@ -144,15 +144,11 @@
 
     (and (not (token? tok1))
          (not (token? tok2)))
-    (apply conj tok1 tok2)
+    (into tok1 tok2)
 
     :else
     (do
-      (println "tok1")
-      (clojure.pprint/pprint tok1)
-      (println "tok2")
-      (clojure.pprint/pprint tok2)
-      (assert false "Unable to combine tokens"))))
+      (assert false (str "Unable to combine tokens:" (prn-str [tok1 tok2]))))))
 
 (defn- extract-undecorated-text [message start end]
   [:undecorated (replace-html-entities (subs message start end))])
