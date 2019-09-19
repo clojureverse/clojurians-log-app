@@ -38,10 +38,10 @@
   "A map from emoji text to emoji.
 
   `(text->emoji \"smile\") ;; => \"😄\"`"
-  (let [emoji-list (-> (io/reader (io/resource "emojis.json"))
-                       (json/read :key-fn keyword)
-                       :emojis)]
-    (into {} (map (juxt :name :emoji) emoji-list))))
+  (with-open [r (io/reader (io/resource "emojis.json"))]
+    (let [emoji-list (-> (json/read r :key-fn keyword)
+                         :emojis)]
+      (into {} (map (juxt :name :emoji) emoji-list)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hiccup

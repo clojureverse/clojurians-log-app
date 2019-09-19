@@ -21,13 +21,13 @@
 
 (deftest test-render-hiccup
   (let [message     "*Hey* <@U4F2A0Z8ER> how are things?"
-        reply       "Thanks, I'm wonderful:smile:"
+        reply       "Thanks, I'm wonderful :smile:"
         user-lookup {"U4F2A0Z8ER" "xandrews"}]
     (is (= [:p [[:b "Hey"] " "
                 [:span.username "@" "xandrews"]
                 " how are things?"]]
            (message->hiccup message user-lookup)))
-    (is (= [:p ["Thanks, I'm wonderful" [:span.emoji "😄"]]]
+    (is (= [:p ["Thanks, I'm wonderful " [:span.emoji "😄"]]]
            (message->hiccup reply user-lookup)))))
 
 (deftest test-render-test
