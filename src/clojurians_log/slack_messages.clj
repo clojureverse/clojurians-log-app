@@ -1,7 +1,9 @@
 (ns clojurians-log.slack-messages
   (:require [clojurians-log.message-parser :as mp]
             [clojure.string :as str]
-            [hiccup2.core :as hiccup]))
+            [hiccup2.core :as hiccup]
+            [clojure.java.io :as io]
+            [clojure.data.json :as json]))
 
 (defn- extract-texts
   [messages]
@@ -31,6 +33,15 @@
            [:user {:user-id content :user-name (get id-names content)}]
            token))
        message))
+
+(def text->emoji
+  "A map from emoji text to emoji.
+
+  `(text->emoji \"smile\") ;; => \"😄\"`"
+  (with-open [r (io/reader (io/resource "emojis.json"))]
+    (let [emoji-list (-> (json/read r :key-fn keyword)
+                         :emojis)]
+      (into {} (map (juxt :name :emoji) emoji-list)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hiccup
@@ -66,7 +77,7 @@
             content)])
 
 (defmethod segment->hiccup :emoji [[type content]]
-  [:span.emoji ":" content ":"])
+  [:span.emoji (or (text->emoji content) (str ":" content ":"))])
 
 (defmethod segment->hiccup :bold [[type content]]
   [:b (transform-children-or-ident segment->hiccup content)])

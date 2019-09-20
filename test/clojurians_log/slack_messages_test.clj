@@ -20,15 +20,18 @@
            " and it’ll work"]])))
 
 (deftest test-render-hiccup
-  (let [message "*Hey* <@U4F2A0Z8ER> how are things?"
+  (let [message     "*Hey* <@U4F2A0Z8ER> how are things?"
+        reply       "Thanks, I'm wonderful :smile:"
         user-lookup {"U4F2A0Z8ER" "xandrews"}]
     (is (= [:p [[:b "Hey"] " "
                 [:span.username "@" "xandrews"]
                 " how are things?"]]
-           (message->hiccup message user-lookup)))))
+           (message->hiccup message user-lookup)))
+    (is (= [:p ["Thanks, I'm wonderful " [:span.emoji "😄"]]]
+           (message->hiccup reply user-lookup)))))
 
 (deftest test-render-test
-  (let [message "*Hey* <@U4F2A0Z8ER> how are things?"
+  (let [message     "*Hey* <@U4F2A0Z8ER> how are things?"
         user-lookup {"U4F2A0Z8ER" "xandrews"}]
     (is (=  "*Hey* @xandrews how are things?"
             (message->text message user-lookup)))))
