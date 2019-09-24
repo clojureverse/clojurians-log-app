@@ -16,8 +16,8 @@
 
 (Thread/setDefaultUncaughtExceptionHandler
  (reify Thread$UncaughtExceptionHandler
-	 (uncaughtException [_ thread throwable]
-		 (println (.getMessage throwable)))))
+   (uncaughtException [_ thread throwable]
+     (println (.getMessage throwable)))))
 
 (defn read-edn [filepath]
   (-> filepath
@@ -38,9 +38,10 @@
   (get-in (app/system) [:datomic :conn]))
 
 (defn load-slack-data!
-  "Import Slack users and Channels."
+  "Import Slack users, Channels, and custom emojis."
   []
   (slack/import-users! (conn))
+  (slack/import-emojis! (conn))
   (let [channel->db-id (q/channel-id-map (d/db (conn)))
         channels       (mapv import/channel->tx (slack/channels))]
     (d/transact (conn) (map (fn [{slack-id :channel/slack-id :as ch}]
