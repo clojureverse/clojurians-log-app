@@ -1,5 +1,8 @@
 (ns clojurians-log.slack-messages
   (:require [clojurians-log.message-parser :as mp]
+            #_[clojurians-log.application :as app]
+            #_[clojurians-log.db.queries :as q]
+            #_[datomic.api :as d]
             [clojure.string :as str]
             [hiccup2.core :as hiccup]
             [clojure.java.io :as io]
@@ -34,7 +37,7 @@
            token))
        message))
 
-(def text->emoji
+(def standard-emoji-map
   "A map from emoji text to emoji.
 
   `(text->emoji \"smile\") ;; => \"😄\"`"
@@ -42,6 +45,24 @@
     (let [emoji-list (-> (json/read r :key-fn keyword)
                          :emojis)]
       (into {} (map (juxt :name :emoji) emoji-list)))))
+
+(defn text->emoji
+  ([text]
+   ;; side effect alert
+   (text->emoji text standard-emoji-map))
+  ([text emoji-map]
+   (loop [shortcode text]
+     (when-let [link (emoji-map shortcode)]
+       (cond
+         (str/starts-with? link "alias:")
+         (recur (str/replace-first link #"alias:" ""))
+
+         (str/starts-with? link "https:")
+         [:img {:alt text :src link}]
+
+         ;; return plaintext when we have unicode
+         ;; or just nil
+         :else link)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hiccup
@@ -77,7 +98,8 @@
             content)])
 
 (defmethod segment->hiccup :emoji [[type content]]
-  [:span.emoji (or (text->emoji content) (str ":" content ":"))])
+  [:span.emoji (or (text->emoji content)
+                   (str ":" content ":"))])
 
 (defmethod segment->hiccup :bold [[type content]]
   [:b (transform-children-or-ident segment->hiccup content)])
@@ -140,3 +162,13 @@
            (replace-ids-names usernames))
        (map segment->text)
        (apply str)))
+
+(comment
+  (str/replace-first "alias:picard" #"alias:" "")
+  (text->emoji "facepalm"
+               {"facepalm" "alias:picard"
+                "picard"   "https://picard.png"})
+  (text->emoji "thumbsup")
+  ({:facepalm "alias:picard"
+    :picard   "https://picard.png"}
+   :picard))

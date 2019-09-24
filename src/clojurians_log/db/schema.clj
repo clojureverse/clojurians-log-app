@@ -149,7 +149,7 @@
 
 (def emoji-schema
   [#:db{:ident       :emoji/shortcode
-        :valueType   :db.type/keyword
+        :valueType   :db.type/string
         :cardinality :db.cardinality/one}
    #:db{:ident       :emoji/url
         :valueType   :db.type/string

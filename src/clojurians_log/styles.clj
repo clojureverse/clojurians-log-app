@@ -24,4 +24,9 @@
    [:div.day-next (assoc small-square-button
                          :margin-left "0.3rem")]]
 
-  [:.message.thread-msg {:margin-left "1rem"}])
+  [:.message.thread-msg {:margin-left "1rem"}]
+
+  [:.emoji
+   [:img {:height     "22px"
+          :width      "22px"
+          :margin-top "-11px"}]])
