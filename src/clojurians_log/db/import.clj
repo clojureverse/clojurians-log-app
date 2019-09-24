@@ -83,9 +83,13 @@
 
 (defn channel->tx [{:keys [id name created creator]}]
   #:channel {:slack-id id
-             :name name
-             :created created
-             :creator [:user/slack-id creator]})
+             :name     name
+             :created  created
+             :creator  [:user/slack-id creator]})
+
+(defn emoji->tx [[shortcode url]]
+  #:emoji {:shortcode shortcode
+           :url       url})
 
 (defn lines-reducible [^BufferedReader rdr]
   (reify clojure.lang.IReduceInit
