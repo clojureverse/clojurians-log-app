@@ -143,6 +143,14 @@
                [?chan :channel/slack-id ?slack-id]]
              db)))
 
+(defn emoji-url-map [db]
+  (into {}
+        (d/q '[:find ?shortcode ?url
+               :where
+               [?emoji :emoji/shortcode ?shortcode]
+               [?emoji :emoji/url ?url]]
+             db)))
+
 #_
 (doseq [v [#'clojurians-log.db.queries/user-names
            #'clojurians-log.db.queries/channel-thread-messages-of-day
