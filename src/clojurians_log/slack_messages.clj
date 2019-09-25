@@ -1,8 +1,5 @@
 (ns clojurians-log.slack-messages
   (:require [clojurians-log.message-parser :as mp]
-            #_[clojurians-log.application :as app]
-            #_[clojurians-log.db.queries :as q]
-            #_[datomic.api :as d]
             [clojure.string :as str]
             [hiccup2.core :as hiccup]
             [clojure.java.io :as io]
