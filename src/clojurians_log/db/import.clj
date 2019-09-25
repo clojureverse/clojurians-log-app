@@ -88,7 +88,7 @@
              :creator  [:user/slack-id creator]})
 
 (defn emoji->tx [[shortcode url]]
-  #:emoji {:shortcode shortcode
+  #:emoji {:shortcode (name shortcode)
            :url       url})
 
 (defn lines-reducible [^BufferedReader rdr]
