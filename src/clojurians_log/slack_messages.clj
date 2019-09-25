@@ -124,12 +124,14 @@
 
 (defn message->hiccup
   "Parse slack markup and convert to hiccup."
-  [message usernames emojis]
-  [:p (map segment->hiccup
-           (-> message
-               (mp/parse2)
-               (replace-ids-names usernames)
-               (replace-custom-emojis emojis)))])
+  ([message usernames]
+   (message->hiccup message usernames {}))
+  ([message usernames emojis]
+   [:p (map segment->hiccup
+            (-> message
+                (mp/parse2)
+                (replace-ids-names usernames)
+                (replace-custom-emojis emojis)))]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Plain text

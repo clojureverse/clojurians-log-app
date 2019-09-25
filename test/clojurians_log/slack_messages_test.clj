@@ -30,6 +30,21 @@
     (is (= [:p ["Thanks, I'm wonderful " [:span.emoji "😄"]]]
            (message->hiccup reply user-lookup)))))
 
+(deftest test-render-custom-emoji
+  (let [message-1 "Oh no, :facepalm:"
+        message-2 ":picard:"
+        emoji-map {"facepalm" "https://emoji/facepalm.png"
+                   "picard"   "alias:facepalm"}]
+    (is (= [:p
+            ["Oh no, "
+             [:span.emoji
+              [:img {:alt "facepalm" :src "https://emoji/facepalm.png"}]]]]
+           (message->hiccup message-1 {} emoji-map)))
+    (is (= [:p
+            [[:span.emoji
+              [:img {:alt "picard" :src "https://emoji/facepalm.png"}]]]]
+           (message->hiccup message-2 {} emoji-map)))))
+
 (deftest test-render-test
   (let [message     "*Hey* <@U4F2A0Z8ER> how are things?"
         user-lookup {"U4F2A0Z8ER" "xandrews"}]
