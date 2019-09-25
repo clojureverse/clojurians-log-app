@@ -27,6 +27,5 @@
   [:.message.thread-msg {:margin-left "1rem"}]
 
   [:.emoji
-   [:img {:height     "22px"
-          :width      "22px"
-          :margin-top "-11px"}]])
+   [:img {:height "22px"
+          :width  "22px"}]])
