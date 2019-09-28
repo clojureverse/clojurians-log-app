@@ -143,10 +143,10 @@
 
 (defn- single-message
   "Returns the hiccup of a single message"
-  [{:data/keys [usernames channel date hostname] :as context}
+  [{:data/keys [usernames channel date hostname emojis] :as context}
    {:message/keys [user inst user text thread-ts ts] :as message}]
 
-  (let [{:user/keys [name slack-id]
+  (let [{:user/keys         [name slack-id]
          :user-profile/keys [image-48]} user]
 
     ;; things in the profile
@@ -156,7 +156,7 @@
            {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
            [:a.message_profile-pic {:href (str "https://clojurians.slack.com/team/" slack-id) :style (str "background-image: url(" image-48 ");")}]
            [:a.message_username {:href (str "https://clojurians.slack.com/team/" slack-id)} name]
-           [:span.message_timestamp [:a {:rel "nofollow"
+           [:span.message_timestamp [:a {:rel  "nofollow"
                                          :href (bidi/path-for routes
                                                               :log-target-message
                                                               :channel (:channel/name channel)
@@ -164,7 +164,7 @@
                                                               :ts ts)}
                                      (cl.tu/format-inst-time inst)]]
            [:span.message_star]
-           [:span.message_content [:p (slack-messages/message->hiccup text usernames)]]])))
+           [:span.message_content [:p (slack-messages/message->hiccup text usernames emojis)]]])))
 
 (defn- message-hiccup
   "Returns either a single message hiccup, or if the given message starts a thread,

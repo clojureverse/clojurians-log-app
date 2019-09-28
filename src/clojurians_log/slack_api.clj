@@ -1,6 +1,7 @@
 (ns clojurians-log.slack-api
   (:require [clj-slack.users :as slack-users]
             [clj-slack.channels :as slack-channels]
+            [clj-slack.emoji :as slack-emoji]
             [datomic.api :as d]
             [clojurians-log.db.queries :as queries]
             [clojurians-log.db.import :as import]
@@ -15,6 +16,9 @@
 
 (defn channels []
   (:channels (slack-channels/list (slack-conn))))
+
+(defn emoji []
+  (:emoji (slack-emoji/list (slack-conn))))
 
 (defn import-users!
   ([conn]
@@ -32,3 +36,10 @@
                            (assoc ch :db/id db-id)
                            ch))
                        channels))))
+
+(defn import-emojis!
+  ([conn]
+   (import-emojis! conn (emoji)))
+  ([conn emojis]
+   (doseq [emojis (partition-all 1000 emojis)]
+     @(d/transact conn (mapv import/emoji->tx emojis)))))

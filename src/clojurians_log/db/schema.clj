@@ -147,9 +147,18 @@
         :valueType   :db.type/ref
         :cardinality :db.cardinality/one}])
 
+(def emoji-schema
+  [#:db{:ident       :emoji/shortcode
+        :valueType   :db.type/string
+        :cardinality :db.cardinality/one}
+   #:db{:ident       :emoji/url
+        :valueType   :db.type/string
+        :cardinality :db.cardinality/one}])
+
 (def full-schema
   (concat message-schema
           event-schema
           user-schema
           user-profile-schema
-          channel-schema))
+          channel-schema
+          emoji-schema))

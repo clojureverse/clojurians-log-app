@@ -52,10 +52,10 @@
       (-> (ring.util.response/response nil)
           (ring.util.response/status 304))
 
-      (let [db       (d/db conn)
-            messages (queries/channel-day-messages db channel date)
+      (let [db              (d/db conn)
+            messages        (queries/channel-day-messages db channel date)
             thread-messages (queries/thread-messages db (map #(:message/ts %) messages))
-            user-ids (slack-messages/extract-user-ids messages)]
+            user-ids        (slack-messages/extract-user-ids messages)]
 
         (if (empty? messages)
           (-> (ring.util.response/response "Oops! No messages here!")
@@ -69,6 +69,7 @@
                      :data/messages (merge-thread-messages messages thread-messages)
                      :data/target-message (some #(when (= (:message/ts %) ts) %) (apply conj messages thread-messages))
                      :data/usernames (into {} (queries/user-names db user-ids))
+                     :data/emojis (queries/emoji-url-map db)
                      :data/channel-days (queries/channel-days db channel)
                      :data/title (str channel " " date " | Clojurians Slack Log")
                      :data/date date
