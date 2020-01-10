@@ -4,8 +4,7 @@
             [clojurians-log.time-util :as cl.tu]
             [clojure.string :as str]
             [clojurians-log.slack-messages :as slack-messages]
-            [clojurians-log.routes-def :refer [routes]]
-            [bidi.bidi :as bidi]))
+            [reitit.core]))
 
 (def origin "https://clojurians-log.clojureverse.org")
 
@@ -59,10 +58,18 @@
           :src "https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"
           :alt "Fork me on GitHub"}]])
 
+
+(defn path-for [context & args]
+  (reitit.core/match->path
+   (apply reitit.core/match-by-name (get-in context [:request :reitit.core/router]) args)))
+
 (defn log-page-head [{:data/keys [title channel date target-message http-origin usernames] :as context}]
   (cond-> (page-head context)
     ;; Always add a canonical rel
-    :-> (conj [:link {:rel "canonical" :href (str origin (bidi/path-for routes :log :channel (:channel/name channel) :date date))}])
+    :-> (conj [:link {:rel "canonical" :href (str origin (path-for context
+                                                                   :clojurians-log.routes/channel-date
+                                                                   {:channel (:channel/name channel)
+                                                                    :date date}))}])
 
     ;; Are we targeting a specific message in the log page?
     ;; If, add tags to enable open graph support.
@@ -71,11 +78,11 @@
     (conj [:meta {:property "og:title" :content (og-title context)}]
           [:meta {:property "og:type" :content "website"}]
           [:meta {:property "og:url" :content (str (url http-origin
-                                                        (bidi/path-for routes
-                                                                       :log-target-message
-                                                                       :channel (:channel/name channel)
-                                                                       :date date
-                                                                       :ts (:message/ts target-message))))}]
+                                                        (path-for context
+                                                                  :clojurians-log.routes/message
+                                                                  {:channel (:channel/name channel)
+                                                                   :date date
+                                                                   :ts (:message/ts target-message)})))}]
           [:meta {:property "og:image" :content (get-in target-message [:message/user :user-profile/image-48])}]
           [:meta {:property "og:image:width" :content 50}]
           [:meta {:property "og:image:height" :content 50}]
@@ -106,27 +113,27 @@
     (nth channel-days $ nil)
     (first $)))
 
-(defn- log-page-header [{:data/keys [channel date channel-days]}]
+(defn- log-page-header [{:data/keys [channel date channel-days] :as context}]
   [:div.header
    [:div.team-menu [:a {:href "/"} "Clojurians"]]
    [:div.channel-menu
     [:span.channel-menu_name [:span.channel-menu_prefix "#"] (:channel/name channel)]
     [:span.day-arrows
      (when-let [past-date (channel-day-offset channel-days date 1)]
-       [:a {:href (bidi/path-for routes
-                                 :log
-                                 :channel (:channel/name channel)
-                                 :date past-date)}
+       [:a {:href (path-for context
+                            :clojurians-log.routes/channel-date
+                            {:channel (:channel/name channel)
+                             :date past-date})}
         [:div.day-prev "<"]])
      date
      (when-let [future-date (channel-day-offset channel-days date -1)]
-       [:a {:href (bidi/path-for routes
-                                 :log
-                                 :channel (:channel/name channel)
-                                 :date future-date)}
+       [:a {:href (path-for context
+                            :clojurians-log.routes/channel-date
+                            {:channel (:channel/name channel)
+                             :date future-date})}
         [:div.day-next ">"]])]]])
 
-(defn- channel-list [{:data/keys [date channels]}]
+(defn- channel-list [{:data/keys [date channels] :as context}]
   [:div.listings_channels
    [:h2.listings_header.listings_header_date date]
    [:h2.listings_header "Channels"]
@@ -135,10 +142,10 @@
       [:li.channel
        [:span.channel_name
         [:a
-         {:href (bidi/path-for routes
-                               :log
-                               :channel name
-                               :date date)}
+         {:href (path-for context
+                          :clojurians-log.routes/channel-date
+                          {:channel name
+                           :date date})}
          [:span [:span.prefix "#"] " " name " (" message-count ")"]]]])]])
 
 (defn- single-message
@@ -157,11 +164,11 @@
            [:a.message_profile-pic {:href (str "https://clojurians.slack.com/team/" slack-id) :style (str "background-image: url(" image-48 ");")}]
            [:a.message_username {:href (str "https://clojurians.slack.com/team/" slack-id)} name]
            [:span.message_timestamp [:a {:rel  "nofollow"
-                                         :href (bidi/path-for routes
-                                                              :log-target-message
-                                                              :channel (:channel/name channel)
-                                                              :date date
-                                                              :ts ts)}
+                                         :href (path-for context
+                                                         :clojurians-log.routes/message
+                                                         {:channel (:channel/name channel)
+                                                          :date date
+                                                          :ts ts})}
                                      (cl.tu/format-inst-time inst)]]
            [:span.message_star]
            [:span.message_content [:p (slack-messages/message->hiccup text usernames emojis)]]])))
@@ -201,10 +208,10 @@
      [:h1 "Channel: #" channel-name]
      [:ul
       (for [[day cnt] channel-days]
-        [:li [:a {:href (bidi/path-for routes
-                                       :log
-                                       :channel channel-name
-                                       :date day)}
+        [:li [:a {:href (path-for context
+                                  :clojurians-log.routes/channel-date
+                                  {:channel channel-name
+                                   :date day})}
               day " (" cnt ")"]])]]]])
 
 (defn- channel-list-page-html [{:data/keys [channels] :as context}]
@@ -217,9 +224,9 @@
      [:ul
       (for [{:channel/keys [name]} channels]
         [:li
-         [:a {:href (bidi/path-for routes
-                                   :channel-history
-                                   :channel name)}
+         [:a {:href (path-for context
+                              :clojurians-log.routes/channel
+                              {:channel name})}
           "# " name]])]]]])
 
 (defn log-page [context]

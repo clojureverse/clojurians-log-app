@@ -17,7 +17,6 @@
                  [com.stuartsierra/component "0.4.0"]
                  [org.danielsz/system "0.4.3"]
                  [org.clojure/tools.namespace "0.3.0" :exclusions [org.clojure/java.classpath]]
-                 [http-kit "2.3.0"]
                  [lambdaisland/garden-watcher "0.3.3"]
                  [hiccup "2.0.0-alpha1"]
                  [org.clojure/data.json "0.2.6"]
@@ -32,7 +31,8 @@
                  [instaparse "1.4.10"]
                  [com.cemerick/url "0.1.1"]
                  [enlive "1.1.6"]
-                 [bidi "2.1.6"]]
+                 [metosin/pohjavirta "0.0.1-alpha5"]
+                 [metosin/reitit "0.3.10"]]
 
   :plugins [[lein-environ "1.1.0"]]
 
