@@ -5,12 +5,12 @@
             [clojurians-log.components.server-info :refer [server-info]]
             [clojurians-log.components.datomic-schema :refer [new-datomic-schema]]
             [clojurians-log.components.indexer :refer [new-indexer]]
+            [clojurians-log.components.pohjavirta :refer [new-pohjavirta]]
             [system.components.handler :refer [new-handler]]
             [system.components.middleware :refer [new-middleware]]
-            [system.components.http-kit :refer [new-web-server]]
             [system.components.datomic :refer [new-datomic-db]]
             [clojurians-log.config :as config]
-            [clojurians-log.routes :refer [home-routes]]
+            [clojurians-log.routes :as routes]
             [clojure.java.io :as io]
             [reloaded.repl]))
 
@@ -28,13 +28,15 @@
   (component/system-map
    :config     (->ValueComponent (atom config))
    :routes     (-> (new-endpoint (fn [endpoint]
-                                   (fn [request]
-                                     ((home-routes endpoint) request))))
+                                   (let [router (reitit.ring/router routes/routes)
+                                         handler (reitit.ring/ring-handler router)]
+                                     (fn [request]
+                                       (handler (assoc request :endpoint endpoint))))))
                    (component/using [:datomic :config]))
    :middleware (new-middleware {:middleware clojurians-log.config/middleware-stack})
    :handler    (-> (new-handler)
                    (component/using [:routes :middleware]))
-   :http       (-> (new-web-server (:port http))
+   :http       (-> (new-pohjavirta {:port (:port http)})
                    (component/using [:handler]))
    :server-info (server-info (:port http))
    :datomic (new-datomic-db (:uri datomic))

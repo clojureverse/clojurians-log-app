@@ -6,13 +6,13 @@
             [clojurians-log.views :as views]
             [clojurians-log.slack-messages :as slack-messages]
             [clojurians-log.time-util :as time-util]
-            [clojurians-log.routes-def :refer [routes]]
             [java-time :as jt]
             [compojure.route :refer [resources]]
             [datomic.api :as d]
             [ring.util.response :refer [response]]
-            [bidi.ring]
-            [bidi.bidi :as bidi]))
+            [reitit.core :as reitit]
+            [reitit.ring]
+            [clojure.string :as str]))
 
 (defn context [request]
   {:request request})
@@ -37,11 +37,19 @@
              msg))
          messages)))
 
-(defn log-route [endpoint request]
+(defn healthcheck-route [_]
+  {:headers {"Content-Type" "text/plain"}
+   :status 200
+   :body "OK"})
+
+(defn log-route [{:keys [endpoint] :as request}]
   (let [config                    @(get-in endpoint [:config :value])
         conn                      (get-in endpoint [:datomic :conn])
-        {:keys [channel date ts]} (:route-params request)
-        cache-time                (get-in config [:message-page :cache-time] 0)]
+        {:keys [channel date ts]} (:path-params request)
+        cache-time                (get-in config [:message-page :cache-time] 0)
+        date (if (str/ends-with? date ".html")
+               (str/replace date ".html" "")
+               date)]
 
     ;; Since we're displaying a log, presumably, all of the content is permanently cachable
     ;; Message page content also most likely have not changed and does not require any processing/page-generation.
@@ -83,7 +91,7 @@
   (->> (get-in endpoint [:datomic :conn])
        (d/db)))
 
-(defn index-route [endpoint request]
+(defn index-route [{:keys [endpoint] :as request}]
   (let [db (db-from-endpoint endpoint)]
     (-> request
         context
@@ -92,9 +100,9 @@
         views/channel-list-page
         response/render)))
 
-(defn channel-history-route [endpoint request]
+(defn channel-history-route [{:keys [endpoint] :as request}]
   (let [db (db-from-endpoint endpoint)
-        {:keys [channel]} (:route-params request)]
+        {:keys [channel]} (:path-params request)]
     (-> request
         context
         (assoc :data/title (str "Clojurians Slack Log | " channel)
@@ -103,17 +111,17 @@
         views/channel-page
         response/render)))
 
-(defn- dispatch
-  "Used internally to resolve a route-handler symbol (as configured in clojurians-logs.route-defs)
-  into a function, then calling the function with the supplied `request`"
-  [endpoint handler-sym]
-  (fn [request]
-    (if (fn? handler-sym)
-      (handler-sym endpoint request)
-      ((var-get (ns-resolve 'clojurians-log.routes handler-sym)) endpoint request))))
-
-(defn home-routes [{:keys [config] :as endpoint}]
-  (bidi.ring/make-handler routes (partial dispatch endpoint)))
+(def routes
+  [["/" {:name :clojurians-log.routes/index
+         :get index-route}]
+   ["/x/x/x/healthcheck" {:name :clojurians-log.routes/healthcheck,
+                          :get healthcheck-route}]
+   ["/{channel}" {:name :clojurians-log.routes/channel,
+                  :get channel-history-route}]
+   ["/{channel}/{date}" {:name :clojurians-log.routes/channel-date,
+                         :get log-route}]
+   ["/{channel}/{date}/{ts}" {:name :clojurians-log.routes/message,
+                              :get log-route}]])
 
 (comment
   (data/load-channel-messages {:request {:params {:channel "clojure" :year "2017" :month "01" :day "01"}}}))
