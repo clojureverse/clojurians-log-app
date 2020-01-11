@@ -1,35 +1,8 @@
 (ns clojurians-log.message-parser
-  (:require [instaparse.core :as insta]
-            [clojure.java.io :as io]
+  (:require [clojure.java.io :as io]
             [clojure.string :as str]))
 
 (set! *warn-on-reflection* true)
-
-(def parser
-  (insta/parser
-   (io/resource "clojurians-log/slack-message.bnf")))
-
-(defn join-adjacent
-  "Takes output from an insta-parse parser and returns a new
-  vector of tokens with repeated types merged.
-  eg. (join-adjacent [[:undecorated \"Hello\"] [:undecorated \" \"] [:undecorated \"World\"]])
-  yields: [[:undecorated \"Hello World\"]]"
-  [tokens]
-  (reduce (fn [result [type content :as token]]
-            (let [[prev-type prev-content :as prev-token] (last result)]
-              (if (and type
-                       (= :undecorated prev-type)
-                       (= :undecorated type))
-                (assoc result (dec (count result)) [:undecorated (str prev-content content)])
-                (conj result token))))
-          [] tokens))
-
-(defn parse
-  "Returns a vector of [type string] pairs, where type identifies one of the special markup types available in slack.
-  eg. (parse \"Hello *bold*!\")
-  yields: [[:undecorated \"Hello \"] [:bold \"bold\"] [:undecorated \"!\"]]"
-  [message]
-  (join-adjacent (parser message)))
 
 (defn re-seq-pos [pattern string]
   (let [m (re-matcher pattern string)]
@@ -53,11 +26,6 @@
    :italic #"\b_(.*?)_"
    :bold #"(?<![a-zA-Z0-9`])\*(.*?)\*(?![a-zA-Z0-9`])"
    :strike-through #"~(.*?)~"})
-
-(def markup-symbol? (set "`_*<>~#@:&"))
-
-(defn contains-markup? [s]
-  (some markup-symbol? s))
 
 (defn remove-item-at-index [v n]
   (into (subvec v 0 n) (subvec v (inc n))))
@@ -314,6 +282,11 @@
                    (and (empty? stack)
                         (not= last-cursor cursor))
                    (conj (extract-undecorated-text message last-cursor cursor)))))))))
+
+(def markup-symbol? (set "`_*<>~#@:&"))
+
+(defn contains-markup? [s]
+  (some markup-symbol? s))
 
 (defn parse2
   "Parse markdown message into hiccup.
