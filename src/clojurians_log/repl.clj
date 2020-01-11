@@ -169,8 +169,10 @@
 
 (comment
   ;; Load https://github.com/clojureverse/clojurians-log-demo-data
-  (load-demo-data! "/home/arne/github/clojurians-log-demo-data")
-  (q/build-indexes! (d/db (conn)))
+  (do
+    (user/reset)
+    (load-demo-data! "/home/arne/github/clojurians-log-demo-data")
+    (q/build-indexes! (d/db (conn))))
   )
 
 (comment

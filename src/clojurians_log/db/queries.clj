@@ -57,23 +57,6 @@
                            :user-profile/image-48]}])
     ...])
 
-(defn channel-thread-messages-of-day
-  "Retrieve all messages for threads that started in the given channel on the given day"
-  [db chan-name day]
-  (->> (d/q {:find [pull-message-pattern]
-             :in '[$ ?chan-name ?day [?from-date ?to-date]]
-             :where '[[?msg  :message/channel ?chan]
-                      [?chan :channel/name ?chan-name]
-                      [?msg  :message/thread-inst ?thread-inst]
-                      [(.after ^java.util.Date ?thread-inst ?from-date)]
-                      [(.before ^java.util.Date ?thread-inst ?to-date)]]}
-            db
-            chan-name
-            day
-            (time-util/day-str->date-interval day))
-       (map assoc-inst)
-       (sort-by :message/inst)))
-
 (defn channel-day-messages [db chan-name day]
   (->> (d/q {:find [pull-message-pattern]
              :in '[$ ?chan-name ?day]
@@ -153,7 +136,6 @@
 
 #_
 (doseq [v [#'clojurians-log.db.queries/user-names
-           #'clojurians-log.db.queries/channel-thread-messages-of-day
            #'clojurians-log.db.queries/channel
            #'clojurians-log.db.queries/channel-id-map
            #'clojurians-log.db.queries/channel-list

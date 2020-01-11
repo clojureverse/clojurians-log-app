@@ -167,7 +167,7 @@
   "Convert Slack markup to plain text."
   [message usernames]
   (->> (-> message
-           (mp/parse)
+           (mp/parse2)
            (replace-ids-names usernames))
        (map segment->text)
        (apply str)))

@@ -3,6 +3,8 @@
             [clojure.java.io :as io]
             [clojure.string :as str]))
 
+(set! *warn-on-reflection* true)
+
 (def parser
   (insta/parser
    (io/resource "clojurians-log/slack-message.bnf")))
@@ -51,6 +53,11 @@
    :italic #"\b_(.*?)_"
    :bold #"(?<![a-zA-Z0-9`])\*(.*?)\*(?![a-zA-Z0-9`])"
    :strike-through #"~(.*?)~"})
+
+(def markup-symbol? (set "`_*<>~#@:&"))
+
+(defn contains-markup? [s]
+  (some markup-symbol? s))
 
 (defn remove-item-at-index [v n]
   (into (subvec v 0 n) (subvec v (inc n))))
@@ -121,9 +128,9 @@
   This seems equired as per https://api.slack.com/docs/message-formatting"
   [message]
   (-> message
-      (str/replace #"&amp;" "&")
-      (str/replace #"&lt;" "<")
-      (str/replace #"&gt;" ">")))
+      (str/replace "&amp;" "&")
+      (str/replace "&lt;" "<")
+      (str/replace "&gt;" ">")))
 
 (defn- token? [o]
   (keyword? (first o)))
@@ -314,7 +321,9 @@
   Return the un-parsed message if any error happens."
   [message]
   (try
-    (parse2-inner message)
+    (if (contains-markup? message)
+      (parse2-inner message)
+      [[:undecorated message]])
     (catch Exception ex
       (println "Failed to parse message:" message)
       #_(.printStackTrace ex)

@@ -160,8 +160,6 @@
 
 (time (clojurians-log.db.queries/channel-days (user/db) "clojure"))
 
-(q/channel-thread-messages-of-day (db) "clojure" "2018-02-01")
-
 
 (take 100
       (d/datoms (db) :eavt))
