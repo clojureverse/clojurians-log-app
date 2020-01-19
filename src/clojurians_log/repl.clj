@@ -8,7 +8,7 @@
             [clojurians-log.db.import :as import]
             [clojurians-log.data :as data]
             [clojure.java.io :as io]
-            [datomic.api :as d]
+            [clojurians-log.datomic :as d]
             [clojure.tools.reader.edn :as edn]
             [clojure.string :as str]
             [clojure.core.async :as async :refer [>!! <! >! go-loop go <!!]]

@@ -2,7 +2,7 @@
   (:require [clj-slack.users :as slack-users]
             [clj-slack.channels :as slack-channels]
             [clj-slack.emoji :as slack-emoji]
-            [datomic.api :as d]
+            [clojurians-log.datomic :as d]
             [clojurians-log.db.queries :as queries]
             [clojurians-log.db.import :as import]
             [clojurians-log.application :as cl-app]))

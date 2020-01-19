@@ -3,7 +3,7 @@
             [clojurians-log.config :as config :refer [config]]
             [garden-watcher.core :refer [new-garden-watcher]]
             [reloaded.repl :refer [system]]
-            [datomic.api :as d]
+            [clojurians-log.datomic :as d]
             [sc.api]))
 
 (defn dev-system []

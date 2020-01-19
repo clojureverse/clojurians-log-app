@@ -1,5 +1,5 @@
 (ns clojurians-log.db.queries
-  (:require [datomic.api :as d]
+  (:require [clojurians-log.datomic :as d]
             [clojurians-log.time-util :as time-util]))
 
 (defonce !indexes (atom {}))
@@ -142,5 +142,5 @@
            #'clojurians-log.db.queries/channel-list
            #'clojurians-log.db.queries/channel-days
            #'clojurians-log.db.queries/channel-day-messages
-           #'datomic.api/db]]
+           #'clojurians-log.datomic/db]]
   (alter-var-root v (fn [f] (memoize f))))
