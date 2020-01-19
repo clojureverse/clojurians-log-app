@@ -41,5 +41,5 @@
            :datomic-pro   {:extra-paths ["profiles/datomic_on_prem"]
                            :extra-deps  {com.datomic/datomic-pro {:mvn/version "0.9.5561.56"}}}
            :datomic-cloud {:extra-paths ["profiles/datomic_cloud"]
-                           :extra-deps  {com.datomic/client-cloud {:mvn/version "0.8.71"}}}
+                           :extra-deps  {com.datomic/client-cloud {:mvn/version "0.8.81"}}}
            :postgresql    {:extra-deps {org.postgresql/postgresql {:mvn/version "42.2.6"}}}}}

@@ -1,1 +1,9 @@
-(ns clojurians-log.datomic)
+(ns clojurians-log.datomic
+  (:require [datomic.client.api :as d]))
+
+(def create-database d/create-database)
+(def connect d/connect)
+(def db d/db)
+(def q d/q)
+(def transact d/transact)
+(def transact-async d/transact)
