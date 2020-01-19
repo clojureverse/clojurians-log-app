@@ -7,7 +7,6 @@
             [clojurians-log.slack-messages :as slack-messages]
             [clojurians-log.time-util :as time-util]
             [java-time :as jt]
-            [compojure.route :refer [resources]]
             [datomic.api :as d]
             [ring.util.response :refer [response]]
             [reitit.core :as reitit]

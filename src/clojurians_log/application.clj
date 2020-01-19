@@ -1,12 +1,11 @@
 (ns clojurians-log.application
   (:gen-class)
   (:require [com.stuartsierra.component :as component]
-            [system.components.endpoint :refer [new-endpoint]]
             [clojurians-log.components.server-info :refer [server-info]]
             [clojurians-log.components.datomic-schema :refer [new-datomic-schema]]
             [clojurians-log.components.indexer :refer [new-indexer]]
             [clojurians-log.components.pohjavirta :refer [new-pohjavirta]]
-            [system.components.handler :refer [new-handler]]
+            [system.components.endpoint :refer [new-endpoint]]
             [system.components.middleware :refer [new-middleware]]
             [system.components.datomic :refer [new-datomic-db]]
             [clojurians-log.config :as config]
@@ -34,10 +33,8 @@
                                        (handler (assoc request :endpoint endpoint))))))
                    (component/using [:datomic :config]))
    :middleware (new-middleware {:middleware clojurians-log.config/middleware-stack})
-   :handler    (-> (new-handler)
-                   (component/using [:routes :middleware]))
    :http       (-> (new-pohjavirta {:port (:port http)})
-                   (component/using [:handler]))
+                   (component/using [:routes :middleware]))
    :server-info (server-info (:port http))
    :datomic (new-datomic-db (:uri datomic))
    :datomic-schema (-> (new-datomic-schema)
