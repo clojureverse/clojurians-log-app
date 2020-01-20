@@ -7,12 +7,12 @@
             [clojurians-log.components.pohjavirta :refer [new-pohjavirta]]
             [system.components.endpoint :refer [new-endpoint]]
             [system.components.middleware :refer [new-middleware]]
-            [system.components.datomic :refer [new-datomic-db]]
+            [clojurians-log.datomic :refer [new-datomic-db]]
             [clojurians-log.config :as config]
             [clojurians-log.routes :as routes]
             [clojure.java.io :as io]
             [reloaded.repl]))
-
+ 
 (def config nil)
 
 (defn system []
@@ -36,7 +36,7 @@
    :http       (-> (new-pohjavirta {:port (:port http)})
                    (component/using [:routes :middleware]))
    :server-info (server-info (:port http))
-   :datomic (new-datomic-db (:uri datomic))
+   :datomic (new-datomic-db datomic)
    :datomic-schema (-> (new-datomic-schema)
                        (component/using [:datomic]))
    :indexer (-> (new-indexer)

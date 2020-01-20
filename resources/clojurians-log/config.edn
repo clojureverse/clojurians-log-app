@@ -1,8 +1,15 @@
-{:datomic {:uri #or [#env DATOMIC_URI "datomic:mem:clojurians_log"]}
- :http {:port #long #or [#env CLOJURIANS_LOG_PORT 4983]
-        :origin #or [#env CLOJURIANS_LOG_HOSTNAME "http://localhost:4983"]}
- :slack {:api-token #env SLACK_API_TOKEN
-         :log-dir #env CLOJURIANS_LOG_DIR}
+{:datomic      {:on-prem {:uri #or [#env DATOMIC_URI "datomic:mem:clojurians_log"]}
+                :cloud   {:server-type   :ion
+                          :region        "us-west-2"
+                          :system        "datomic-2"
+                          :creds-profile "default"
+                          :endpoint      "http://entry.datomic-2.us-west-2.datomic.net:8182/"
+                          :proxy-port    8182
+                          :db-name       "clojurians_log"}}
+ :http         {:port   #long #or [#env CLOJURIANS_LOG_PORT 4983]
+                :origin #or [#env CLOJURIANS_LOG_HOSTNAME "http://localhost:4983"]}
+ :slack        {:api-token #env SLACK_API_TOKEN
+                :log-dir   #env CLOJURIANS_LOG_DIR}
  :message-page {:cache-time #profile {:default 86400
-                                      :dev 0
-                                      :test 0}}}
+                                      :dev     0
+                                      :test    0}}}
