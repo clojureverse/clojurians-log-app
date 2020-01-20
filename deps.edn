@@ -1,6 +1,7 @@
 {:paths ["src" "resources" "test"]
  :deps  {org.clojure/data.json {:mvn/version "0.2.7"}
          org.clojure/clojure   {:mvn/version "1.10.1"}
+         org.clojure/core.async {:mvn/version "0.7.559"}
 
          environ                    {:mvn/version "1.1.0"}
          aero                       {:mvn/version "1.1.4"}
