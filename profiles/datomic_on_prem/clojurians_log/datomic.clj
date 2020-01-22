@@ -2,6 +2,8 @@
   (:require [com.stuartsierra.component :as component]
             [datomic.api :as d]))
 
+(def cloud? false)
+
 (defrecord Datomic [uri conn]
   component/Lifecycle
   (start [component]
