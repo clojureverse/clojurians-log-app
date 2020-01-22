@@ -90,7 +90,7 @@
                (sort-by first reverse-compare)))))
 
 (defn channel [db name]
-  (d/q '[:find (pull ?chan [*]) .
+  (d/q '[:find (pull ?chan [*])
          :in $ ?chan-name
          :where
          [?chan :channel/name ?chan-name]]
