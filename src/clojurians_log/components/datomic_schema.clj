@@ -7,8 +7,8 @@
   component/Lifecycle
   (start [this]
     (d/transact (:conn datomic)
-                (if cloud?
-                  (map #(dissoc % :index) schema/full-schema)
+                (if d/cloud?
+                  (map #(dissoc % :db/index) schema/full-schema)
                   schema/full-schema)))
   (stop [this]))
 
