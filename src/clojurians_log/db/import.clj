@@ -1,6 +1,7 @@
 (ns clojurians-log.db.import
   (:require [clojurians-log.time-util :as time-util]
-            [java-time :as jt])
+            [java-time :as jt]
+            [clojurians-log.datomic :as d])
   (:import java.io.BufferedReader))
 
 (defn message-key
@@ -47,7 +48,9 @@
   (message->tx message))
 
 (defmethod event->tx "message_deleted" [{:keys [deleted_ts channel] :as message}]
-  [:db.fn/retractEntity [:message/key (message-key {:channel channel :ts deleted_ts})]])
+  [(if d/cloud?
+     :db/retractEntity
+     :db.fn/retractEntity) [:message/key (message-key {:channel channel :ts deleted_ts})]])
 
 (defmethod event->tx "message_changed" [{:keys [message channel]}]
   (event->tx (assoc message :channel channel)))
