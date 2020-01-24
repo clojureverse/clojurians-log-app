@@ -21,6 +21,7 @@
 (def connect d/connect)
 (def db d/db)
 (def q d/q)
+
 (def transact (fn [conn data]
-                (d/transact conn {:tx-data data})))
+                (future (d/transact conn {:tx-data data}))))
 (def transact-async transact)
