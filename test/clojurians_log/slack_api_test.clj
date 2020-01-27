@@ -18,7 +18,7 @@
         (slack/import-channels! conn)
         (is (= {:channel/slack-id "C03RZGPG1"
                 :channel/name "announcements"}
-               (select-keys (queries/channel (d/db conn) "announcements")
+               (select-keys (ffirst (queries/channel (d/db conn) "announcements"))
                             [:channel/slack-id :channel/name]))))
 
       (with-redefs [slack/users (constantly [{:id "U03RZGPFT"}])
@@ -30,5 +30,5 @@
         (slack/import-channels! conn)
         (is (= {:channel/slack-id "C03RZGPG1"
                 :channel/name "admin-announcements"}
-               (select-keys (queries/channel (d/db conn) "admin-announcements")
+               (select-keys (ffirst (queries/channel (d/db conn) "admin-announcements"))
                             [:channel/slack-id :channel/name])))))))

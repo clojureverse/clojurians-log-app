@@ -48,14 +48,13 @@
   (assoc message :message/inst (time-util/ts->inst (:message/ts message))))
 
 (def ^:private pull-message-pattern
-  '[(pull ?msg
-          [:message/text
-           :message/ts
-           :message/thread-ts
-           {:message/user [:user/name
-                           :user/slack-id
-                           :user-profile/image-48]}])
-    ...])
+  '(pull ?msg
+         [:message/text
+          :message/ts
+          :message/thread-ts
+          {:message/user [:user/name
+                          :user/slack-id
+                          :user-profile/image-48]}]))
 
 (defn channel-day-messages [db chan-name day]
   (->> (d/q {:find [pull-message-pattern]
@@ -67,7 +66,7 @@
             db
             chan-name
             day)
-
+       (map first)
        ;; Remove all thread messages except for the thread parent
        ;; Note that thread parents do not have a :thread-ts value themselves
        (remove #(if-let [thread-ts (:message/thread-ts %)]
@@ -90,7 +89,7 @@
                (sort-by first reverse-compare)))))
 
 (defn channel [db name]
-  (d/q '[:find (pull ?chan [*]) .
+  (d/q '[:find (pull ?chan [*])
          :in $ ?chan-name
          :where
          [?chan :channel/name ?chan-name]]
@@ -116,7 +115,7 @@
              }
             db
             parent-tss)
-
+       (map first)
        (map assoc-inst)
        (sort-by :message/inst)))
 

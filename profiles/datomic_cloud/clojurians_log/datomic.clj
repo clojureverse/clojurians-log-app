@@ -2,6 +2,8 @@
   (:require [com.stuartsierra.component :as component]
             [datomic.client.api :as d]))
 
+(def cloud? true)
+
 (defrecord Datomic [config client conn]
   component/Lifecycle
   (start [component]
@@ -14,11 +16,12 @@
 
 (defn new-datomic-db [config]
   (map->Datomic {:config (:cloud config)}))
- 
+
 (def create-database d/create-database)
 (def connect d/connect)
 (def db d/db)
 (def q d/q)
+
 (def transact (fn [conn data]
-                (d/transact conn {:tx-data data})))
+                (future (d/transact conn {:tx-data data}))))
 (def transact-async transact)

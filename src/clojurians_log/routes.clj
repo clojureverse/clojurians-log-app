@@ -77,7 +77,7 @@
 
           (-> request
               context
-              (assoc :data/channel (queries/channel db channel)
+              (assoc :data/channel (ffirst (queries/channel db channel))
                      :data/channels (queries/channel-list db date)
                      :data/messages (merge-thread-messages messages thread-messages)
                      :data/target-message (some #(when (= (:message/ts %) ts) %) (apply conj messages thread-messages))

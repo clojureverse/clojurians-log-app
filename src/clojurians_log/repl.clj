@@ -203,7 +203,7 @@
    (do
      (time (clojurians-log.db.queries/channel-day-messages db "clojurescript" "2018-02-04"))
      (time (clojurians-log.db.queries/thread-messages db '("1517722327.000023" "1517722363.000043" "1517722613.000012" "1517724278.000043" "1517724340.000044" "1517724770.000024" "1517724836.000023" "1517725105.000054")))
-     (time (clojurians-log.db.queries/channel db "clojurescript"))
+     (time (ffirst (clojurians-log.db.queries/channel db "clojurescript")))
      (time (clojurians-log.db.queries/channel-list db "2018-02-04"))
      (time (clojurians-log.db.queries/user-names db #{"U2TUBBPNU"}))
      (time (clojurians-log.db.queries/channel-days db "clojurescript"))
