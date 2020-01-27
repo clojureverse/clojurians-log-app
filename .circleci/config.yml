@@ -21,10 +21,6 @@ commands:
                 clojure_version: << parameters.clojure_version >>
             - kaocha/upload_codecov:
                 flags: unit
-            - kaocha/execute:
-                aliases: "dev:datomic-free"
-                args: "integration --reporter documentation --plugin cloverage --codecov"
-                clojure_version: << parameters.clojure_version >>
 
 jobs:
   java-11-clojure-1_10:
