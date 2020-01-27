@@ -38,16 +38,17 @@
   "A map from emoji text to emoji.
 
   `(text->emoji \"smile\") ;; => \"😄\"`"
-  (with-open [r (io/reader (io/resource "emojis.json"))]
-    (let [emoji-list (-> (json/read r :key-fn keyword)
-                         :emojis)]
-      (into {} (map (juxt :name :emoji) emoji-list)))))
+  (delay
+    (with-open [r (io/reader (io/resource "emojis.json"))]
+      (let [emoji-list (-> (json/read r :key-fn keyword)
+                           :emojis)]
+        (into {} (map (juxt :name :emoji) emoji-list))))))
 
 (defn text->emoji
   ([text]
    (text->emoji text {}))
   ([text emoji-map]
-   (let [emoji-map (merge emoji-map standard-emoji-map)]
+   (let [emoji-map (merge emoji-map @standard-emoji-map)]
      (loop [shortcode text]
        (when-let [link (emoji-map shortcode)]
          (cond
@@ -167,7 +168,7 @@
   "Convert Slack markup to plain text."
   [message usernames]
   (->> (-> message
-           (mp/parse)
+           (mp/parse2)
            (replace-ids-names usernames))
        (map segment->text)
        (apply str)))

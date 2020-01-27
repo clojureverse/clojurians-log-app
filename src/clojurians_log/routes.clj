@@ -7,8 +7,7 @@
             [clojurians-log.slack-messages :as slack-messages]
             [clojurians-log.time-util :as time-util]
             [java-time :as jt]
-            [compojure.route :refer [resources]]
-            [datomic.api :as d]
+            [clojurians-log.datomic :as d]
             [ring.util.response :refer [response]]
             [reitit.core :as reitit]
             [reitit.ring]
@@ -41,6 +40,12 @@
   {:headers {"Content-Type" "text/plain"}
    :status 200
    :body "OK"})
+
+(def emoji-map (atom nil))
+
+(defn emoji-url-map [db]
+  (or @emoji-map
+      (reset! emoji-map (queries/emoji-url-map db))))
 
 (defn log-route [{:keys [endpoint] :as request}]
   (let [config                    @(get-in endpoint [:config :value])
@@ -77,7 +82,7 @@
                      :data/messages (merge-thread-messages messages thread-messages)
                      :data/target-message (some #(when (= (:message/ts %) ts) %) (apply conj messages thread-messages))
                      :data/usernames (into {} (queries/user-names db user-ids))
-                     :data/emojis (queries/emoji-url-map db)
+                     :data/emojis (emoji-url-map db)
                      :data/channel-days (queries/channel-days db channel)
                      :data/title (str channel " " date " | Clojurians Slack Log")
                      :data/date date

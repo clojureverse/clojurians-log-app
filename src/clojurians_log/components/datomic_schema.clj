@@ -1,6 +1,6 @@
 (ns clojurians-log.components.datomic-schema
   (:require [com.stuartsierra.component :as component]
-            [datomic.api :as d]
+            [clojurians-log.datomic :as d]
             [clojurians-log.db.schema :as schema]))
 
 (defrecord DatomicSchema [datomic]

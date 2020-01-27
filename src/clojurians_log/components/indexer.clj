@@ -1,6 +1,6 @@
 (ns clojurians-log.components.indexer
   (:require [com.stuartsierra.component :as component]
-            [datomic.api :as d]
+            [clojurians-log.datomic :as d]
             [clojurians-log.db.queries :as queries]))
 
 (defrecord Indexer [datomic]
@@ -10,7 +10,7 @@
           (Thread.
            (fn []
              (queries/build-indexes! (d/db (:conn datomic)))
-             (Thread/sleep 3600)
+             (Thread/sleep 6000000)
              (recur)))]
       (.start thread)
       (assoc this :thread thread)))

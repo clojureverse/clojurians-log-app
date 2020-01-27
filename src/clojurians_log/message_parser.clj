@@ -1,33 +1,8 @@
 (ns clojurians-log.message-parser
-  (:require [instaparse.core :as insta]
-            [clojure.java.io :as io]
+  (:require [clojure.java.io :as io]
             [clojure.string :as str]))
 
-(def parser
-  (insta/parser
-   (io/resource "clojurians-log/slack-message.bnf")))
-
-(defn join-adjacent
-  "Takes output from an insta-parse parser and returns a new
-  vector of tokens with repeated types merged.
-  eg. (join-adjacent [[:undecorated \"Hello\"] [:undecorated \" \"] [:undecorated \"World\"]])
-  yields: [[:undecorated \"Hello World\"]]"
-  [tokens]
-  (reduce (fn [result [type content :as token]]
-            (let [[prev-type prev-content :as prev-token] (last result)]
-              (if (and type
-                       (= :undecorated prev-type)
-                       (= :undecorated type))
-                (assoc result (dec (count result)) [:undecorated (str prev-content content)])
-                (conj result token))))
-          [] tokens))
-
-(defn parse
-  "Returns a vector of [type string] pairs, where type identifies one of the special markup types available in slack.
-  eg. (parse \"Hello *bold*!\")
-  yields: [[:undecorated \"Hello \"] [:bold \"bold\"] [:undecorated \"!\"]]"
-  [message]
-  (join-adjacent (parser message)))
+(set! *warn-on-reflection* true)
 
 (defn re-seq-pos [pattern string]
   (let [m (re-matcher pattern string)]
@@ -121,9 +96,9 @@
   This seems equired as per https://api.slack.com/docs/message-formatting"
   [message]
   (-> message
-      (str/replace #"&amp;" "&")
-      (str/replace #"&lt;" "<")
-      (str/replace #"&gt;" ">")))
+      (str/replace "&amp;" "&")
+      (str/replace "&lt;" "<")
+      (str/replace "&gt;" ">")))
 
 (defn- token? [o]
   (keyword? (first o)))
@@ -308,13 +283,20 @@
                         (not= last-cursor cursor))
                    (conj (extract-undecorated-text message last-cursor cursor)))))))))
 
+(def markup-symbol? (set "`_*<>~#@:&"))
+
+(defn contains-markup? [s]
+  (some markup-symbol? s))
+
 (defn parse2
   "Parse markdown message into hiccup.
 
   Return the un-parsed message if any error happens."
   [message]
   (try
-    (parse2-inner message)
+    (if (contains-markup? message)
+      (parse2-inner message)
+      [[:undecorated message]])
     (catch Exception ex
       (println "Failed to parse message:" message)
       #_(.printStackTrace ex)

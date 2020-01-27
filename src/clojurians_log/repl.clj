@@ -8,7 +8,7 @@
             [clojurians-log.db.import :as import]
             [clojurians-log.data :as data]
             [clojure.java.io :as io]
-            [datomic.api :as d]
+            [clojurians-log.datomic :as d]
             [clojure.tools.reader.edn :as edn]
             [clojure.string :as str]
             [clojure.core.async :as async :refer [>!! <! >! go-loop go <!!]]
@@ -169,8 +169,10 @@
 
 (comment
   ;; Load https://github.com/clojureverse/clojurians-log-demo-data
-  (load-demo-data! "/home/arne/github/clojurians-log-demo-data")
-  (q/build-indexes! (d/db (conn)))
+  (do
+    (user/reset)
+    (load-demo-data! "/home/arne/github/clojurians-log-demo-data")
+    (q/build-indexes! (d/db (conn))))
   )
 
 (comment

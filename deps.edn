@@ -1,0 +1,46 @@
+{:paths ["src" "resources" "test"]
+ :deps  {org.clojure/data.json {:mvn/version "0.2.7"}
+         org.clojure/clojure   {:mvn/version "1.10.1"}
+         org.clojure/core.async {:mvn/version "0.7.559"}
+
+         environ                    {:mvn/version "1.1.0"}
+         aero                       {:mvn/version "1.1.4"}
+         com.stuartsierra/component {:mvn/version "0.4.0"}
+         org.danielsz/system        {:mvn/version "0.4.4"}
+
+         metosin/pohjavirta                   {:mvn/version "0.0.1-alpha7"}
+         ring                                 {:mvn/version "1.8.0"}
+         metosin/reitit                       {:mvn/version "0.4.2"}
+         ring/ring-defaults                   {:mvn/version "0.3.2"}
+         bk/ring-gzip                         {:mvn/version "0.3.0"}
+         radicalzephyr/ring.middleware.logger {:mvn/version "0.6.0"}
+         hiccup                               {:mvn/version "2.0.0-alpha1"}
+         enlive                               {:mvn/version "1.1.6"}
+
+         prone              {:mvn/version "2020-01-17"}
+         clj-logging-config {:mvn/version "1.9.12"}
+
+         clojure.java-time         {:mvn/version "0.3.2"}
+         com.cemerick/url          {:mvn/version "0.1.1"}
+         com.cognitect/transit-clj {:mvn/version "0.8.319"}
+         clj-http                  {:mvn/version "3.10.0"}
+         org.julienxx/clj-slack    {:mvn/version "0.6.3"}
+
+         lambdaisland/repl-tools {:mvn/version "0.1.0"}
+         reloaded.repl           {:mvn/version "0.2.4"}}
+
+ :aliases {:dev {:extra-paths ["profiles/dev"]
+                 :extra-deps  {vvvvalvalval/scope-capture  {:mvn/version "0.3.2"}
+                               cheshire                    {:mvn/version "5.8.1"}
+                               ring/ring-mock              {:mvn/version "0.4.0"}
+                               hickory                     {:mvn/version "0.7.1"}
+                               lambdaisland/garden-watcher {:mvn/version "0.3.3"}
+                               lambdaisland/kaocha         {:mvn/version "RELEASE"}}}
+
+           :datomic-free  {:extra-paths ["profiles/datomic_on_prem"]
+                           :extra-deps  {com.datomic/datomic-free {:mvn/version "0.9.5697"}}}
+           :datomic-pro   {:extra-paths ["profiles/datomic_on_prem"]
+                           :extra-deps  {com.datomic/datomic-pro {:mvn/version "0.9.5561.56"}}}
+           :datomic-cloud {:extra-paths ["profiles/datomic_cloud"]
+                           :extra-deps  {com.datomic/client-cloud {:mvn/version "0.8.81"}}}
+           :postgresql    {:extra-deps {org.postgresql/postgresql {:mvn/version "42.2.6"}}}}}
