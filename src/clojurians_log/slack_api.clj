@@ -9,6 +9,7 @@
 
 (defn slack-conn []
   {:api-url "https://slack.com/api"
+   ;; TODO: get rid of this global config access
    :token (get-in cl-app/config [:slack :api-token])})
 
 (defn users []

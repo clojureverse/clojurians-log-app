@@ -12,4 +12,5 @@
                 :log-dir   #env CLOJURIANS_LOG_DIR}
  :message-page {:cache-time #profile {:default 86400
                                       :dev     0
-                                      :test    0}}}
+                                      :test    0}}
+ :application {:title "Clojurians Slack Log"}}

@@ -12,7 +12,7 @@
             [clojurians-log.routes :as routes]
             [clojure.java.io :as io]
             [reloaded.repl]))
- 
+
 (def config nil)
 
 (defn system []
@@ -30,7 +30,9 @@
                                    (let [router (reitit.ring/router routes/routes)
                                          handler (reitit.ring/ring-handler router)]
                                      (fn [request]
-                                       (handler (assoc request :endpoint endpoint))))))
+                                       (handler (assoc request
+                                                       :endpoint endpoint
+                                                       ::title (get-in config [:application :title])))))))
                    (component/using [:datomic :config]))
    :middleware (new-middleware {:middleware clojurians-log.config/middleware-stack})
    :http       (-> (new-pohjavirta {:port (:port http)})

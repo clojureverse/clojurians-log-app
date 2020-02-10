@@ -84,7 +84,7 @@
                      :data/usernames (into {} (queries/user-names db user-ids))
                      :data/emojis (emoji-url-map db)
                      :data/channel-days (queries/channel-days db channel)
-                     :data/title (str channel " " date " | Clojurians Slack Log")
+                     :data/title (str channel " " date " | " (get request :clojurians-log.application/title "Clojurians Slack Log"))
                      :data/date date
                      :data/http-origin (get-in config [:http :origin]))
               views/log-page
@@ -100,7 +100,7 @@
   (let [db (db-from-endpoint endpoint)]
     (-> request
         context
-        (assoc :data/title "Clojurians Slack Log"
+        (assoc :data/title (get request :clojurians-log.application/title "Clojurians Slack Log")
                :data/channels (queries/channel-list db))
         views/channel-list-page
         response/render)))
@@ -110,7 +110,7 @@
         {:keys [channel]} (:path-params request)]
     (-> request
         context
-        (assoc :data/title (str "Clojurians Slack Log | " channel)
+        (assoc :data/title (str (get request :clojurians-log.application/title "Clojurians Slack Log") "| " channel)
                :data/channel-days (queries/channel-days db channel)
                :data/channel-name channel)
         views/channel-page
