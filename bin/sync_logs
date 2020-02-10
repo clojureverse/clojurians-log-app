@@ -9,18 +9,23 @@ SOCKET_REPL="nc -N localhost 50505"
     echo "(clojurians-log.repl/load-slack-data!)"
 } | $SOCKET_REPL
 
-cd /var/clojure_app/logs
+SOURCE="${SLACK_LOG_SOURCE:-/var/rtmbot/logs}"
+DEST="${SLACK_LOG_DEST:-/var/clojure_app/logs/logs}"
+
+cd "${SOURCE}"
 
 prev=""
 for f in `ls *.txt | sort`; do
     echo '(clojurians-log.repl/load-log-file! (clojure.java.io/file "'$(pwd)'/'${f}'")) (println "OK!")\n' | $SOCKET_REPL | grep 'OK!'
     # Don't commit the current day yet, as it's still incomplete
     if [[ ! -z "${prev}" ]]; then
-      mv -f "${prev}" logs
-      git add "logs/${prev}"
-      git commit -m "Import ${prev}"
-      git log -1 --stat
-      git push
+        mv -f "${prev}" "${DEST}"
+        pushd "${DEST}"
+        git add "${prev}"
+        git commit -m "Import ${prev}"
+        git log -1 --stat
+        git push
+        popd
     fi
     prev="${f}"
 done
