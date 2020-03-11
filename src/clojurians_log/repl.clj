@@ -50,6 +50,9 @@
                                 ch))
                             channels))))
 
+(defn build-indexes! []
+  (q/build-indexes! (d/db (conn))))
+
 (defn log-files
   "List all files in the given log directory.
 
@@ -90,7 +93,8 @@
                        (partition-all 1000))]
       @(d/transact (conn) users)))
   @(d/transact (conn) (edn/read-string (slurp (str directory "/channels.edn"))))
-  (run! load-log-file! (log-files (java.io.File. directory "logs"))))
+  (run! load-log-file! (log-files (java.io.File. directory "logs")))
+  (build-indexes!))
 
 (defn load-from
   "Load log files starting from a certain date (a string like \"2019-05-20\")"
@@ -172,7 +176,7 @@
   (do
     (user/reset)
     (load-demo-data! "/home/arne/github/clojurians-log-demo-data")
-    (q/build-indexes! (d/db (conn))))
+    (build-indexes!))
   )
 
 (comment

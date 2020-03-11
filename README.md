@@ -40,7 +40,7 @@ git clone https://github.com/clojureverse/clojurians-log-demo-data.git
 Now you can start a REPL, import the data, and start the app:
 
 ``` clojure
-lein repl
+clj -A:dev:datomic-free
 user=> (go)
 ...
 Started clojurians-log on http://localhost:4983
@@ -82,10 +82,6 @@ user> (last-response)                    ;; See the last response the app genera
 
 ## License
 
-Copyright © 2018 Arne Brasseur and contributors.
+Copyright © 2018-2020 Brasseur and contributors.
 
 Distributed under the Mozilla Public License version 2.0.
-
-## Chestnut
-
-Created with [Chestnut](http://plexus.github.io/chestnut/) 0.15.3-SNAPSHOT (6ef3c4bc).
