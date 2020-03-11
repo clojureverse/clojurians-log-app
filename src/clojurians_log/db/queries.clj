@@ -82,11 +82,12 @@
 
 (defn channel-days [db chan-name]
   (when-let [indexes @!indexes]
-    (let [{:keys [chan-day-cnt chan-name->id]} @!indexes]
-      (some->> chan-name
-               chan-name->id
-               chan-day-cnt
-               (sort-by first reverse-compare)))))
+    (let [{:keys [chan-day-cnt chan-name->id] :as index} @!indexes]
+      (when index
+        (some->> chan-name
+                 chan-name->id
+                 chan-day-cnt
+                 (sort-by first reverse-compare))))))
 
 (defn channel [db name]
   (d/q '[:find (pull ?chan [*])
