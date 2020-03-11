@@ -13,7 +13,7 @@
             [reitit.ring]
             [clojure.string :as str]))
 
-(defn context [request]
+(defn make-context [request]
   {:request request})
 
 (defn message-page-might-have-updated? [page-date-str last-fetch-time-ts]
@@ -47,14 +47,19 @@
   (or @emoji-map
       (reset! emoji-map (queries/emoji-url-map db))))
 
+(defn add-cache-control-header [context]
+  (let [config  @(get-in context [:request :endpoint :config :value])
+        max-age (get-in config [:message-page :cache-time] 0)]
+    (assoc-in context [:response/headers "Cache-Control"] (str "public, max-age: " max-age))))
+
 (defn log-route [{:keys [endpoint] :as request}]
   (let [config                    @(get-in endpoint [:config :value])
         conn                      (get-in endpoint [:datomic :conn])
         {:keys [channel date ts]} (:path-params request)
         cache-time                (get-in config [:message-page :cache-time] 0)
-        date (if (str/ends-with? date ".html")
-               (str/replace date ".html" "")
-               date)]
+        date                      (if (str/ends-with? date ".html")
+                                    (str/replace date ".html" "")
+                                    date)]
 
     ;; Since we're displaying a log, presumably, all of the content is permanently cachable
     ;; Message page content also most likely have not changed and does not require any processing/page-generation.
@@ -75,8 +80,7 @@
               (ring.util.response/content-type "text/html; charset=utf-8")
               (ring.util.response/status 404))
 
-          (-> request
-              context
+          (-> (make-context request)
               (assoc :data/channel (ffirst (queries/channel db channel))
                      :data/channels (queries/channel-list db date)
                      :data/messages (merge-thread-messages messages thread-messages)
@@ -88,7 +92,7 @@
                      :data/date date
                      :data/http-origin (get-in config [:http :origin]))
               views/log-page
-              (assoc-in [:response/headers "Cache-Control"] (str "public, max-age: " cache-time))
+              add-cache-control-header
               (assoc-in [:response/headers "Last-Modified"] (time-util/time->html-ts (jt/zoned-date-time time-util/UTC)))
               response/render))))))
 
@@ -98,22 +102,22 @@
 
 (defn index-route [{:keys [endpoint] :as request}]
   (let [db (db-from-endpoint endpoint)]
-    (-> request
-        context
+    (-> (make-context request)
         (assoc :data/title (get request :clojurians-log.application/title "Clojurians Slack Log")
                :data/channels (queries/channel-list db))
         views/channel-list-page
+        add-cache-control-header
         response/render)))
 
 (defn channel-history-route [{:keys [endpoint] :as request}]
   (let [db (db-from-endpoint endpoint)
         {:keys [channel]} (:path-params request)]
-    (-> request
-        context
+    (-> (make-context request)
         (assoc :data/title (str (get request :clojurians-log.application/title "Clojurians Slack Log") "| " channel)
                :data/channel-days (queries/channel-days db channel)
                :data/channel-name channel)
         views/channel-page
+        add-cache-control-header
         response/render)))
 
 (def routes

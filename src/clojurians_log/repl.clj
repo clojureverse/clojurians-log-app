@@ -176,7 +176,7 @@
   (do
     (user/reset)
     (load-demo-data! "/home/arne/github/clojurians-log-demo-data")
-    (build-indexes!))
+    )
   )
 
 (comment
