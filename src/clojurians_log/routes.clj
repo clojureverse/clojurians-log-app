@@ -116,9 +116,17 @@
         views/channel-page
         response/render)))
 
+(defn about [request]
+  (-> request
+      context
+      views/about
+      response/render))
+
 (def routes
   [["/" {:name :clojurians-log.routes/index
          :get index-route}]
+   ["/x/x/x/about" {:name :clojurians-log.routes/about
+                    :get about}]
    ["/x/x/x/healthcheck" {:name :clojurians-log.routes/healthcheck,
                           :get healthcheck-route}]
    ["/{channel}" {:name :clojurians-log.routes/channel,

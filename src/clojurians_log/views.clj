@@ -220,6 +220,8 @@
    [:body
     [:div.main
      (fork-me-badge)
+     [:a {:href (path-for context :clojurians-log.routes/about)}
+      "About Clojurians Slack Log"]
      [:h1 "Channels"]
      [:ul
       (for [{:channel/keys [name]} channels]
@@ -237,3 +239,15 @@
 
 (defn channel-list-page [context]
   (assoc context :response/html (channel-list-page-html context)))
+
+(defn- about-html [context]
+  [:html
+   (page-head context)
+   [:body
+    [:div.main
+     (fork-me-badge)
+     [:h1 "About Clojurians Slack Log"]
+     [:p "One of the main on-line hangouts for Clojure people is the " [:a {:href "clojurians.net"} "Clojurians Slack community"] ". Unfortunately it suffers from its popularity. Slack will only retain the last 10,000 messages of history, which means that less than two weeks of logs are kept available. A lot of valuable information is in that chat history, and so the Clojureverse team set up a logging service so that these logs aren’t lost in time."]]]])
+
+(defn about [context]
+  (assoc context :response/html (about-html context)))
