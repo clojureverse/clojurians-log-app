@@ -82,7 +82,10 @@
 
 (defn channel-days [db chan-name]
   (when-let [indexes @!indexes]
-    (let [{:keys [chan-day-cnt chan-name->id] :as index} @!indexes]
+    (let [{:keys [chan-day-cnt chan-name->id] :as index}
+          (if (seq @!indexes)
+            @!indexes
+            {:chan-day-cnt {} :chan-name->id {}})]
       (when index
         (some->> chan-name
                  chan-name->id

@@ -223,13 +223,15 @@
      [:a {:href (path-for context :clojurians-log.routes/about)}
       "About Clojurians Slack Log"]
      [:h1 "Channels"]
-     [:ul
-      (for [{:channel/keys [name]} channels]
-        [:li
-         [:a {:href (path-for context
-                              :clojurians-log.routes/channel
-                              {:channel name})}
-          "# " name]])]]]])
+     (if (seq channels)
+       [:ul
+        (for [{:channel/keys [name]} channels]
+          [:li
+           [:a {:href (path-for context
+                                :clojurians-log.routes/channel
+                                {:channel name})}
+            "# " name]])]
+       [:p "no data loaded"])]]])
 
 (defn log-page [context]
   (assoc context :response/html (log-page-html context)))
