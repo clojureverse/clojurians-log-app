@@ -247,7 +247,15 @@
     [:div.main
      (fork-me-badge)
      [:h1 "About Clojurians Slack Log"]
-     [:p "One of the main on-line hangouts for Clojure people is the " [:a {:href "clojurians.net"} "Clojurians Slack community"] ". Unfortunately it suffers from its popularity. Slack will only retain the last 10,000 messages of history, which means that less than two weeks of logs are kept available. A lot of valuable information is in that chat history, and so the Clojureverse team set up a logging service so that these logs aren’t lost in time."]]]])
+     [:p "One of the main on-line hangouts for Clojure people is the "
+      [:a {:href "http://clojurians.net"} "Clojurians Slack community"]
+      ". Unfortunately it suffers from its popularity. Slack will only retain the last 10,000 messages of history, that is less than two weeks of logs. A lot of valuable information is in that chat history. The Clojureverse team has decided to set up this service so that the logs aren’t lost in time."
+      [:p "If some channel is not logging, it's probably because @logbot isn't receiving its messages. Feel free to invite @logbot to a channel to start logging"]
+      [:p "The source code is in "
+       [:a {:href "https://github.com/clojureverse/clojurians-log-app"}
+        "this"] " github repo, you are welcome to contribute."]]
+     [:p "The hosting of Clojurians Slack Log is kindly donated by " [:a {:href "https://www.exoscale.com"} "Exoscale."]]]]])
+
 
 (defn about [context]
   (assoc context :response/html (about-html context)))
