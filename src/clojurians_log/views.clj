@@ -220,8 +220,12 @@
    [:body
     [:div.main
      (fork-me-badge)
-     [:a {:href (path-for context :clojurians-log.routes/about)}
-      "About Clojurians Slack Log"]
+     [:p
+      [:a {:href (path-for context :clojurians-log.routes/about)}
+       "About Clojurians Slack Log"]]
+     [:p
+      [:a {:href (path-for context :clojurians-log.routes/sitemap)}
+       "Sitemap"]]
      [:h1 "Channels"]
      (if (seq channels)
        [:ul
@@ -258,6 +262,26 @@
         "this"] " github repo, you are welcome to contribute."]]
      [:p "The hosting of Clojurians Slack Log is kindly donated by " [:a {:href "https://www.exoscale.com"} "Exoscale."]]]]])
 
-
 (defn about [context]
   (assoc context :response/html (about-html context)))
+
+(defn- sitemap-html [{:data/keys [channel-day-tuples] :as context}]
+  [:html
+   (page-head context)
+   [:body
+    [:div.main
+     (fork-me-badge)
+     [:h1 "Sitemap"]
+     (if (seq channel-day-tuples)
+       [:ul
+        (for [[{:channel/keys [name]} channel-days] channel-day-tuples]
+          (for [[day cnt] channel-days]
+            [:li [:a {:href (path-for context
+                                      :clojurians-log.routes/channel-date
+                                      {:channel name
+                                       :date day})}
+                  "# " name " " day " (" cnt ")"]]))]
+       [:p "no data loaded"])]]])
+
+(defn sitemap [context]
+  (assoc context :response/html (sitemap-html context)))

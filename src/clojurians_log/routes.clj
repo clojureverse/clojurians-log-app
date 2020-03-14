@@ -116,17 +116,29 @@
         views/channel-page
         response/render)))
 
-(defn about [request]
+(defn about-route [request]
   (-> request
       context
       views/about
       response/render))
 
+(defn sitemap-route [{:keys [endpoint] :as request}]
+  (let [db (db-from-endpoint endpoint)]
+    (-> request
+        context
+        (assoc :data/channel-day-tuples
+               (for [{:channel/keys [name] :as channel} (queries/channel-list db)]
+                 [channel (queries/channel-days db name)]))
+        views/sitemap
+        response/render)))
+
 (def routes
   [["/" {:name :clojurians-log.routes/index
          :get index-route}]
    ["/x/x/x/about" {:name :clojurians-log.routes/about
-                    :get about}]
+                    :get about-route}]
+   ["/x/x/x/sitemap" {:name :clojurians-log.routes/sitemap
+                      :get sitemap-route}]
    ["/x/x/x/healthcheck" {:name :clojurians-log.routes/healthcheck,
                           :get healthcheck-route}]
    ["/{channel}" {:name :clojurians-log.routes/channel,
