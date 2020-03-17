@@ -36,3 +36,11 @@
          [:message-page :cache-time]
          (constantly new-cache-time))
   true)
+
+(comment
+  (go)
+  (reset)
+  (reset-all)
+  (use 'clojurians-log.repl)
+  (load-demo-data! "../clojurians-log-demo-data")
+  #_:end)
