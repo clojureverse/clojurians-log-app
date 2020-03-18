@@ -6,8 +6,6 @@
             [clojurians-log.slack-messages :as slack-messages]
             [reitit.core]))
 
-(def origin "https://clojurians-log.clojureverse.org")
-
 (defn- thread-child?
   "Answers if the `message` is a message within a thread."
   [{:message/keys [thread-ts ts]:as message}]
@@ -70,10 +68,10 @@
 (defn log-page-head [{:data/keys [title channel date target-message http-origin usernames] :as context}]
   (cond-> (page-head context)
     ;; Always add a canonical rel
-    :-> (conj [:link {:rel "canonical" :href (str origin (path-for context
-                                                                   :clojurians-log.routes/channel-date
-                                                                   {:channel (:channel/name channel)
-                                                                    :date date}))}])
+    :-> (conj [:link {:rel "canonical" :href (str http-origin (path-for context
+                                                                        :clojurians-log.routes/channel-date
+                                                                        {:channel (:channel/name channel)
+                                                                         :date date}))}])
 
     ;; Are we targeting a specific message in the log page?
     ;; If, add tags to enable open graph support.
@@ -201,6 +199,7 @@
    [:body
     (log-page-header context)
     [:div.main
+     (fork-me-badge)
      [:div.listings
       [:p.disclaimer "This page is not created by, affiliated with, or supported by Slack Technologies, Inc."]
       (channel-list context)
@@ -211,6 +210,7 @@
   [:html
    (page-head context)
    [:body
+    (fork-me-badge)
     [:div.main
      [:h1 "Channel: #" channel-name]
      [:ul
