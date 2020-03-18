@@ -17,7 +17,7 @@
   [:h1 {:text-decoration "underline"}]
 
   [:.day-arrows
-   {:margin-left "1rem"}
+   {:margin "1rem 0 0 1rem"}
 
    [:div.day-prev (assoc small-square-button
                          :margin-right "0.3rem")]
@@ -28,4 +28,20 @@
 
   [:.emoji
    [:img {:height "22px"
-          :width  "22px"}]])
+          :width  "22px"}]]
+
+  [:.content
+   {:display "flex"
+    :height "100%"
+    :overflow "hidden"}]
+
+  [:.sidebar
+   {:max-width "250px"}]
+
+  [:.fork-me-on-github
+   {:z-index -1
+    :position "absolute"
+    :top 0
+    :right 0
+    :border 0}]
+  )

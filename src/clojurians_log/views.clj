@@ -56,9 +56,8 @@
 
 (defn fork-me-badge []
   [:a {:href "https://github.com/clojureverse/clojurians-log-app"}
-   [:img {:style "position: absolute; top: 0; right: 0; border: 0;"
-          :src "https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"
-          :alt "Fork me on GitHub"}]])
+   [:img.fork-me-on-github {:src "https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"
+                            :alt "Fork me on GitHub"}]])
 
 
 (defn path-for [context & args]
@@ -115,9 +114,30 @@
     (nth channel-days $ nil)
     (first $)))
 
+(defn- channel-list [{:data/keys [date channels] :as context}]
+  [:div.listings_channels
+   [:h2.listings_header.listings_header_date date]
+   [:h2.listings_header "Channels"]
+   [:ul.channel_list
+    (for [{:channel/keys [name slack-id message-count]} channels]
+      [:li.channel
+       [:span.channel_name
+        [:a
+         {:href (path-for context
+                          :clojurians-log.routes/channel-date
+                          {:channel name
+                           :date date})}
+         [:span [:span.prefix "#"] " " name " (" message-count ")"]]]])]])
+
+(defn- log-page-sidebar [{:data/keys [channel date channel-days] :as context}]
+  [:div.sidebar.listings
+   [:div.app-title [:a {:href "/"} (get-in context [:request :clojurians-log.application/title])]]
+   [:p.disclaimer "This page is not created by, affiliated with, or supported by Slack Technologies, Inc."]
+   (channel-list context)
+   [:div.listings_direct-messages]])
+
 (defn- log-page-header [{:data/keys [channel date channel-days] :as context}]
   [:div.header
-   [:div.team-menu [:a {:href "/"} (get-in context [:request :clojurians-log.application/title])]]
    [:div.channel-menu
     [:span.channel-menu_name [:span.channel-menu_prefix "#"] (:channel/name channel)]
     [:span.day-arrows
@@ -134,21 +154,6 @@
                             {:channel (:channel/name channel)
                              :date future-date})}
         [:div.day-next ">"]])]]])
-
-(defn- channel-list [{:data/keys [date channels] :as context}]
-  [:div.listings_channels
-   [:h2.listings_header.listings_header_date date]
-   [:h2.listings_header "Channels"]
-   [:ul.channel_list
-    (for [{:channel/keys [name slack-id message-count]} channels]
-      [:li.channel
-       [:span.channel_name
-        [:a
-         {:href (path-for context
-                          :clojurians-log.routes/channel-date
-                          {:channel name
-                           :date date})}
-         [:span [:span.prefix "#"] " " name " (" message-count ")"]]]])]])
 
 (defn- single-message
   "Returns the hiccup of a single message"
@@ -197,14 +202,12 @@
   [:html
    (log-page-head context)
    [:body
-    (log-page-header context)
-    [:div.main
-     (fork-me-badge)
-     [:div.listings
-      [:p.disclaimer "This page is not created by, affiliated with, or supported by Slack Technologies, Inc."]
-      (channel-list context)
-      [:div.listings_direct-messages]]
-     (message-history context)]]])
+    (fork-me-badge)
+    [:div.content
+     (log-page-sidebar context)
+     [:div.main
+      (log-page-header context)
+      (message-history context)]]]])
 
 (defn- channel-page-html [{:data/keys [channel-days channel-name] :as context}]
   [:html

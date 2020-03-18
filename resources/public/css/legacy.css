@@ -82,15 +82,11 @@ body {
     height: 100%;
     width: 100%;
     margin: 0;
-    padding-top: 53px;
 }
 
 /* line 23, ../tests/sass/_layout.scss */
 .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 53px;
+    height: 2rem;
     width: 100%;
 }
 
@@ -109,39 +105,38 @@ body {
 }
 
 /* line 1, ../tests/sass/components/_header.scss */
-.team-menu {
-    position: relative;
-    width: 220px;
-    height: 53px;
-    line-height: 53px;
+.app-title {
+    line-height: 2rem;
     font-weight: 900;
-    padding: 0 1rem;
+    padding: 1rem 1rem;
     color: #ffffff;
     background: #3e313c;
     border-bottom: 2px solid #372c36;
-    float: left;
     /*cursor: pointer;*/
 }
 
-.team-menu a {
+.app-title a {
     color: #ffffff;
     background: #3e313c;
     border-bottom: 2px solid #372c36;
     text-decoration: none;
 }
 
-.team-menu a:hover {
+.app-title a:hover {
     text-decoration: underline;
+}
+
+.channel-menu {
+    margin-top: 1rem;
 }
 
 /* line 19, ../tests/sass/components/_header.scss */
 .channel-menu_name {
     display: inline-block;
-    padding: 0 .5rem 0 1.5rem;
+    padding: 0 .5rem 0 2.5rem;
     color: #555459;
     font-size: 1.4rem;
     font-weight: 900;
-    line-height: 53px;
     cursor: pointer;
 }
 
@@ -155,8 +150,6 @@ body {
 /* line 1, ../tests/sass/components/_main.scss */
 .listings {
     height: 100%;
-    width: 220px;
-    float: left;
     color: #ab9ba9;
     background-color: #4d394b;
     overflow-y: auto;
@@ -165,11 +158,10 @@ body {
 
 /* line 11, ../tests/sass/components/_main.scss */
 .message-history {
-    margin-left: 220px;
     overflow-y: auto;
     overflow-x: hidden;
     height: 100%;
-    padding: 0 18px 1rem 1.5rem;
+    margin-left: 2rem;
 }
 
 /* line 4, ../tests/sass/components/_listings.scss */
@@ -186,8 +178,6 @@ body {
     text-transform: uppercase;
     font-weight: 700;
     color: #ab9ba9;
-    width: 165px;
-    position: relative;
 }
 
 .listings_header_date {
