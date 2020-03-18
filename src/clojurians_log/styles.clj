@@ -36,7 +36,8 @@
     :overflow "hidden"}]
 
   [:.sidebar
-   {:max-width "250px"}]
+   {:max-width "250px"
+    :flex-shrink "0"}]
 
   [:.fork-me-on-github
    {:z-index -1
@@ -44,4 +45,18 @@
     :top 0
     :right 0
     :border 0}]
+
+  [:.channel-page
+   [:.main
+    {:margin "2rem"}]]
+
+  [:.channel-list-page
+   [:.main
+    {:margin "2rem"}]]
+
+  [:.channel-index
+   :.channel-days
+   [:li
+    {:margin "0.3rem 0"
+     :font-size "1.2rem"}]]
   )

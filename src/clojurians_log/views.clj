@@ -210,13 +210,14 @@
       (message-history context)]]]])
 
 (defn- channel-page-html [{:data/keys [channel-days channel-name] :as context}]
-  [:html
+  [:html.channel-page
    (page-head context)
    [:body
     (fork-me-badge)
     [:div.main
+     [:div.app-title [:a {:href "/"} (get-in context [:request :clojurians-log.application/title])]]
      [:h1 "Channel: #" channel-name]
-     [:ul
+     [:ul.channel-days
       (for [[day cnt] channel-days]
         [:li [:a {:href (path-for context
                                   :clojurians-log.routes/channel-date
@@ -225,13 +226,14 @@
               day " (" cnt ")"]])]]]])
 
 (defn- channel-list-page-html [{:data/keys [channels] :as context}]
-  [:html
+  [:html.channel-list-page
    (page-head context)
    [:body
     [:div.main
      (fork-me-badge)
+     [:div.app-title [:a {:href "/"} (get-in context [:request :clojurians-log.application/title])]]
      [:h1 "Channels"]
-     [:ul
+     [:ul.channel-index
       (for [{:channel/keys [name]} channels]
         [:li
          [:a {:href (path-for context
