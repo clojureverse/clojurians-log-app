@@ -4,7 +4,8 @@
             [clojurians-log.time-util :as cl.tu]
             [clojure.string :as str]
             [clojurians-log.slack-messages :as slack-messages]
-            [reitit.core]))
+            [reitit.core]
+            [clojure.java.io :as io]))
 
 (defn- thread-child?
   "Answers if the `message` is a message within a thread."
@@ -14,6 +15,13 @@
 (defn- find-message-with-ts
   [messages ts]
   (some #(when (= (:message/ts %) ts) %) messages))
+
+(defn stylesheet [path]
+  (let [ts (.lastModified (io/file (io/resource (str "public" path))))]
+    [:link
+     {:href (str path "?version=" ts)
+      :rel "stylesheet"
+      :type "text/css"}] ))
 
 (defn page-head [{:data/keys [title]}]
   [:head
@@ -30,8 +38,8 @@
    ;; This one is just copied over from the static site, seems it was generated
    ;; with Compass and SASS. At some point I'd prefer to delete this and do the
    ;; styling over in clean Garden or Garden+Tachyons.
-   [:link {:href "/css/legacy.css", :rel "stylesheet", :type "text/css"}]
-   [:link {:href "/css/style.css", :rel "stylesheet", :type "text/css"}]])
+   (stylesheet "/css/legacy.css")
+   (stylesheet "/css/style.css")])
 
 (defn og-title [{:keys [request]
                  :data/keys [title channel date target-message messages usernames] :as context}]
