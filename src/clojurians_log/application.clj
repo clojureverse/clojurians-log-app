@@ -45,6 +45,13 @@
    :indexer (-> (new-indexer)
                 (component/using [:datomic]))))
 
+(defn dev-system [cfg]
+  ;; Late resolve garden watcher, because in prod we won't have it on the filesystem
+  (let [new-garden-watcher (requiring-resolve 'garden-watcher.core/new-garden-watcher)
+        style-nss ['clojurians-log.styles]]
+    (-> (prod-system cfg)
+        (assoc :garden-watcher (new-garden-watcher style-nss)))))
+
 (defn -main [& [config-file]]
   (let [conf (if (and config-file (.exists (io/file config-file)))
                (config/config (io/file config-file) :prod)
