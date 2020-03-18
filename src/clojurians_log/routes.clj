@@ -88,7 +88,7 @@
                      :data/usernames (into {} (queries/user-names db user-ids))
                      :data/emojis (emoji-url-map db)
                      :data/channel-days (queries/channel-days db channel)
-                     :data/title (str channel " " date " | " (get request :clojurians-log.application/title "Clojurians Slack Log"))
+                     :data/title (str channel " " date " | " (get request :clojurians-log.application/title))
                      :data/date date
                      :data/http-origin (get-in config [:http :origin]))
               views/log-page
@@ -103,7 +103,7 @@
 (defn index-route [{:keys [endpoint] :as request}]
   (let [db (db-from-endpoint endpoint)]
     (-> (make-context request)
-        (assoc :data/title (get request :clojurians-log.application/title "Clojurians Slack Log")
+        (assoc :data/title (get request :clojurians-log.application/title)
                :data/channels (queries/channel-list db))
         views/channel-list-page
         add-cache-control-header

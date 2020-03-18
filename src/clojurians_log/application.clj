@@ -32,7 +32,8 @@
                                      (fn [request]
                                        (handler (assoc request
                                                        :endpoint endpoint
-                                                       ::title (get-in config [:application :title])))))))
+                                                       ::title (get-in config [:application :title])
+                                                       ::slack-instance (get-in config [:slack :instance])))))))
                    (component/using [:datomic :config]))
    :middleware (new-middleware {:middleware clojurians-log.config/middleware-stack})
    :http       (-> (new-pohjavirta {:port (:port http)})

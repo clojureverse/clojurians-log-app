@@ -35,22 +35,26 @@
    [:link {:href "/css/legacy.css", :rel "stylesheet", :type "text/css"}]
    [:link {:href "/css/style.css", :rel "stylesheet", :type "text/css"}]])
 
-(defn og-title [{:data/keys [title channel date target-message messages usernames] :as context}]
-  (cond
-    ;; Is the message part of a thread?
-    (thread-child? target-message)
-    (let [thread-parent (find-message-with-ts messages (:message/thread-ts target-message))]
-      (format "@%s in reply to @%s, in #%s, %s | Clojurians Slack"
-              (get-in target-message [:message/user :user/name])
-              (get-in thread-parent [:message/user :user/name])
-              (:channel/name channel)
-              date))
+(defn og-title [{:keys [request]
+                 :data/keys [title channel date target-message messages usernames] :as context}]
+  (let [app-title (:clojurians-log.application/title request)]
+    (cond
+      ;; Is the message part of a thread?
+      (thread-child? target-message)
+      (let [thread-parent (find-message-with-ts messages (:message/thread-ts target-message))]
+        (format "@%s in reply to @%s, in #%s, %s | %s"
+                (get-in target-message [:message/user :user/name])
+                (get-in thread-parent [:message/user :user/name])
+                (:channel/name channel)
+                date
+                app-title))
 
-    :else
-    (format "@%s in #%s, %s | Clojurians Slack"
-            (get-in target-message [:message/user :user/name])
-            (:channel/name channel)
-            date)))
+      :else
+      (format "@%s in #%s, %s | %s"
+              (get-in target-message [:message/user :user/name])
+              (:channel/name channel)
+              date
+              app-title))))
 
 (defn fork-me-badge []
   [:a {:href "https://github.com/clojureverse/clojurians-log-app"}
@@ -115,7 +119,7 @@
 
 (defn- log-page-header [{:data/keys [channel date channel-days] :as context}]
   [:div.header
-   [:div.team-menu [:a {:href "/"} "Clojurians"]]
+   [:div.team-menu [:a {:href "/"} (get-in context [:request :clojurians-log.application/title])]]
    [:div.channel-menu
     [:span.channel-menu_name [:span.channel-menu_prefix "#"] (:channel/name channel)]
     [:span.day-arrows
@@ -150,19 +154,22 @@
 
 (defn- single-message
   "Returns the hiccup of a single message"
-  [{:data/keys [usernames channel date hostname emojis] :as context}
+  [{:keys [request]
+    :data/keys [usernames channel date hostname emojis]
+    :as context}
    {:message/keys [user inst user text thread-ts ts] :as message}]
 
   (let [{:user/keys         [name slack-id]
-         :user-profile/keys [image-48]} user]
+         :user-profile/keys [image-48]} user
+        slack-instance (:clojurians-log.application/slack-instance request)]
 
     ;; things in the profile
     ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
     ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
     (list [:div.message
            {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
-           [:a.message_profile-pic {:href (str "https://clojurians.slack.com/team/" slack-id) :style (str "background-image: url(" image-48 ");")}]
-           [:a.message_username {:href (str "https://clojurians.slack.com/team/" slack-id)} name]
+           [:a.message_profile-pic {:href (str slack-instance "/team/" slack-id) :style (str "background-image: url(" image-48 ");")}]
+           [:a.message_username {:href (str slack-instance "/team/" slack-id)} name]
            [:span.message_timestamp [:a {:rel  "nofollow"
                                          :href (path-for context
                                                          :clojurians-log.routes/message
