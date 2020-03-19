@@ -69,8 +69,8 @@
       :background "#3e313c";
       :border-bottom "2px solid #372c36"}]]]
 
-  [".app-title"
-   ["a:hover"
+  [:.app-title
+   [:a:hover
     {:text-decoration "underline"}]]
 
   )
