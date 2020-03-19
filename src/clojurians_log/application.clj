@@ -23,16 +23,18 @@
   (start [component] component)
   (stop [component] component))
 
-(defn prod-system [{:keys [datomic http] :as config}]
+(defn prod-system [{:keys [datomic http] :as cfg}]
+  (alter-var-root #'config (constantly cfg))
   (component/system-map
-   :config     (->ValueComponent (atom config))
+   :config     (->ValueComponent (atom cfg))
    :routes     (-> (new-endpoint (fn [endpoint]
                                    (let [router (reitit.ring/router routes/routes)
                                          handler (reitit.ring/ring-handler router)]
                                      (fn [request]
                                        (handler (assoc request
                                                        :endpoint endpoint
-                                                       ::title (get-in config [:application :title])))))))
+                                                       ::title (get-in cfg [:application :title])
+                                                       ::slack-instance (get-in cfg [:slack :instance])))))))
                    (component/using [:datomic :config]))
    :middleware (new-middleware {:middleware clojurians-log.config/middleware-stack})
    :http       (-> (new-pohjavirta {:port (:port http)})
@@ -44,10 +46,16 @@
    :indexer (-> (new-indexer)
                 (component/using [:datomic]))))
 
+(defn dev-system [cfg]
+  ;; Late resolve garden watcher, because in prod we won't have it on the filesystem
+  (let [new-garden-watcher (requiring-resolve 'garden-watcher.core/new-garden-watcher)
+        style-nss ['clojurians-log.styles]]
+    (-> (prod-system cfg)
+        (assoc :garden-watcher (new-garden-watcher style-nss)))))
+
 (defn -main [& [config-file]]
   (let [conf (if (and config-file (.exists (io/file config-file)))
                (config/config (io/file config-file) :prod)
                (config/config :prod))]
-    (alter-var-root #'config (constantly conf))
     (reloaded.repl/set-init! #(prod-system conf))
     (reloaded.repl/go)))

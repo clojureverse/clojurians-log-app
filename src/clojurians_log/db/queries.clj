@@ -2,7 +2,7 @@
   (:require [clojurians-log.datomic :as d]
             [clojurians-log.time-util :as time-util]))
 
-(defonce !indexes (atom {}))
+(defonce !indexes (atom nil))
 
 (defn channels-dates-msgcounts [db]
   (d/q '[:find ?slack-id ?chan-name ?day (count ?msg)
@@ -23,7 +23,7 @@
            (assoc-in [:day-chan-cnt day slack-id] msgcount)
            (assoc-in [:chan-id->name slack-id] chan-name)
            (assoc-in [:chan-name->id chan-name] slack-id)))
-     {}
+     nil
      cdm)))
 
 (defn build-indexes! [db]

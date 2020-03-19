@@ -9,8 +9,9 @@
  :http         {:port   #long #or [#env CLOJURIANS_LOG_PORT 4983]
                 :origin #or [#env CLOJURIANS_LOG_HOSTNAME "http://localhost:4983"]}
  :slack        {:api-token #env SLACK_API_TOKEN
-                :log-dir   #env CLOJURIANS_LOG_DIR}
+                :log-dir   #env CLOJURIANS_LOG_DIR
+                :instance  "https://clojurians.slack.com"}
  :message-page {:cache-time #profile {:default 86400
                                       :dev     0
                                       :test    0}}
- :application {:title "Clojurians Slack Log"}}
+ :application  {:title "Clojurians Slack Log"}}

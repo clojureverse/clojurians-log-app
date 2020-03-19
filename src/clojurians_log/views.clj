@@ -4,9 +4,8 @@
             [clojurians-log.time-util :as cl.tu]
             [clojure.string :as str]
             [clojurians-log.slack-messages :as slack-messages]
-            [reitit.core]))
-
-(def origin "https://clojurians-log.clojureverse.org")
+            [reitit.core]
+            [clojure.java.io :as io]))
 
 (defn- thread-child?
   "Answers if the `message` is a message within a thread."
@@ -16,6 +15,13 @@
 (defn- find-message-with-ts
   [messages ts]
   (some #(when (= (:message/ts %) ts) %) messages))
+
+(defn stylesheet [path]
+  (let [ts (.lastModified (io/file (io/resource (str "public" path))))]
+    [:link
+     {:href (str path "?version=" ts)
+      :rel "stylesheet"
+      :type "text/css"}] ))
 
 (defn page-head [{:data/keys [title]}]
   [:head
@@ -32,31 +38,34 @@
    ;; This one is just copied over from the static site, seems it was generated
    ;; with Compass and SASS. At some point I'd prefer to delete this and do the
    ;; styling over in clean Garden or Garden+Tachyons.
-   [:link {:href "/css/legacy.css", :rel "stylesheet", :type "text/css"}]
-   [:link {:href "/css/style.css", :rel "stylesheet", :type "text/css"}]])
+   (stylesheet "/css/legacy.css")
+   (stylesheet "/css/style.css")])
 
-(defn og-title [{:data/keys [title channel date target-message messages usernames] :as context}]
-  (cond
-    ;; Is the message part of a thread?
-    (thread-child? target-message)
-    (let [thread-parent (find-message-with-ts messages (:message/thread-ts target-message))]
-      (format "@%s in reply to @%s, in #%s, %s | Clojurians Slack"
+(defn og-title [{:keys [request]
+                 :data/keys [title channel date target-message messages usernames] :as context}]
+  (let [app-title (:clojurians-log.application/title request)]
+    (cond
+      ;; Is the message part of a thread?
+      (thread-child? target-message)
+      (let [thread-parent (find-message-with-ts messages (:message/thread-ts target-message))]
+        (format "@%s in reply to @%s, in #%s, %s | %s"
+                (get-in target-message [:message/user :user/name])
+                (get-in thread-parent [:message/user :user/name])
+                (:channel/name channel)
+                date
+                app-title))
+
+      :else
+      (format "@%s in #%s, %s | %s"
               (get-in target-message [:message/user :user/name])
-              (get-in thread-parent [:message/user :user/name])
               (:channel/name channel)
-              date))
-
-    :else
-    (format "@%s in #%s, %s | Clojurians Slack"
-            (get-in target-message [:message/user :user/name])
-            (:channel/name channel)
-            date)))
+              date
+              app-title))))
 
 (defn fork-me-badge []
   [:a {:href "https://github.com/clojureverse/clojurians-log-app"}
-   [:img {:style "position: absolute; top: 0; right: 0; border: 0;"
-          :src "https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"
-          :alt "Fork me on GitHub"}]])
+   [:img.fork-me-on-github {:src "https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"
+                            :alt "Fork me on GitHub"}]])
 
 
 (defn path-for [context & args]
@@ -66,10 +75,10 @@
 (defn log-page-head [{:data/keys [title channel date target-message http-origin usernames] :as context}]
   (cond-> (page-head context)
     ;; Always add a canonical rel
-    :-> (conj [:link {:rel "canonical" :href (str origin (path-for context
-                                                                   :clojurians-log.routes/channel-date
-                                                                   {:channel (:channel/name channel)
-                                                                    :date date}))}])
+    :-> (conj [:link {:rel "canonical" :href (str http-origin (path-for context
+                                                                        :clojurians-log.routes/channel-date
+                                                                        {:channel (:channel/name channel)
+                                                                         :date date}))}])
 
     ;; Are we targeting a specific message in the log page?
     ;; If, add tags to enable open graph support.
@@ -113,9 +122,30 @@
     (nth channel-days $ nil)
     (first $)))
 
+(defn- channel-list [{:data/keys [date channels] :as context}]
+  [:div.listings_channels
+   [:h2.listings_header.listings_header_date date]
+   [:h2.listings_header "Channels"]
+   [:ul.channel_list
+    (for [{:channel/keys [name slack-id message-count]} channels]
+      [:li.channel
+       [:span.channel_name
+        [:a
+         {:href (path-for context
+                          :clojurians-log.routes/channel-date
+                          {:channel name
+                           :date date})}
+         [:span [:span.prefix "#"] " " name " (" message-count ")"]]]])]])
+
+(defn- log-page-sidebar [{:data/keys [channel date channel-days] :as context}]
+  [:div.sidebar.listings
+   [:div.app-title [:a {:href "/"} (get-in context [:request :clojurians-log.application/title])]]
+   [:p.disclaimer "This page is not created by, affiliated with, or supported by Slack Technologies, Inc."]
+   (channel-list context)
+   [:div.listings_direct-messages]])
+
 (defn- log-page-header [{:data/keys [channel date channel-days] :as context}]
   [:div.header
-   [:div.team-menu [:a {:href "/"} "Clojurians"]]
    [:div.channel-menu
     [:span.channel-menu_name [:span.channel-menu_prefix "#"] (:channel/name channel)]
     [:span.day-arrows
@@ -133,36 +163,24 @@
                              :date future-date})}
         [:div.day-next ">"]])]]])
 
-(defn- channel-list [{:data/keys [date channels] :as context}]
-  [:div.listings_channels
-   [:h2.listings_header.listings_header_date date]
-   [:h2.listings_header "Channels"]
-   [:ul.channel_list
-    (for [{:channel/keys [name slack-id message-count]} channels]
-      [:li.channel
-       [:span.channel_name
-        [:a
-         {:href (path-for context
-                          :clojurians-log.routes/channel-date
-                          {:channel name
-                           :date date})}
-         [:span [:span.prefix "#"] " " name " (" message-count ")"]]]])]])
-
 (defn- single-message
   "Returns the hiccup of a single message"
-  [{:data/keys [usernames channel date hostname emojis] :as context}
+  [{:keys [request]
+    :data/keys [usernames channel date hostname emojis]
+    :as context}
    {:message/keys [user inst user text thread-ts ts] :as message}]
 
   (let [{:user/keys         [name slack-id]
-         :user-profile/keys [image-48]} user]
+         :user-profile/keys [image-48]} user
+        slack-instance (:clojurians-log.application/slack-instance request)]
 
     ;; things in the profile
     ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
     ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
     (list [:div.message
            {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
-           [:a.message_profile-pic {:href (str "https://clojurians.slack.com/team/" slack-id) :style (str "background-image: url(" image-48 ");")}]
-           [:a.message_username {:href (str "https://clojurians.slack.com/team/" slack-id)} name]
+           [:a.message_profile-pic {:href (str slack-instance "/team/" slack-id) :style (str "background-image: url(" image-48 ");")}]
+           [:a.message_username {:href (str slack-instance "/team/" slack-id)} name]
            [:span.message_timestamp [:a {:rel  "nofollow"
                                          :href (path-for context
                                                          :clojurians-log.routes/message
@@ -192,21 +210,22 @@
   [:html
    (log-page-head context)
    [:body
-    (log-page-header context)
-    [:div.main
-     [:div.listings
-      [:p.disclaimer "This page is not created by, affiliated with, or supported by Slack Technologies, Inc."]
-      (channel-list context)
-      [:div.listings_direct-messages]]
-     (message-history context)]]])
+    (fork-me-badge)
+    [:div.content
+     (log-page-sidebar context)
+     [:div.main
+      (log-page-header context)
+      (message-history context)]]]])
 
 (defn- channel-page-html [{:data/keys [channel-days channel-name] :as context}]
-  [:html
+  [:html.channel-page
    (page-head context)
    [:body
+    (fork-me-badge)
     [:div.main
+     [:div.app-title [:a {:href "/"} (get-in context [:request :clojurians-log.application/title])]]
      [:h1 "Channel: #" channel-name]
-     [:ul
+     [:ul.channel-days
       (for [[day cnt] channel-days]
         [:li [:a {:href (path-for context
                                   :clojurians-log.routes/channel-date
@@ -215,13 +234,14 @@
               day " (" cnt ")"]])]]]])
 
 (defn- channel-list-page-html [{:data/keys [channels] :as context}]
-  [:html
+  [:html.channel-list-page
    (page-head context)
    [:body
     [:div.main
      (fork-me-badge)
+     [:div.app-title [:a {:href "/"} (get-in context [:request :clojurians-log.application/title])]]
      [:h1 "Channels"]
-     [:ul
+     [:ul.channel-index
       (for [{:channel/keys [name]} channels]
         [:li
          [:a {:href (path-for context
