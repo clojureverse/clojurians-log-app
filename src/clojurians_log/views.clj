@@ -39,7 +39,8 @@
    ;; with Compass and SASS. At some point I'd prefer to delete this and do the
    ;; styling over in clean Garden or Garden+Tachyons.
    (stylesheet "/css/legacy.css")
-   (stylesheet "/css/style.css")])
+   (stylesheet "/css/style.css")
+   (stylesheet "/css/gh-fork-ribbon.min.css")])
 
 (defn og-title [{:keys [request]
                  :data/keys [title channel date target-message messages usernames] :as context}]
@@ -63,9 +64,11 @@
               app-title))))
 
 (defn fork-me-badge []
-  [:a {:href "https://github.com/clojureverse/clojurians-log-app"}
-   [:img.fork-me-on-github {:src "https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"
-                            :alt "Fork me on GitHub"}]])
+  [:a.github-fork-ribbon
+   {:href "https://github.com/clojureverse/clojurians-log-app"
+    :data-ribbon "Fork me on GitHub"
+    :title "Fork me on GitHub"}
+   "Fork me on GitHub"])
 
 
 (defn path-for [context & args]

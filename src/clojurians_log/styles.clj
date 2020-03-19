@@ -39,13 +39,6 @@
    {:max-width "250px"
     :flex-shrink "0"}]
 
-  [:.fork-me-on-github
-   {:z-index -1
-    :position "absolute"
-    :top 0
-    :right 0
-    :border 0}]
-
   [:.channel-page
    [:.main
     {:margin "2rem"}]]
