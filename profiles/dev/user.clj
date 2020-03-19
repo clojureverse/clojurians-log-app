@@ -1,8 +1,14 @@
 (ns user
   (:require [reloaded.repl :as reloaded]))
 
-(reloaded/set-init! #((requiring-resolve 'clojurians-log.application/dev-system)
-                      ((requiring-resolve 'clojurians-log.config/config) :dev)))
+(defmacro jit [sym]
+  `(or (resolve '~sym)
+       (do
+         (-> '~sym namespace symbol require)
+         (resolve '~sym))))
+
+(reloaded/set-init! #((jit clojurians-log.application/dev-system)
+                      ((jit clojurians-log.config/config) :dev)))
 
 ;; Set up aliases so they don't accidentally
 ;; get scrubbed from the namespace declaration
@@ -17,7 +23,7 @@
   (get-in reloaded/system [:datomic :conn]))
 
 (defn db []
-  ((requiring-resolve 'clojurians-log.datomic/db) (conn)))
+  ((jit clojurians-log.datomic/db) (conn)))
 
 (defn update-cache-time! [new-cache-time]
   "Changes how long to ask http clients to cache each of the messages pages"
