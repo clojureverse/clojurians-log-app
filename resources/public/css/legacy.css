@@ -107,26 +107,6 @@ body {
 
 /* line 1, ../tests/sass/components/_header.scss */
 
-.app-title {
-    line-height: 2rem;
-    font-weight: 900;
-    /*cursor: pointer;*/
-    text-decoration: none;
-}
-.sidebar .app-title {
-    padding: 1rem 1rem;
-}
-
-.sidebar .app-title, .sidebar .app-title a {
-    color: #ffffff;
-    background: #3e313c;
-    border-bottom: 2px solid #372c36;
-}
-
-.app-title a:hover {
-    text-decoration: underline;
-}
-
 .channel-menu {
     margin-top: 1rem;
 }
