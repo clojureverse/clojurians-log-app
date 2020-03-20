@@ -261,7 +261,7 @@
           "# " name]])]]]])
 
 (defn- about-html [context]
-  [:html
+  [:html.about-page
    (page-head context)
    [:body
     (fork-me-badge)

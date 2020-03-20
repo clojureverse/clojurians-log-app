@@ -47,6 +47,10 @@
    [:.main
     {:margin "2rem"}]]
 
+  [:.about-page
+   [:.main
+    {:margin "2rem"}]]
+
   [:.channel-index
    :.channel-days
    [:li
