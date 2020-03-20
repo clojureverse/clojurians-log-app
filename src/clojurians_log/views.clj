@@ -277,7 +277,7 @@
      (:data/about-hiccup context)]]])
 
 (defn- sitemap-html [{:data/keys [channel-day-tuples] :as context}]
-  [:html
+  [:html.sitemap-page
    (page-head context)
    [:body
     (fork-me-badge)

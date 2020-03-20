@@ -51,6 +51,10 @@
    [:.main
     {:margin "2rem"}]]
 
+  [:.sitemap-page
+   [:.main
+    {:margin "2rem"}]]
+
   [:.channel-index
    :.channel-days
    [:li
