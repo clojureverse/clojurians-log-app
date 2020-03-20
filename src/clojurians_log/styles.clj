@@ -52,4 +52,25 @@
    [:li
     {:margin "0.3rem 0"
      :font-size "1.2rem"}]]
+
+  [:.app-title
+   {:line-height "2rem"
+    :font-weight 900
+    :text-decoration "none"}]
+
+  [:.sidebar
+   [:.app-title
+    {:padding "1rem 1rem"}]]
+
+  [:.sidebar
+   [:.app-title
+    ["" :a
+     {:color "#ffffff"
+      :background "#3e313c";
+      :border-bottom "2px solid #372c36"}]]]
+
+  [:.app-title
+   [:a:hover
+    {:text-decoration "underline"}]]
+
   )
