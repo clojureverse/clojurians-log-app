@@ -280,8 +280,11 @@
   [:html
    (page-head context)
    [:body
+    (fork-me-badge)
     [:div.main
-     (fork-me-badge)
+     [:div.app-title
+      [:a {:href "/"}
+       (get-in context [:request :clojurians-log.application/title])]]
      [:h1 "Sitemap"]
      [:ul
       (for [[{:channel/keys [name]} channel-days] channel-day-tuples]
