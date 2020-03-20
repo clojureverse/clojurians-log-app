@@ -283,16 +283,14 @@
     [:div.main
      (fork-me-badge)
      [:h1 "Sitemap"]
-     (if (seq channel-day-tuples)
-       [:ul
-        (for [[{:channel/keys [name]} channel-days] channel-day-tuples]
-          (for [[day cnt] channel-days]
-            [:li [:a {:href (path-for context
-                                      :clojurians-log.routes/channel-date
-                                      {:channel name
-                                       :date day})}
-                  "# " name " " day " (" cnt ")"]]))]
-       [:p "no data loaded"])]]])
+     [:ul
+      (for [[{:channel/keys [name]} channel-days] channel-day-tuples]
+        (for [[day cnt] channel-days]
+          [:li [:a {:href (path-for context
+                                    :clojurians-log.routes/channel-date
+                                    {:channel name
+                                     :date day})}
+                "# " name " " day " (" cnt ")"]]))]]]])
 
 (defn log-page [context]
   (assoc context :response/html (log-page-html context)))
