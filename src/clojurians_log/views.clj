@@ -264,9 +264,11 @@
   [:html
    (page-head context)
    [:body
+    (fork-me-badge)
     [:div.main
-     (fork-me-badge)
-     [:h1 "About Clojurians Slack Log"]
+     [:div.app-title
+      [:a {:href "/"}
+       (get-in context [:request :clojurians-log.application/title])]]
      [:table {:style {:width "50%"}}
       [:tr
        [:td
