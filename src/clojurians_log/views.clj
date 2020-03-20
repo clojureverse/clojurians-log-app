@@ -16,12 +16,14 @@
   [messages ts]
   (some #(when (= (:message/ts %) ts) %) messages))
 
+
 (defn stylesheet [path]
-  (let [ts (.lastModified (io/file (io/resource (str "public" path))))]
-    [:link
-     {:href (str path "?version=" ts)
-      :rel "stylesheet"
-      :type "text/css"}] ))
+  (when-let [f (io/file (io/resource (str "public" path)))]
+    (let [ts (.lastModified f)]
+      [:link
+       {:href (str path "?version=" ts)
+        :rel "stylesheet"
+        :type "text/css"}] )))
 
 (defn page-head [{:data/keys [title]}]
   [:head
