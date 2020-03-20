@@ -247,10 +247,15 @@
      [:table
       [:tr
        [:td
-        [:div.app-title [:a {:href "/"} (get-in context [:request :clojurians-log.application/title])]]]
+        [:div.app-title
+         [:a {:href "/"}
+          (get-in context [:request :clojurians-log.application/title])]]]
        [:td.padding-15px
         [:a {:href (path-for context :clojurians-log.routes/about)}
-         "About"]]]]
+         "About"]]
+       [:td.padding-15px
+        [:a {:href (path-for context :clojurians-log.routes/sitemap)}
+         "Sitemap"]]]]
      [:h1 "Channels"]
      [:ul.channel-index
       (for [{:channel/keys [name]} channels]
@@ -271,6 +276,24 @@
        (get-in context [:request :clojurians-log.application/title])]]
      (:data/about-hiccup context)]]])
 
+(defn- sitemap-html [{:data/keys [channel-day-tuples] :as context}]
+  [:html
+   (page-head context)
+   [:body
+    [:div.main
+     (fork-me-badge)
+     [:h1 "Sitemap"]
+     (if (seq channel-day-tuples)
+       [:ul
+        (for [[{:channel/keys [name]} channel-days] channel-day-tuples]
+          (for [[day cnt] channel-days]
+            [:li [:a {:href (path-for context
+                                      :clojurians-log.routes/channel-date
+                                      {:channel name
+                                       :date day})}
+                  "# " name " " day " (" cnt ")"]]))]
+       [:p "no data loaded"])]]])
+
 (defn log-page [context]
   (assoc context :response/html (log-page-html context)))
 
@@ -282,3 +305,6 @@
 
 (defn about [context]
   (assoc context :response/html (about-html context)))
+
+(defn sitemap [context]
+  (assoc context :response/html (sitemap-html context)))
