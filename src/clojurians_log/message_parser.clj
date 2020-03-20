@@ -262,10 +262,10 @@
           ;; re-bind/re-assign the values of `stack` and `result`.
           ;; The only convenient way seems to just do so through `recur`.
           (should-close-stack-top? stack cursor)
-          (let [[next-stack token next-cursor] (collapse-match-stack message stack cursor)]
+          (let [[next-stack token ^long next-cursor] (collapse-match-stack message stack cursor)]
             (recur (inc iteration)
-                   (or next-cursor
-                       last-cursor)
+                   (long (or next-cursor
+                             last-cursor))
                    matches
                    next-stack
                    (if token
@@ -275,7 +275,7 @@
           ;; The default thing to do is to push the item into the stack
           :else
           (recur (inc iteration)
-                 (:start (match-content-extents item))
+                 (long (:start (match-content-extents item)))
                  (rest matches)
                  (push-match-stack message stack last-cursor item)
                  (cond-> result
