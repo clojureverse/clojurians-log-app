@@ -286,7 +286,7 @@
       [:a {:href "/"}
        (get-in context [:request :clojurians-log.application/title])]]
      [:h1 "Sitemap"]
-     [:ul
+     [:ul.channel-index
       (for [[{:channel/keys [name]} channel-days] channel-day-tuples]
         (for [[day cnt] channel-days]
           [:li [:a {:href (path-for context
