@@ -269,23 +269,7 @@
      [:div.app-title
       [:a {:href "/"}
        (get-in context [:request :clojurians-log.application/title])]]
-     [:table {:style {:width "50%"}}
-      [:tr
-       [:td
-        "One of the main on-line hangouts for Clojure people is the "
-        [:a {:href "http://clojurians.net"} "Clojurians Slack community"]
-        ". Unfortunately it suffers from its popularity. Slack will only retain the last 10,000 messages of history, that is less than two weeks of logs. A lot of valuable information is in that chat history. The Clojureverse team has decided to set up this service so that the logs aren’t lost in time."]]
-      [:tr
-       [:td
-        "If some channel is not logging, it's probably because @logbot isn't receiving its messages. Feel free to invite @logbot to a channel to start logging."]]
-      [:tr
-       [:td
-        "The source code is in "
-        [:a {:href "https://github.com/clojureverse/clojurians-log-app"}
-         "this"] " github repo, you are welcome to contribute."]]
-      [:tr
-       [:td
-        "The hosting of Clojurians Slack Log is kindly donated by " [:a {:href "https://www.exoscale.com"} "Exoscale."]]]]]]])
+     (:data/about-hiccup context)]]])
 
 (defn log-page [context]
   (assoc context :response/html (log-page-html context)))

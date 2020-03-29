@@ -27,7 +27,8 @@
          org.julienxx/clj-slack    {:mvn/version "0.6.3"}
 
          lambdaisland/repl-tools {:mvn/version "0.1.0"}
-         reloaded.repl           {:mvn/version "0.2.4"}}
+         reloaded.repl           {:mvn/version "0.2.4"}
+         markdown-to-hiccup {:mvn/version "0.6.2"}}
 
  :aliases {:dev {:extra-paths ["profiles/dev"]
                  :extra-deps  {vvvvalvalval/scope-capture  {:mvn/version "0.3.2"}
