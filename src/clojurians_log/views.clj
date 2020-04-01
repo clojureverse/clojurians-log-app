@@ -244,7 +244,13 @@
    [:body
     [:div.main
      (fork-me-badge)
-     [:div.app-title [:a {:href "/"} (get-in context [:request :clojurians-log.application/title])]]
+     [:table
+      [:tr
+       [:td
+        [:div.app-title [:a {:href "/"} (get-in context [:request :clojurians-log.application/title])]]]
+       [:td.padding-15px
+        [:a {:href (path-for context :clojurians-log.routes/about)}
+         "About"]]]]
      [:h1 "Channels"]
      [:ul.channel-index
       (for [{:channel/keys [name]} channels]
@@ -254,6 +260,17 @@
                               {:channel name})}
           "# " name]])]]]])
 
+(defn- about-html [context]
+  [:html.about-page
+   (page-head context)
+   [:body
+    (fork-me-badge)
+    [:div.main
+     [:div.app-title
+      [:a {:href "/"}
+       (get-in context [:request :clojurians-log.application/title])]]
+     (:data/about-hiccup context)]]])
+
 (defn log-page [context]
   (assoc context :response/html (log-page-html context)))
 
@@ -262,3 +279,6 @@
 
 (defn channel-list-page [context]
   (assoc context :response/html (channel-list-page-html context)))
+
+(defn about [context]
+  (assoc context :response/html (about-html context)))

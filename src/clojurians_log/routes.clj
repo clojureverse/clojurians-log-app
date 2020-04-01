@@ -8,6 +8,7 @@
             [clojurians-log.time-util :as time-util]
             [java-time :as jt]
             [clojurians-log.datomic :as d]
+            [markdown-to-hiccup.core :as m]
             [ring.util.response :refer [response]]
             [reitit.core :as reitit]
             [reitit.ring]
@@ -120,9 +121,23 @@
         add-cache-control-header
         response/render)))
 
+(defn about-route [request]
+  (-> request
+      make-context
+      (assoc :data/about-hiccup
+             (-> "clojurians-log/about.md"
+                 io/resource
+                 slurp
+                 (m/md->hiccup {:encode? true})
+                 (m/component)))
+      views/about
+      response/render))
+
 (def routes
   [["/" {:name :clojurians-log.routes/index
          :get index-route}]
+   ["/x/x/x/about" {:name :clojurians-log.routes/about
+                    :get about-route}]
    ["/x/x/x/healthcheck" {:name :clojurians-log.routes/healthcheck,
                           :get healthcheck-route}]
    ["/{channel}" {:name :clojurians-log.routes/channel,

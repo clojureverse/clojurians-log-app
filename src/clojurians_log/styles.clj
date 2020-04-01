@@ -47,6 +47,10 @@
    [:.main
     {:margin "2rem"}]]
 
+  [:.about-page
+   [:.main
+    {:margin "2rem"}]]
+
   [:.channel-index
    :.channel-days
    [:li
@@ -72,5 +76,8 @@
   [:.app-title
    [:a:hover
     {:text-decoration "underline"}]]
+
+  [:.padding-15px
+   {:padding "15px"}]
 
   )
