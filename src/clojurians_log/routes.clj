@@ -141,7 +141,7 @@
                (for [{:channel/keys [name] :as channel} (queries/channel-list db)]
                  [channel (queries/channel-days db name)]))
         views/sitemap
-        response/render)))
+        response/xml-render)))
 
 (def routes
   [["/" {:name :clojurians-log.routes/index

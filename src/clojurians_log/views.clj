@@ -276,24 +276,17 @@
        (get-in context [:request :clojurians-log.application/title])]]
      (:data/about-hiccup context)]]])
 
-(defn- sitemap-html [{:data/keys [channel-day-tuples] :as context}]
-  [:html.sitemap-page
-   (page-head context)
-   [:body
-    (fork-me-badge)
-    [:div.main
-     [:div.app-title
-      [:a {:href "/"}
-       (get-in context [:request :clojurians-log.application/title])]]
-     [:h1 "Sitemap"]
-     [:ul.channel-index
-      (for [[{:channel/keys [name]} channel-days] channel-day-tuples]
-        (for [[day cnt] channel-days]
-          [:li [:a {:href (path-for context
-                                    :clojurians-log.routes/channel-date
-                                    {:channel name
-                                     :date day})}
-                "# " name " " day " (" cnt ")"]]))]]]])
+(defn- sitemap-xml [{:data/keys [channel-day-tuples] :as context}]
+  [:urlset {:xmlns "http://www.sitemaps.org/schemas/sitemap/0.9"}
+   (for [[{:channel/keys [name]} channel-days] channel-day-tuples]
+     (for [[day cnt] channel-days]
+       [:url
+        [:loc (str "https://clojurians-log.clojureverse.org"
+                   (path-for context
+                             :clojurians-log.routes/channel-date
+                             {:channel name
+                              :date day}))]
+        [:lastmod day]]))])
 
 (defn log-page [context]
   (assoc context :response/html (log-page-html context)))
@@ -308,4 +301,4 @@
   (assoc context :response/html (about-html context)))
 
 (defn sitemap [context]
-  (assoc context :response/html (sitemap-html context)))
+  (assoc context :response/xml (sitemap-xml context)))
