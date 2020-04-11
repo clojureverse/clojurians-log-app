@@ -276,12 +276,12 @@
        (get-in context [:request :clojurians-log.application/title])]]
      (:data/about-hiccup context)]]])
 
-(defn- sitemap-xml [{:data/keys [channel-day-tuples] :as context}]
+(defn- sitemap-xml [{:data/keys [channel-day-tuples http-origin] :as context}]
   [:urlset {:xmlns "http://www.sitemaps.org/schemas/sitemap/0.9"}
    (for [[{:channel/keys [name]} channel-days] channel-day-tuples]
      (for [[day cnt] channel-days]
        [:url
-        [:loc (str "https://clojurians-log.clojureverse.org"
+        [:loc (str http-origin
                    (path-for context
                              :clojurians-log.routes/channel-date
                              {:channel name

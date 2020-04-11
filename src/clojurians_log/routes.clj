@@ -134,10 +134,12 @@
       response/render))
 
 (defn sitemap-route [{:keys [endpoint] :as request}]
-  (let [db (db-from-endpoint endpoint)]
+  (let [config @(get-in endpoint [:config :value])
+        db (db-from-endpoint endpoint)]
     (-> request
         make-context
-        (assoc :data/channel-day-tuples
+        (assoc :data/http-origin (get-in config [:http :origin])
+               :data/channel-day-tuples
                (for [{:channel/keys [name] :as channel} (queries/channel-list db)]
                  [channel (queries/channel-days db name)]))
         views/sitemap
