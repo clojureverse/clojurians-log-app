@@ -14,6 +14,13 @@
    :border-radius "20%"})
 
 (defstyles style
+  [:ol :ul {:list-style "none"}]
+
+  [:table {
+           :border-collapse "collapse"
+           :border-spacing 0
+           }]
+
 
   [:html :body :div :span :applet :object :iframe
    :h1 :h2 :h3 :h4 :h5 :h6 :p :blockquote :pre
@@ -112,5 +119,56 @@
 
   [:.padding-15px
    {:padding "15px"}]
+
+  [:.disclaimer
+   {:font-size "0.8rem"
+    :padding-left "1rem"
+    :padding-top "1rem"
+    :margin-right "17px"}]
+
+  [:.listings
+   {:height "100%"
+    :color "#ab9ba9"
+    :background-color "#4d394b"
+    :overflow-y "auto"
+    :overflow-x "hidden"
+    }]
+
+  [:.channel_list {:list-style-type "none"
+                   :text-align "left"
+                   :color "#ab9ba9"}]
+
+  [:.channel {:line-height "24px"
+              :-moz-border-radius-topright "0.25rem"
+              :-webkit-border-top-right-radius "0.25rem"
+              :border-top-right-radius "0.25rem"
+              :-moz-border-radius-bottomright "0.25rem"
+              :-webkit-border-bottom-right-radius "0.25rem"
+              :border-bottom-right-radius "0.25rem"
+              :margin-right "17px"
+              :color "#ffffff"
+              :padding-left "1rem"}]
+
+  [:.channel
+   [:a {:color "#ffffff"
+        :text-decoration "none"}]]
+
+  [:.channel
+   [:a:hover {:text-decoration "underline"}]]
+
+  [:.channel-menu {:margin-top "1rem"}]
+
+  [:.channel-menu_name
+   {:display "inline-block"
+    :padding "0 .5rem 0 2.5rem"
+    :color "#555459"
+    :font-size "1.4rem"
+    :font-weight "900"
+    :cursor "pointer"}]
+
+  [:.channel-menu_prefix
+   {:color "#9e9ea6"
+    :padding-right ".1rem"
+    :font-weight "500"}]
 
   )
