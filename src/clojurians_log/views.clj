@@ -37,10 +37,6 @@
              :rel "stylesheet",
              :type "text/css"}]
 
-   ;; This one is just copied over from the static site, seems it was generated
-   ;; with Compass and SASS. At some point I'd prefer to delete this and do the
-   ;; styling over in clean Garden or Garden+Tachyons.
-   (stylesheet "/css/legacy.css")
    (stylesheet "/css/style.css")
    (stylesheet "/css/gh-fork-ribbon.min.css")])
 
