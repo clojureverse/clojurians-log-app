@@ -371,6 +371,10 @@
    [:.main
     {:margin "2rem"}]]
 
+  [:.sitemap-page
+   [:.main
+    {:margin "2rem"}]]
+
   [:.channel-index
    :.channel-days
    [:li
@@ -398,6 +402,6 @@
     {:text-decoration "underline"}]]
 
   [:.padding-15px
-   {:padding "15px"}]
+   {:padding-left "15px"}]
 
   )

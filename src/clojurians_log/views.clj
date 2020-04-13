@@ -243,10 +243,15 @@
      [:table
       [:tr
        [:td
-        [:div.app-title [:a {:href "/"} (get-in context [:request :clojurians-log.application/title])]]]
+        [:div.app-title
+         [:a {:href "/"}
+          (get-in context [:request :clojurians-log.application/title])]]]
        [:td.padding-15px
         [:a {:href (path-for context :clojurians-log.routes/about)}
-         "About"]]]]
+         "About"]]
+       [:td.padding-15px
+        [:a {:href (path-for context :clojurians-log.routes/sitemap)}
+         "Sitemap"]]]]
      [:h1 "Channels"]
      [:ul.channel-index
       (for [{:channel/keys [name]} channels]
@@ -267,6 +272,18 @@
        (get-in context [:request :clojurians-log.application/title])]]
      (:data/about-hiccup context)]]])
 
+(defn- sitemap-xml [{:data/keys [channel-day-tuples http-origin] :as context}]
+  [:urlset {:xmlns "http://www.sitemaps.org/schemas/sitemap/0.9"}
+   (for [[{:channel/keys [name]} channel-days] channel-day-tuples]
+     (for [[day cnt] channel-days]
+       [:url
+        [:loc (str http-origin
+                   (path-for context
+                             :clojurians-log.routes/channel-date
+                             {:channel name
+                              :date day}))]
+        [:lastmod day]]))])
+
 (defn log-page [context]
   (assoc context :response/html (log-page-html context)))
 
@@ -278,3 +295,6 @@
 
 (defn about [context]
   (assoc context :response/html (about-html context)))
+
+(defn sitemap [context]
+  (assoc context :response/xml (sitemap-xml context)))

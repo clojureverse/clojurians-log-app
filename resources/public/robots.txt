@@ -9,3 +9,5 @@ Disallow: /
 
 User-agent: linkdexbot/2.0
 Disallow: /
+
+Sitemap: https://clojurians-log.clojureverse.org/x/x/x/sitemap
