@@ -42,7 +42,4 @@
   (use 'clojurians-log.repl)
   (load-demo-data! "../clojurians-log-demo-data")
 
-  (use 'greenhouse.css)
-  (css->garden "ol, ul {list-style: none;}")
-
   )
