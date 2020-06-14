@@ -1,3 +1,4 @@
 #!/bin/sh
 
-clojure -A:dev:datomic-cloud -m garden-watcher.main clojurians-log.styles
+# clojure $CLOJURE_OPTS -A:dev:datomic-cloud -m garden-watcher.main clojurians-log.styles
+clojure $CLOJURE_OPTS -A:dev:datomic-pro:postgresql -m garden-watcher.main clojurians-log.styles

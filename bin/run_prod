@@ -1,3 +1,4 @@
 #!/bin/sh
 
-clojure $CLOJURE_OPTS -A:datomic-cloud -m clojurians-log.application "$@"
+#clojure $CLOJURE_OPTS -A:datomic-cloud -m clojurians-log.application "$@"
+clojure $CLOJURE_OPTS -A:datomic-pro:postgresql -m clojurians-log.application "$@"
