@@ -13,6 +13,8 @@
    :text-align :center
    :border-radius "20%"})
 
+(def header-height "2rem")
+
 (defstyles style
   [:html :body :div :span :applet :object :iframe :h1 :h2
    :h3 :h4 :h5 :h6 :p :blockquote :pre :a :abbr :acronym
@@ -81,7 +83,7 @@
 
   [:body {:height "100%", :width "100%", :margin "0"}]
 
-  [:.header {:height "2rem", :width "100%"}]
+  [:.header {:height header-height, :width "100%"}]
 
   [:.main {:height "100%", :width "100%"}]
 
@@ -115,7 +117,7 @@
   [:.message-history
    {:overflow-y "auto",
     :overflow-x "hidden",
-    :height "100%",
+    :height (format "calc(100%% - %s)" header-height),
     :margin-left "2rem"}]
 
   [:.listings_channels {:margin "1rem 0 2rem"}]
