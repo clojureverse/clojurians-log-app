@@ -187,6 +187,7 @@
   result
 
   (def result (load-files! (drop 1508 (log-files))))
+  (def rrr (load-files! (filter #(and (.contains (str %) "2020-08") (.contains (str %) "backfill")) (log-files))))
 
   (while (not (realized? (second result)))
     (println (java.util.Date.) "\t" @(first result))
