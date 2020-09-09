@@ -1,6 +1,6 @@
 {:paths ["src" "resources" "test"]
- :deps  {org.clojure/data.json {:mvn/version "0.2.7"}
-         org.clojure/clojure   {:mvn/version "1.10.1"}
+ :deps  {org.clojure/data.json  {:mvn/version "0.2.7"}
+         org.clojure/clojure    {:mvn/version "1.10.1"}
          org.clojure/core.async {:mvn/version "0.7.559"}
 
          environ/environ            {:mvn/version "1.1.0"}
@@ -20,11 +20,11 @@
          prone/prone                           {:mvn/version "2020-01-17"}
          clj-logging-config/clj-logging-config {:mvn/version "1.9.12"}
 
-         clojure.java-time/clojure.java-time   {:mvn/version "0.3.2"}
-         com.cemerick/url          {:mvn/version "0.1.1"}
-         com.cognitect/transit-clj {:mvn/version "0.8.319"}
-         clj-http/clj-http         {:mvn/version "3.10.0"}
-         org.julienxx/clj-slack    {:mvn/version "0.6.3"}
+         clojure.java-time/clojure.java-time {:mvn/version "0.3.2"}
+         com.cemerick/url                    {:mvn/version "0.1.1"}
+         com.cognitect/transit-clj           {:mvn/version "0.8.319"}
+         clj-http/clj-http                   {:mvn/version "3.10.0"}
+         org.julienxx/clj-slack              {:mvn/version "0.6.3"}
 
          lambdaisland/repl-tools               {:mvn/version "0.1.0"}
          reloaded.repl/reloaded.repl           {:mvn/version "0.2.4"}
