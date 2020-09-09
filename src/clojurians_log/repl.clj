@@ -19,6 +19,7 @@
    (uncaughtException [_ thread throwable]
      (println (.getMessage throwable)))))
 
+
 (defn read-edn [filepath]
   (-> filepath
       slurp
@@ -36,6 +37,9 @@
   Not 100% kosher but remember this is not production code as such."
   []
   (get-in (app/system) [:datomic :conn]))
+
+(defn db []
+  (d/db (conn)))
 
 (defn load-slack-data!
   "Import Slack users, Channels, and custom emojis."
@@ -182,9 +186,12 @@
 (comment
   ;; rlwrap nc localhost 50505
   (use 'clojurians-log.repl)
+  (in-ns 'clojurians-log.repl)
   (load-slack-data!)
   (def result (load-files! (log-files)))
   result
+
+  (load-files! [f])
 
   (def result (load-files! (drop 1508 (log-files))))
   (def rrr (load-files! (filter #(and (.contains (str %) "2020-08") (.contains (str %) "backfill")) (log-files))))
