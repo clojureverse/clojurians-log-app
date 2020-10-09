@@ -33,6 +33,8 @@
          (constantly new-cache-time))
   true)
 
+(defn browse []
+  ((jit clojure.java.browse/browse-url) (str "http://localhost:" (get-in @(jit clojurians-log.application/config) [:http :port]))))
 
 (comment
 
