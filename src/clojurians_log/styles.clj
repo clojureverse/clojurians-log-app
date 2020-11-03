@@ -117,7 +117,7 @@
   [:.message-history
    {:overflow-y "auto",
     :overflow-x "hidden",
-    :height (format "calc(100%% - %s)" header-height),
+    :height "calc(100%% - 3rem)" ;; 2rem .header height + 1rem .channel-menu margin
     :margin-left "2rem"}]
 
   [:.listings_channels {:margin "1rem 0 2rem"}]
@@ -182,6 +182,9 @@
     :margin-top ".5rem",
     :padding ".25rem 2rem .1rem 3rem",
     :min-height "36px"}]
+
+  [:.message:last-child
+   {:margin-bottom "3rem"}] ;; allow scrolling a little beyond the last message
 
   [:.message_profile-pic
    {:width "36px",
