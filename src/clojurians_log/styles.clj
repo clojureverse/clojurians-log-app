@@ -117,7 +117,7 @@
   [:.message-history
    {:overflow-y "auto",
     :overflow-x "hidden",
-    :height "calc(100%% - 3rem)" ;; 2rem .header height + 1rem .channel-menu margin
+    :height "calc(100% - 3rem)" ;; 2rem .header height + 1rem .channel-menu margin
     :margin-left "2rem"}]
 
   [:.listings_channels {:margin "1rem 0 2rem"}]
