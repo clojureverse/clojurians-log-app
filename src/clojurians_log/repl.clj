@@ -90,11 +90,11 @@
   [directory]
   (if-not (conn)
     (println "Can't find Datomic connection. Make sure the system is up and running with (user/go).")
-    (doseq [users (->> "/users.edn"
-                       (str directory)
+    (doseq [users (->> (io/file directory "users.edn")
                        slurp
                        edn/read-string
                        (partition-all 1000))]
+
       @(d/transact (conn) users)))
   @(d/transact (conn) (edn/read-string (slurp (str directory "/channels.edn"))))
   (run! load-log-file! (log-files (java.io.File. directory "logs")))
@@ -208,8 +208,8 @@
 
 
   (do
-    (write-edn "users.edn" (slack/users))
-    (write-edn "channels.edn" (slack/channels)))
+    (write-edn "users.edn" (map import/user->tx (slack/users)))
+    (write-edn "channels.edn" (map import/channel->tx (slack/channels))))
 
   (time
    (do

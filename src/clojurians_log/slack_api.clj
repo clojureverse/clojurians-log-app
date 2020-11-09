@@ -48,15 +48,15 @@
 
 (def users (wrap-paginate
             :members
-            (partial
-             (wrap-rate-limit slack-list-users)
-             (slack-conn))))
+            (let [users (wrap-rate-limit slack-list-users)]
+              (fn [& args]
+                (apply users (slack-conn) args)))))
 
 (def channels (wrap-paginate
                :channels
-               (partial
-                (wrap-rate-limit slack-channels/list)
-                (slack-conn))))
+               (let [channels (wrap-rate-limit slack-channels/list)]
+                 (fn [& args]
+                   (apply channels (slack-conn) args)))))
 
 (defn emoji []
   (:emoji (slack-emoji/list (slack-conn))))
