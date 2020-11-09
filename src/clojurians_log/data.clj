@@ -36,26 +36,6 @@
            line-seq
            (map json/read-json)))
 
-(defn channel-messages [channel-id date]
-  (some->> (event-seq (io/resource (str "logs/" date ".txt")))
-           (sequence
-            (comp
-             (filter #(and (= "message" (:type %))
-                           (nil? (:subtype %))
-                           (= channel-id (:channel %))))
-             (map coerce-message)))))
-;; TODO handle message_changed and message_deleted messages
-
-(defn load-channel-messages [{:keys [request] :as context}]
-  (let [{:keys [channel date]} (:params request)
-        {channel-id :id :as channel} (channel-by-name channel)
-        messages (channel-messages channel-id date)]
-    (assoc context
-           :data/channel channel
-           :data/messages messages
-           :data/date date)))
-
-
 (defn log-files []
   (file-seq (io/file (io/resource "logs"))))
 

@@ -160,6 +160,3 @@
                          :get log-route}]
    ["/{channel}/{date}/{ts}" {:name :clojurians-log.routes/message,
                               :get log-route}]])
-
-(comment
-  (data/load-channel-messages {:request {:params {:channel "clojure" :year "2017" :month "01" :day "01"}}}))
