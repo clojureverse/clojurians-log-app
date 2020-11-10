@@ -1,96 +1,96 @@
 (ns clojurians-log.message-parser-test
-  (:require [clojurians-log.message-parser :refer [parse2] :as sut]
+  (:require [clojurians-log.message-parser :as mp]
             [clojure.test :refer :all]))
 
 (deftest test-parse2
   (testing "basic messages"
     (is (= [[:undecorated "This is a normal message"]]
-           (parse2 "This is a normal message")))
+           (mp/parse2 "This is a normal message")))
     (is (= [[:user-id "U4F2A0Z8ER"]]
-           (parse2 "<@U4F2A0Z8ER>")))
+           (mp/parse2 "<@U4F2A0Z8ER>")))
     (is (= [[:channel-id "C4F2A26SGSHBW"]]
-           (parse2 "<#C4F2A26SGSHBW>")))
+           (mp/parse2 "<#C4F2A26SGSHBW>")))
     (is (= [[:channel-id "C03S1L9DN" "clojurescript"]]
-           (parse2 "<#C03S1L9DN|clojurescript>")))
+           (mp/parse2 "<#C03S1L9DN|clojurescript>")))
     (is (= [[:inline-code "DateTime"]]
-           (parse2 "`DateTime`")))
+           (mp/parse2 "`DateTime`")))
     (is (= [[:code-block "(some clojure code)"]]
-           (parse2 "```(some clojure code)```")))
+           (mp/parse2 "```(some clojure code)```")))
     (is (= [[:bold "hey!"]]
-           (parse2 "*hey!*")))
+           (mp/parse2 "*hey!*")))
     (is (= [[:italic "hello"]]
-           (parse2 "_hello_")))
+           (mp/parse2 "_hello_")))
     (is (= [[:emoji "thumbsup"]]
-           (parse2 ":thumbsup:")))
+           (mp/parse2 ":thumbsup:")))
     (is (= [[:emoji "+1"]]
-           (parse2 ":+1:")))
+           (mp/parse2 ":+1:")))
     (is (= [[:emoji "-1"]]
-           (parse2 ":-1:")))
+           (mp/parse2 ":-1:")))
     (is (= [[:emoji "e-mail"]]
-           (parse2 ":e-mail:")))
+           (mp/parse2 ":e-mail:")))
     (is (= [[:bold "hi!"] [:undecorated " "] [:emoji "smiles"]]
-           (parse2 "*hi!* :smiles:")))
+           (mp/parse2 "*hi!* :smiles:")))
     (is (= [[:undecorated "12:34:56:78:90:12:34:56:78:90:12:34:56:78:90:12"]]
-           (parse2 "12:34:56:78:90:12:34:56:78:90:12:34:56:78:90:12")))
+           (mp/parse2 "12:34:56:78:90:12:34:56:78:90:12:34:56:78:90:12")))
     (is (= [[:strike-through "strike-through"]]
-           (parse2 "~strike-through~")))
+           (mp/parse2 "~strike-through~")))
     (is (= [[:undecorated "just_some_snake_case"]]
-           (parse2 "just_some_snake_case")))
+           (mp/parse2 "just_some_snake_case")))
     (is (= [[:url "https://google.com"]]
-           (parse2 "<https://google.com>")))
+           (mp/parse2 "<https://google.com>")))
     (is (= [[:undecorated "from: "]
             [:url "https://google.com"]]
-           (parse2 "from: <https://google.com>")))
+           (mp/parse2 "from: <https://google.com>")))
     (is (= [[:undecorated "&<>"]]
-           (parse2 "&amp;&lt;&gt;"))))
+           (mp/parse2 "&amp;&lt;&gt;"))))
 
   (testing "nested regions"
     ;; Basic case
     (is (= [[:bold "hello"]]
-           (parse2 "*hello*")))
+           (mp/parse2 "*hello*")))
 
     ;; two unrelated regions
     (is (= [[:italic "hello"] [:undecorated " "] [:bold "world"]]
-           (parse2 "_hello_ *world*")))
+           (mp/parse2 "_hello_ *world*")))
 
     ;; single nested case
     (is (= [[:italic [:bold "hello"]]]
-           (parse2 "_*hello*_")))
+           (mp/parse2 "_*hello*_")))
 
     ;; undecorated text outside regions
     (is (= [[:bold "hello"] [:undecorated " world again"]]
-           (parse2 "*hello* world again")))
+           (mp/parse2 "*hello* world again")))
 
     (is (= [[:undecorated "hello "] [:bold "world"] [:undecorated " again"]]
-           (parse2 "hello *world* again")))
+           (mp/parse2 "hello *world* again")))
 
     (is (= [[:undecorated "hello world "] [:bold "again"]]
-           (parse2 "hello world *again*")))
+           (mp/parse2 "hello world *again*")))
 
     ;; undecorated text inside regions
     (is (= [[:italic [[:bold "hello"] [:undecorated " world"]]]]
-           (parse2 "_*hello* world_")))
+           (mp/parse2 "_*hello* world_")))
 
     (is (= [[:italic [[:undecorated "hello "] [:bold "world"]]]]
-           (parse2 "_hello *world*_")))
+           (mp/parse2 "_hello *world*_")))
 
     (is (= [[:italic [[:bold "hello"] [:undecorated " world again"]]]]
-           (parse2 "_*hello* world again_")))
+           (mp/parse2 "_*hello* world again_")))
 
     (is (= [[:italic [[:undecorated "hello "] [:bold "world"] [:undecorated " again"]]]]
-           (parse2 "_hello *world* again_")))
+           (mp/parse2 "_hello *world* again_")))
 
     (is (= [[:italic [[:undecorated "hello world "] [:bold "again"]]]]
-           (parse2 "_hello world *again*_")))
+           (mp/parse2 "_hello world *again*_")))
 
     ;; Two nested regions
     (is (= [[:italic [[:bold "hello"] [:undecorated " "] [:strike-through "world"]]]]
-           (parse2 "_*hello* ~world~_"))))
+           (mp/parse2 "_*hello* ~world~_"))))
 
   (testing "No nested regions inside a code block"
     (is (= [[:undecorated "Some text "]
             [:code-block "some code <#C03S1L9DN|clojurescript>"]]
-           (parse2 "Some text ```some code <#C03S1L9DN|clojurescript>```"))))
+           (mp/parse2 "Some text ```some code <#C03S1L9DN|clojurescript>```"))))
 
   (testing "putting it together"
     (let [message "Hey <@U4F2A0Z8ER>: here is the `my-ns.core` code ```
@@ -115,12 +115,12 @@ please respond in <#C346HE24SD>"]
               [:emoji "mindblown"]
               [:undecorated "\nplease respond in "]
               [:channel-id "C346HE24SD"]]
-             (parse2 message))))))
+             (mp/parse2 message))))))
 
 ;; Try out Slack message parsing at
 ;; https://api.slack.com/docs/messages/builder?msg=%7B%22text%22%3A%22xx1_%20*basic*%60%22%7D
 (deftest parse-test
-  (are [x y] (= y (parse2 x))
+  (are [x y] (= y (mp/parse2 x))
     "basic"              [[:undecorated "basic"]]
     "*bold*"             [[:bold "bold"]]
     "basic *bold* basic" [[:undecorated "basic "] [:bold "bold"] [:undecorated " basic"]]

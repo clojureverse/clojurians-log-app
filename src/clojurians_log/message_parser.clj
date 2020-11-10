@@ -326,8 +326,12 @@
          doall))
 
   (with-redefs-fn {#'parse2-inner (fn [_] (throw (ex-info "error" {})))}
-    (fn [] (let [data (clojurians-log.db.queries/channel-day-messages (user/db) "clojure" "2018-02-02")]
-            (->> data
-                 (map #(parse2 (:message/text %)))
-                 doall))))
+    (fn []
+      (let [data (clojurians-log.db.queries/channel-day-messages (user/db)
+                                                                 "clojure"
+                                                                 "2018-02-02")]
+        (->> data
+             (map #(parse2 (:message/text %)))
+             doall))))
+
   )
