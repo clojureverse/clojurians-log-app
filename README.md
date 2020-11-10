@@ -53,6 +53,12 @@ user=> (load-demo-data! "/path/to/clojurians-log-demo-data")
 ...
 ```
 
+Note for WSL users - please enter the below command in your terminal before running any of the above commands:
+
+```
+export CLOJURIANS_LOG_HOST="0.0.0.0"
+```
+
 You can see it in action at [http://localhost:4983](http://localhost:4983)
 
 ## Some tips on development

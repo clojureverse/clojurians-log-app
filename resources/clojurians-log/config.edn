@@ -7,6 +7,7 @@
                           :proxy-port    8182
                           :db-name       "clojurians_log"}}
  :http         {:port   #long #or [#env CLOJURIANS_LOG_PORT 4983]
+                :host   #or [#env CLOJURIANS_LOG_HOST "localhost"]
                 :origin #or [#env CLOJURIANS_LOG_HOSTNAME "http://localhost:4983"]}
  :slack        {:api-token #env SLACK_API_TOKEN
                 :log-dir   #env CLOJURIANS_LOG_DIR
