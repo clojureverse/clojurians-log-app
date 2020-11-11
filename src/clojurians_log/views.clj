@@ -42,7 +42,7 @@
 
 (defn og-title [{:keys [request]
                  :data/keys [title channel date target-message messages usernames] :as context}]
-  (let [app-title (:clojurians-log.application/title request)]
+  (let [app-title (get-in request [:config :application :title])]
     (cond
       ;; Is the message part of a thread?
       (thread-child? target-message)
@@ -140,7 +140,7 @@
 
 (defn- log-page-sidebar [{:data/keys [channel date channel-days] :as context}]
   [:div.sidebar.listings
-   [:div.app-title [:a {:href "/"} (get-in context [:request :clojurians-log.application/title])]]
+   [:div.app-title [:a {:href "/"} (get-in context [:request :config :application :title])]]
    [:p.disclaimer "This page is not created by, affiliated with, or supported by Slack Technologies, Inc."]
    (channel-list context)
    [:div.listings_direct-messages]])
@@ -224,7 +224,7 @@
    [:body
     (fork-me-badge)
     [:div.main
-     [:div.app-title [:a {:href "/"} (get-in context [:request :clojurians-log.application/title])]]
+     [:div.app-title [:a {:href "/"} (get-in context [:request :config :application :title])]]
      [:h1 "Channel: #" channel-name]
      [:ul.channel-days
       (for [[day cnt] channel-days]
@@ -245,7 +245,7 @@
        [:td
         [:div.app-title
          [:a {:href "/"}
-          (get-in context [:request :clojurians-log.application/title])]]]
+          (get-in context [:request :config :application :title])]]]
        [:td.padding-15px
         [:a {:href (path-for context :clojurians-log.routes/about)}
          "About"]]
@@ -269,8 +269,9 @@
     [:div.main
      [:div.app-title
       [:a {:href "/"}
-       (get-in context [:request :clojurians-log.application/title])]]
-     (:data/about-hiccup context)]]])
+       (get-in context [:request :config :application :title])]]
+     [:section#about
+      (:data/about-hiccup context)]]]])
 
 (defn- sitemap-xml [{:data/keys [channel-day-tuples http-origin] :as context}]
   [:urlset {:xmlns "http://www.sitemaps.org/schemas/sitemap/0.9"}

@@ -339,8 +339,6 @@
       :border "none",
       :color "inherit"}]]]
 
-  [:h1 {:text-decoration "underline"}]
-
   [:.day-arrows
    {:margin "1rem 0 0 1rem"}
 
@@ -409,4 +407,13 @@
   [:.padding-15px
    {:padding-left "15px"}]
 
+  [:#about
+   {:max-width "800px"}
+   [:h1 {:font-size "2rem"
+         :margin-top "1.66rem"
+         :margin-bottom "2.33rem"}]
+   [:p :ul {:margin-bottom "1em"
+            :line-height "1.33rem"}]
+   [:ul {:padding-left "1rem"}]
+   [:li {:list-style-type "disc"}]]
   )

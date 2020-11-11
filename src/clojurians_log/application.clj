@@ -33,7 +33,7 @@
                                      (fn [request]
                                        (handler (assoc request
                                                        :endpoint endpoint
-                                                       ::title (get-in cfg [:application :title])
+                                                       :config cfg
                                                        ::slack-instance (get-in cfg [:slack :instance])))))))
                    (component/using [:datomic :config]))
    :middleware (new-middleware {:middleware clojurians-log.config/middleware-stack})
