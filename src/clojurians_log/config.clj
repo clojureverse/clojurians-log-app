@@ -8,6 +8,10 @@
             [ring.middleware.logger :refer [wrap-with-logger]]
             [ring.middleware.session.memory :as mem]))
 
+(defmethod aero/reader 'resource
+  [_ tag value]
+  (io/resource value))
+
 (def session-store (mem/memory-store))
 
 (def site-defaults
