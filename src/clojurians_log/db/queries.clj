@@ -54,6 +54,8 @@
           :message/thread-ts
           {:message/user [:user/name
                           :user/slack-id
+                          :user-profile/real-name
+                          :user-profile/display-name
                           :user-profile/image-48]}]))
 
 (defn channel-day-messages [db chan-name day]
