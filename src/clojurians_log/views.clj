@@ -182,7 +182,7 @@
            {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
            [:a.message_profile-pic {:href (str slack-instance "/team/" slack-id) :style (str "background-image: url(" image-48 ");")}]
            [:a.message_username {:href (str slack-instance "/team/" slack-id)}
-            (first (filter #(not (clojure.string/blank? %)) [display-name real-name name]))]
+            (some #(when-not (str/blank? %) %) [display-name real-name name])]
            [:span.message_timestamp [:a {:rel  "nofollow"
                                          :href (path-for context
                                                          :clojurians-log.routes/message
