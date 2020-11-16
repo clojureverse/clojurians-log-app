@@ -86,6 +86,23 @@ user> (last-request)                     ;; See the last ring request handled
 user> (last-response)                    ;; See the last response the app generated
 ```
 
+### Tests
+
+We're using [Kaocha](https://github.com/lambdaisland/kaocha/) for our testing needs.
+
+You can run the tests by running the following command from the project root directory:
+
+```
+./bin/kaocha
+```
+
+You can also run tests from the repl. For example to run the tests inside `test/clojurians_log/views_test.clj`:
+
+```
+(use 'kaocha.repl)
+(run 'clojurians-log.views-test)
+```
+
 ## License
 
 Copyright © 2018-2020 Brasseur and contributors.
