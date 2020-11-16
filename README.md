@@ -45,8 +45,8 @@ user=> (go)
 ...
 Started clojurians-log on http://localhost:4983
 :started
-user=> (use 'clojurians-log.repl)
-user=> (load-demo-data! "/path/to/clojurians-log-demo-data")
+user=> (require '[clojurians-log.repl :as r])
+user=> (r/load-demo-data! "/path/to/clojurians-log-demo-data")
 /path/to/clojurians-log-demo-data/2018-02-01.txt
 /path/to/clojurians-log-demo-data/2018-02-02.txt
 /path/to/clojurians-log-demo-data/2018-02-03.txt
