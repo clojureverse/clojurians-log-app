@@ -99,8 +99,8 @@ You can run the tests by running the following command from the project root dir
 You can also run tests from the repl. For example to run the tests inside `test/clojurians_log/views_test.clj`:
 
 ```
-(use 'kaocha.repl)
-(run 'clojurians-log.views-test)
+(require '[kaocha.repl :as k])
+(k/run 'clojurians-log.views-test)
 ```
 
 ## License
