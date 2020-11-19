@@ -28,9 +28,9 @@
   (component/system-map
    :config     (->ValueComponent (atom cfg))
    :routes     (-> (new-endpoint (fn [endpoint]
-                                   (let [router (reitit.ring/router routes/routes)
-                                         handler (reitit.ring/ring-handler router)]
-                                     (fn [request]
+                                   (fn [request]
+                                     (let [router (reitit.ring/router routes/routes)
+                                           handler (reitit.ring/ring-handler router)]
                                        (handler (assoc request
                                                        :endpoint endpoint
                                                        :config cfg
