@@ -51,7 +51,6 @@ user=> (r/load-demo-data! "/path/to/clojurians-log-demo-data")
 /path/to/clojurians-log-demo-data/2018-02-02.txt
 /path/to/clojurians-log-demo-data/2018-02-03.txt
 ...
-```
 
 Note for WSL users - please enter the below command in your terminal before running any of the above commands:
 
@@ -59,7 +58,11 @@ Note for WSL users - please enter the below command in your terminal before runn
 export CLOJURIANS_LOG_HOST="0.0.0.0"
 ```
 
-You can see it in action at [http://localhost:4983](http://localhost:4983)
+You can see it in action at [http://localhost:4983](http://localhost:4983), or start a browser with
+
+```
+user=> (browse)
+```
 
 ## Some tips on development
 
