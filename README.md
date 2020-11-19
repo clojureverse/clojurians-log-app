@@ -52,6 +52,7 @@ user=> (r/load-demo-data! "/path/to/clojurians-log-demo-data")
 /path/to/clojurians-log-demo-data/2018-02-03.txt
 ...
 
+```
 Note for WSL users - please enter the below command in your terminal before running any of the above commands:
 
 ```
