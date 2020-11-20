@@ -122,7 +122,6 @@
         response/render)))
 
 (defn about-route [request]
-  (def request request)
   (-> request
       make-context
       (assoc :data/about-hiccup
@@ -137,7 +136,9 @@
   (-> request
       make-context
       (assoc :data/username
-             (get-in request [:path-params :user-id])) 
+             (get-in request [:path-params :user-id])
+            ;;  (queries/user-profile db (get-in request [:path-params :user-id]))
+             ) 
       views/user-profile-route
       response/render)
   )

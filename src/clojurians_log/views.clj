@@ -181,7 +181,8 @@
     (list [:div.message
            {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
            [:a.message_profile-pic {:href (str slack-instance "/team/" slack-id) :style (str "background-image: url(" image-48 ");")}]
-           [:a.message_username {:href (str slack-instance "/team/" slack-id)}
+           ;;[:a.message_username {:href (str slack-instance "/team/" slack-id)}
+           [:a.message_username {:href (str slack-instance "/users/x/x/" slack-id)} 
             (some #(when-not (str/blank? %) %) [display-name real-name name])]
            [:span.message_timestamp [:a {:rel  "nofollow"
                                          :href (path-for context

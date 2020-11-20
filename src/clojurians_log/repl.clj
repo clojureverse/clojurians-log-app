@@ -230,3 +230,47 @@
   "Elapsed time: 1535.355001 msecs"
   "Elapsed time: 2205.20762 msecs"
   )
+
+
+(comment
+  (require '[clojurians-log.db.queries :as queries])
+  
+  (d/q '[:find ?msg
+         :where
+         [?chan :channel/name "clojure"]
+         [?msg :message/channel ?chan]]
+       (db))
+  
+  
+  (d/q '[:find ?id ;;?username ?real-name ?is-admin ?is-owner
+         :in $ ?id
+         :where
+         [?user :user/slack-id ?id]
+        ;;  [?user :user/name ?username]
+        ;;  [?user :user/real-name ?real-name]
+        ;;  [?user :user/admin? ?is-admin]
+        ;;  [?user :user/owner? ?is-owner]
+        ;;  [?user :user/profile ?profile]
+         ]
+       (db)
+       "U04V15CAJ")
+  
+  (defn user-profile 
+  "returing all the data about the user acording to the is" 
+  [db id]
+   (d/q '[:find ?id ?username ?real-name ?is-admin ?is-owner
+          :in $ ?id
+          :where
+          [?user :user/slack-id ?id]
+          [?user :user/name ?username]
+          [?user :user/real-name ?real-name]
+          [?user :user/admin? ?is-admin]
+          [?user :user/owner? ?is-owner]
+        ;;  [?user :user/profile ?profile]
+          ]
+        (db)
+        id)
+    
+  (user-profile db "U04V15CAJ")
+    
+  )
