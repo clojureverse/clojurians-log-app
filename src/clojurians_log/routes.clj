@@ -122,6 +122,7 @@
         response/render)))
 
 (defn about-route [request]
+  (def request request)
   (-> request
       make-context
       (assoc :data/about-hiccup
@@ -131,6 +132,15 @@
                  (m/component)))
       views/about
       response/render))
+
+(defn user-profile-route [request]
+  (-> request
+      make-context
+      (assoc :data/username
+             (get-in request [:path-params :user-id])) 
+      views/user-profile-route
+      response/render)
+  )
 
 (defn sitemap-route [{:keys [endpoint] :as request}]
   (let [config @(get-in endpoint [:config :value])
@@ -158,4 +168,8 @@
    ["/{channel}/{date}" {:name :clojurians-log.routes/channel-date,
                          :get log-route}]
    ["/{channel}/{date}/{ts}" {:name :clojurians-log.routes/message,
-                              :get log-route}]])
+                              :get log-route}]
+   ["/users/x/x/{user-id}" {:name :clojurians-log.routes/user-profile-route, 
+                            :get user-profile-route}]
+   ]
+  )

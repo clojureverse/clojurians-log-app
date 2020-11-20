@@ -274,6 +274,17 @@
      [:section#about
       (:data/about-hiccup context)]]]])
 
+(defn- user-profile-html [context]
+  [:html.user-profile-page
+   [:body 
+    [:p 
+     (get-in context [:data/username])
+     ]
+    ]
+   ]
+  
+  )
+
 (defn- sitemap-xml [{:data/keys [channel-day-tuples http-origin] :as context}]
   [:urlset {:xmlns "http://www.sitemaps.org/schemas/sitemap/0.9"}
    (for [[{:channel/keys [name]} channel-days] channel-day-tuples]
@@ -297,6 +308,9 @@
 
 (defn about [context]
   (assoc context :response/html (about-html context)))
+
+(defn user-profile-route [context]
+  (assoc context :response/html (user-profile-html context)))
 
 (defn sitemap [context]
   (assoc context :response/xml (sitemap-xml context)))
