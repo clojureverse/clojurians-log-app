@@ -109,6 +109,23 @@
        db
        ids))
 
+(defn user-profile 
+  "returing all the data about the user acording to the is" 
+  [db id]
+   (d/q '[:find ?id ?username ?real-name ?is-admin ?is-owner
+          :in $ ?id
+          :where
+          [?user :user/slack-id ?id]
+          [?user :user/name ?username]
+          [?user :user/real-name ?real-name]
+          [?user :user/admin? ?is-admin]
+          [?user :user/owner? ?is-owner]
+        ;;  [?user :user/profile ?profile]
+          ]
+        (db)
+        id)
+  )
+
 (defn thread-messages
   "Retrieve all child messages for the given parent threads"
   [db parent-tss]
