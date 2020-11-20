@@ -137,6 +137,17 @@
                [?emoji :emoji/url ?url]]
              db)))
 
+(defn message-stats-between-days [db from-date to-date]
+  (d/q '[:find ?msg ?day
+         :in $ ?from-date ?to-date
+         :where
+         [?msg :message/day ?day]
+         [(> ?day ?from-date)]
+         [(< ?day ?to-date)]]
+       db
+       from-date
+       to-date))
+
 #_
 (doseq [v [#'clojurians-log.db.queries/user-names
            #'clojurians-log.db.queries/channel

@@ -286,6 +286,10 @@
                               :date day}))]
         [:lastmod day]]))])
 
+(defn- message-stats-page-html [{:data/keys [message-stats] :as context}]
+  [:div
+    (for [[a b] message-stats] [:p a b])])
+
 (defn log-page [context]
   (assoc context :response/html (log-page-html context)))
 
@@ -300,3 +304,6 @@
 
 (defn sitemap [context]
   (assoc context :response/xml (sitemap-xml context)))
+
+(defn message-stats-page [context]
+  (assoc context :response/html (message-stats-page-html context)))
