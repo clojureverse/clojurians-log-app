@@ -31,7 +31,7 @@
   "Attach thread messages as :message/children to their parent message"
   [messages thread-messages]
   (let [messages-by-thread-ts (group-by :message/thread-ts thread-messages)]
-    (map (fn[msg]
+    (map (fn [msg]
            (if-let [children (get messages-by-thread-ts (:message/ts msg))]
              (assoc msg :message/children children)
              msg))
@@ -132,16 +132,24 @@
       views/about
       response/render))
 
-(defn user-profile-route [request]
+#_(defn user-profile-route [request]
   (-> request
       make-context
       (assoc :data/username
-             (get-in request [:path-params :user-id])
-            ;;  (queries/user-profile db (get-in request [:path-params :user-id]))
-             ) 
+             (get-in request [:path-params :user-id]))
       views/user-profile-route
-      response/render)
-  )
+      response/render))
+
+(defn user-profile-route  [{:keys [endpoint] :as request}]
+    (def request request)
+    (let [db (db-from-endpoint endpoint)]
+      ;; (println @db)
+      (-> request
+          make-context
+          (assoc :data/username
+                 (queries/user-profile db (get-in request [:path-params :user-id])))
+          views/user-profile-route
+          response/render)))
 
 (defn sitemap-route [{:keys [endpoint] :as request}]
   (let [config @(get-in endpoint [:config :value])
@@ -162,15 +170,13 @@
                     :get about-route}]
    ["/x/x/x/sitemap" {:name :clojurians-log.routes/sitemap
                       :get sitemap-route}]
-   ["/x/x/x/healthcheck" {:name :clojurians-log.routes/healthcheck,
+   ["/x/x/x/healthcheck" {:name :clojurians-log.routes/healthcheck
                           :get healthcheck-route}]
-   ["/{channel}" {:name :clojurians-log.routes/channel,
+   ["/{channel}" {:name :clojurians-log.routes/channel
                   :get channel-history-route}]
-   ["/{channel}/{date}" {:name :clojurians-log.routes/channel-date,
+   ["/{channel}/{date}" {:name :clojurians-log.routes/channel-date
                          :get log-route}]
-   ["/{channel}/{date}/{ts}" {:name :clojurians-log.routes/message,
+   ["/{channel}/{date}/{ts}" {:name :clojurians-log.routes/message
                               :get log-route}]
-   ["/users/x/x/{user-id}" {:name :clojurians-log.routes/user-profile-route, 
-                            :get user-profile-route}]
-   ]
-  )
+   ["/users/x/x/{user-id}" {:name :clojurians-log.routes/user-profile-route
+                            :get user-profile-route}]])
