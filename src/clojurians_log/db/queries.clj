@@ -109,22 +109,6 @@
        db
        ids))
 
-#_(defn user-profile 
-  "returing all the data about the user acording to the is" 
-  [db id]
-   (d/q '[:find ?id ?username ?real-name ?is-admin ?is-owner
-          :in $ ?id
-          :where
-          [?user :user/slack-id ?id]
-          [?user :user/name ?username]
-          [?user :user/real-name ?real-name]
-          [?user :user/admin? ?is-admin]
-          [?user :user/owner? ?is-owner]
-        ;;  [?user :user/profile ?profile]
-          ]
-        (db)
-        id)
-  )
 (defn user-profile
     "returing all the data about the user acording to the user id slack number"
     [db id]
@@ -133,7 +117,7 @@
            :in $ ?id
            :where
            [?user :user/slack-id ?id]] 
-         (db)
+         db
          id))
 
 (defn thread-messages
