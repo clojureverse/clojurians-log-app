@@ -132,22 +132,14 @@
       views/about
       response/render))
 
-#_(defn user-profile-route [request]
-  (-> request
-      make-context
-      (assoc :data/username
-             (get-in request [:path-params :user-id]))
-      views/user-profile-route
-      response/render))
-
 (defn user-profile-route  [{:keys [endpoint] :as request}]
-    (def request request)
+    ;; (def request request)  
     (let [db (db-from-endpoint endpoint)]
-      ;; (println @db)
       (-> request
           make-context
-          (assoc :data/username
+          (assoc :data/username 
                  (queries/user-profile db (get-in request [:path-params :user-id])))
+          ;; (println :data/username)        
           views/user-profile-route
           response/render)))
 
