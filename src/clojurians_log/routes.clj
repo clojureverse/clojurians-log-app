@@ -145,12 +145,11 @@
         response/xml-render)))
 
 (defn message-stats-route [{:keys [endpoint] :as request}]
-  (let [config                    @(get-in endpoint [:config :value])
-        db (db-from-endpoint endpoint)
+  (let [config @(get-in endpoint [:config :value])
         {:keys [from-date to-date]} (:path-params request)]
     (-> request
         make-context
-        (assoc :data/message-stats (queries/message-stats-between-days db from-date to-date))
+        (assoc :data/message-stats (queries/message-stats-between-days from-date to-date))
         views/message-stats-page
         response/render)))
 

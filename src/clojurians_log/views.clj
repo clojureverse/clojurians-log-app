@@ -288,7 +288,18 @@
 
 (defn- message-stats-page-html [{:data/keys [message-stats] :as context}]
   [:div
-    (for [[a b] message-stats] [:p a b])])
+   [:h3 (str "Showing message stats between " 
+             (:day (first message-stats)) 
+             " to "
+             (:day (last message-stats)))]
+   [:table
+    [:thead
+     [:tr
+      [:th "Day"]
+      [:th "Message count"]]]
+    [:tbody
+     (for [day-stat message-stats] [:tr [:td (:day day-stat)] [:td (:msg-count day-stat)]])]]
+   [:h4 "Total message count: " (reduce #(+ %1 (:msg-count %2)) 0 message-stats)]])
 
 (defn log-page [context]
   (assoc context :response/html (log-page-html context)))
