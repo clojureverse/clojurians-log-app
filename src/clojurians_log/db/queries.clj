@@ -137,6 +137,24 @@
                [?emoji :emoji/url ?url]]
              db)))
 
+(defn unique-users-between-days [db from-day to-day]
+  (d/q '[:find (count ?user)
+         :in $ ?from-day ?to-day
+         :where
+         [?msg :message/user ?user]
+         [?msg :message/day ?day]
+         [(>= ?day ?from-day)]
+         [(<= ?day ?to-day)]]
+       db
+       from-day
+       to-day))
+
+(defn message-stats-between-days [from-day to-day]
+  (letfn [(day-chan-cnt [] (:day-chan-cnt @!indexes))
+          (day-total [day] (apply + (vals (get (day-chan-cnt) day))))
+          (days-total [days] (transduce (map day-total) + 0 days))]
+    (mapv #(hash-map :day % :msg-count (day-total %)) (time-util/range-of-days from-day to-day))))
+
 #_
 (doseq [v [#'clojurians-log.db.queries/user-names
            #'clojurians-log.db.queries/channel

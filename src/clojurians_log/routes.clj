@@ -144,6 +144,15 @@
         views/sitemap
         response/xml-render)))
 
+(defn message-stats-route [{:keys [endpoint] :as request}]
+  (let [config @(get-in endpoint [:config :value])
+        {:keys [from-date to-date]} (:path-params request)]
+    (-> request
+        make-context
+        (assoc :data/message-stats (queries/message-stats-between-days from-date to-date))
+        views/message-stats-page
+        response/render)))
+
 (def routes
   [["/" {:name :clojurians-log.routes/index
          :get index-route}]
@@ -158,4 +167,5 @@
    ["/{channel}/{date}" {:name :clojurians-log.routes/channel-date,
                          :get log-route}]
    ["/{channel}/{date}/{ts}" {:name :clojurians-log.routes/message,
-                              :get log-route}]])
+                              :get log-route}]
+   ["/_/stats/{from-date}/{to-date}" {:name :clojurians-log.routes/message-stats :get message-stats-route}]])
