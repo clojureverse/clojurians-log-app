@@ -143,8 +143,8 @@
          :where
          [?msg :message/user ?user]
          [?msg :message/day ?day]
-         [(> ?day ?from-day)]
-         [(< ?day ?to-day)]]
+         [(>= ?day ?from-day)]
+         [(<= ?day ?to-day)]]
        db
        from-day
        to-day))
