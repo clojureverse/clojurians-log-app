@@ -278,12 +278,13 @@
 (defn- user-profile-html [context]
   [:html.user-profile-page
    [:body 
-    [:p 
-     (get-in context [:data/username])
-     ]
+    (for [[k v]
+          (select-keys (get-in context [:data/username 0])
+                       [:user-profile/display-name :user-profile/real-name :user-profile/image-192 :user/slack-id])
+          :when (-> k)]
+      [:p [k v]])
     ]
    ]
-  
   )
 
 (defn- sitemap-xml [{:data/keys [channel-day-tuples http-origin] :as context}]

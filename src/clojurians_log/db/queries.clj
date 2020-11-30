@@ -112,13 +112,14 @@
 (defn user-profile
     "returing all the data about the user acording to the user id slack number"
     [db id]
-    (d/q '[:find
-           (pull ?user [*])
-           :in $ ?id
-           :where
-           [?user :user/slack-id ?id]] 
-         db
-         id))
+  (first
+ (d/q '[:find
+        (pull ?user [*])
+        :in $ ?id
+        :where
+        [?user :user/slack-id ?id]]
+      db
+      id)))
 
 (defn thread-messages
   "Retrieve all child messages for the given parent threads"
