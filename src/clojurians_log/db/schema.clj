@@ -140,14 +140,28 @@
 (def emoji-schema
   [{:db/ident       :emoji/shortcode
     :db/valueType   :db.type/string
-    :db/cardinality :db.cardinality/one}
+    :db/cardinality :db.cardinality/one
+    :db/unique      :db.unique/identity}
    {:db/ident       :emoji/url
     :db/valueType   :db.type/string
     :db/cardinality :db.cardinality/one}])
 
 (def reaction-schema
-  [#_{:db/ident :reaction/reaction
-      ,,,}])
+  [{:db/ident       :reaction/type
+    :db/valueType   :db.type/string
+    :db/cardinality :db.cardinality/one}
+   {:db/ident       :reaction/emoji
+    :db/valueType   :db.type/ref
+    :db/cardinality :db.cardinality/one}
+   {:db/ident       :reaction/ts
+    :db/valueType   :db.type/string
+    :db/cardinality :db.cardinality/one}
+   {:db/ident       :reaction/user
+    :db/valueType   :db.type/ref
+    :db/cardinality :db.cardinality/one}
+   {:db/ident       :reaction/message
+    :db/valueType   :db.type/ref
+    :db/cardinality :db.cardinality/one}])
 
 (def full-schema
   (concat message-schema
