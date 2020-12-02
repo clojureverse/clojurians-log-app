@@ -97,8 +97,11 @@
 (defmethod event->tx ["reaction_added" nil] [{:keys [user item reaction item_user event_ts ts]}]
   ;; Placeholder just to show that we're getting some data.
   ;; TODO: return Datomic transaction data to create a reaction entity
-  (println "+" reaction)
-  nil)
+  {:reaction/type "reaction_added"
+   :reaction/emoji [:emoji/shortcode reaction]
+   :reaction/ts ts
+   :reaction/user [:user/slack-id user]
+   :reaction/message [:message/key (message-key item)]})
 
 (defmethod event->tx ["reaction_removed" nil] [{:keys [user item reaction item_user event_ts ts]}]
   ;; Placeholder just to show that we're getting some data.
