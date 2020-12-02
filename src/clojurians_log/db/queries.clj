@@ -50,7 +50,6 @@
 (def ^:private pull-message-pattern
   '(pull ?msg
          [:message/text
-          :message/key
           :message/ts
           :message/thread-ts
           {:reaction/_message [:reaction/type {:reaction/emoji [*]}]}
