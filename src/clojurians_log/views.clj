@@ -93,7 +93,7 @@
                                                                   {:channel (:channel/name channel)
                                                                    :date date
                                                                    :ts (:message/ts target-message)})))}]
-          [:meta {:property "og:image" :content (get-in target-message [:message/user :user-profile/image-48])}]
+          [:meta {:property "og:image" :content (get-in target-message [:message/user :user-profile/image-192])}]
           [:meta {:property "og:image:width" :content 50}]
           [:meta {:property "og:image:height" :content 50}]
           [:meta {:property "og:description" :content
@@ -172,7 +172,7 @@
    {:message/keys [user inst user text thread-ts ts] :as message}]
 
   (let [{:user/keys         [name slack-id]
-         :user-profile/keys [display-name real-name image-48]} user
+         :user-profile/keys [display-name real-name image-192]} user
         slack-instance (:clojurians-log.application/slack-instance request)]
 
     ;; things in the profile
@@ -180,7 +180,7 @@
     ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
     (list [:div.message
            {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
-          [:a.message_profile-pic {:href (str slack-instance "/users/x/x/" slack-id) :style (str "background-image: url(" image-48 ");")}]
+          [:a.message_profile-pic {:href (str slack-instance "/users/x/x/" slack-id) :style (str "background-image: url(" image-192 ");")}]
            ;;[:a.message_username {:href (str slack-instance "/team/" slack-id)}
             [:a.message_username {:href (str "/users/x/x/" slack-id)}
             (some #(when-not (str/blank? %) %) [display-name real-name name])]
@@ -278,13 +278,23 @@
 (defn- user-profile-html [context]
   [:html.user-profile-page
    [:body 
+    [:h2 {:style "text-align:center; margin-top: 20px;"} "User Profile"]
+    [:div {:style " box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); max-width: 300px; 
+                   margin: auto; text-align: center; font-family: arial;"}
+     
     (for [[k v] (select-keys (get-in context [:data/username 0])
-                             [:user-profile/display-name :user-profile/real-name :user-profile/image-48 :user/slack-id])
+                             [:user-profile/display-name :user-profile/real-name :user-profile/image-192 :user/slack-id])
           :when (-> k)]
-      (if (= 0 (compare k :user-profile/image-48))
-        [:img {:src [v]}]
-        [:p [k v]])
-      )]])
+      
+      (case k
+        :user-profile/image-192 [:img {:src [v], :alt "John", :style "width:100%"}]
+        :user-profile/display-name [:h1 [k v]]
+        :user-profile/real-name [:p {:style "color: grey; font-size: 18px;"} [k v]]
+        :user/slack-id [:p {:style "border: none; outline: 0; display: inline-block; padding: 8px 0px; 
+                                    color: white; background-color: #000; text-align: center; cursor: pointer; 
+                                    width: 100%; font-size: 18px;"} [k v]]
+        )
+        )]]])
 
 (defn- sitemap-xml [{:data/keys [channel-day-tuples http-origin] :as context}]
   [:urlset {:xmlns "http://www.sitemaps.org/schemas/sitemap/0.9"}
