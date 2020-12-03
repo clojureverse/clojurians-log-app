@@ -277,24 +277,28 @@
 
 (defn- user-profile-html [context]
   [:html.user-profile-page
+   
+   
    [:body 
-    [:h2 {:style "text-align:center; margin-top: 20px;"} "User Profile"]
-    [:div {:style " box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); max-width: 300px; 
-                   margin: auto; text-align: center; font-family: arial;"}
-     
-    (for [[k v] (select-keys (get-in context [:data/username 0])
-                             [:user-profile/display-name :user-profile/real-name :user-profile/image-192 :user/slack-id])
-          :when (-> k)]
-      
-      (case k
-        :user-profile/image-192 [:img {:src [v], :alt "John", :style "width:100%"}]
-        :user-profile/display-name [:h1 [k v]]
-        :user-profile/real-name [:p {:style "color: grey; font-size: 18px;"} [k v]]
-        :user/slack-id [:p {:style "border: none; outline: 0; display: inline-block; padding: 8px 0px; 
+    [:h2 {:style "text-align:center; margin-top: 20px; font-family: sans-serif;"} "User Profile"]
+    [:div {:style " box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); max-width: 350px; 
+                   margin: auto; text-align: center; font-family: sans-serif;"}
+
+     (for [[k v] (select-keys (get-in context [:data/username 0])
+                              [:user-profile/display-name :user-profile/real-name :user-profile/image-192 :user/slack-id])
+           :when (-> k)]
+       (case k
+         :user-profile/image-192 [:img {:src [v], :alt "John", :style "width:95%; border-radius:80%; padding: 8px 0px;"}]
+         :user-profile/display-name [:h1 [k v]]
+         :user-profile/real-name [:p {:style "color: grey; font-size: 18px;"} [k v]]
+         :user/slack-id [:a {:style "border: none; outline: 0; display: inline-block; padding: 8px 0px; 
                                     color: white; background-color: #000; text-align: center; cursor: pointer; 
-                                    width: 100%; font-size: 18px;"} [k v]]
-        )
-        )]]])
+                                    width: 100%; font-size: 18px;"
+                             :href (str "https://clojurians.slack.com//team/" v )} "let's talk on Slack"]
+         )
+       )
+     
+     ]]])
 
 (defn- sitemap-xml [{:data/keys [channel-day-tuples http-origin] :as context}]
   [:urlset {:xmlns "http://www.sitemaps.org/schemas/sitemap/0.9"}
