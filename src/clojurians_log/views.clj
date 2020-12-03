@@ -2,6 +2,7 @@
   (:require [hiccup2.core :as hiccup]
             [cemerick.url :refer [url]]
             [clojurians-log.time-util :as cl.tu]
+            [clojure.data.json :as json]
             [clojure.string :as str]
             [clojurians-log.slack-messages :as slack-messages]
             [reitit.core]
@@ -16,6 +17,11 @@
   [messages ts]
   (some #(when (= (:message/ts %) ts) %) messages))
 
+(defn jsfile [path]
+  (when-let [f (io/file (io/resource (str "public" path)))]
+    (let [ts (.lastModified f)]
+      [:script
+       {:src (str path "?version=" ts)}])))
 
 (defn stylesheet [path]
   (when-let [f (io/file (io/resource (str "public" path)))]
@@ -312,6 +318,43 @@
                               :date day}))]
         [:lastmod day]]))])
 
+
+(defn- page-head-stats [{:data/keys [title]}]
+  [:head
+   [:meta {:charset "utf-8"}]
+   [:meta {:http-equiv "X-UA-Compatible" :content "IE=edge"}]
+   [:meta {:content="width=device-width, initial-scale=1" :name "viewport"}]
+   [:title title]
+   [:link {:href "https://unpkg.com/sakura.css/css/sakura.css"
+           :rel "stylesheet"
+           :type "text/css"}]
+   (stylesheet "/css/gh-fork-ribbon.min.css")
+   [:script {:src "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"}]
+   ])
+
+(defn- message-stats-page-html [{:data/keys [message-stats] :as context}]
+  [:html
+   (page-head-stats context)
+   [:body
+    [:div
+     [:h4 "Slack message stats"]
+     [:p 
+      [:strong {:style {:border-bottom "1px solid black"}} (:day (first message-stats))]
+      " to "
+      [:strong {:style {:border-bottom "1px solid black"}} (:day (last message-stats))]]
+     [:div {:width "100%"}
+      [:canvas#message-chart]]
+     [:h4 "Total message count: " (reduce #(+ %1 (:msg-count %2)) 0 message-stats)]
+     [:table
+      [:thead
+       [:tr
+        [:th "Day"]
+        [:th "Message count"]]]
+      [:tbody
+       (for [day-stat message-stats] [:tr [:td (:day day-stat)] [:td (:msg-count day-stat)]])]]]
+    [:script#message-data {:type "application/json"} (json/write-str message-stats)]
+    (jsfile "/js/stats.js")]])
+
 (defn log-page [context]
   (assoc context :response/html (log-page-html context)))
 
@@ -329,3 +372,6 @@
 
 (defn sitemap [context]
   (assoc context :response/xml (sitemap-xml context)))
+
+(defn message-stats-page [context]
+  (assoc context :response/html (message-stats-page-html context)))
