@@ -165,6 +165,8 @@
 (def routes
   [["/" {:name :clojurians-log.routes/index
          :get index-route}]
+   ["/_/_/users/{user-id}" {:name :clojurians-log.routes/user-profile-route
+                          :get user-profile-route}]
    ["/x/x/x/about" {:name :clojurians-log.routes/about
                     :get about-route}]
    ["/x/x/x/sitemap" {:name :clojurians-log.routes/sitemap
@@ -175,6 +177,10 @@
                   :get channel-history-route}]
    ["/{channel}/{date}" {:name :clojurians-log.routes/channel-date
                          :get log-route}]
-   ["/{channel}/{date}/{ts}" {:name :clojurians-log.routes/message,
-                              :get log-route}]
-   ["/_/stats/{from-date}/{to-date}" {:name :clojurians-log.routes/message-stats :get message-stats-route}]])
+   ["/{channel}/{date}/{ts}" {:name :clojurians-log.routes/message :get log-route}]
+   ["/_/stats/{from-date}/{to-date}" {:name :clojurians-log.routes/message-stats 
+                                      :get message-stats-route}]
+
+   {:conflicts nil}
+   ]
+ )
