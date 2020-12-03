@@ -2,7 +2,7 @@
   (:require [java-time :as jt]
             [java-time.local :as jt.l]
             [clojure.string :as str])
-  (:import [java.time Instant]
+  (:import [java.time Instant LocalDate]
            [java.time.format DateTimeFormatter]))
 
 (defn ts->inst
@@ -81,3 +81,14 @@
          ret# ~expr]
      (prn (str ~label ": " (/ (double (- (. System (nanoTime)) start#)) 1000000.0) " msecs"))
      ret#))
+
+(defn range-of-local-dates [^LocalDate ld1 ^LocalDate ld2]
+  (when (.isBefore ld1 (.plusDays ld2 1))
+    (cons ld1 (lazy-seq (range-of-local-dates (.plusDays ld1 1) ld2)))))
+
+(defn range-of-days 
+  "Takes 2 day values as a strings and returns range of all days between them inclusive of both"
+  [from-day to-day]
+  (let [ld1 (java.time.LocalDate/parse from-day)
+        ld2 (java.time.LocalDate/parse to-day)]
+    (map str (range-of-local-dates ld1 ld2))))
