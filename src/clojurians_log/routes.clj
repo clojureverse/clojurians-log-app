@@ -133,13 +133,11 @@
       response/render))
 
 (defn user-profile-route  [{:keys [endpoint] :as request}]
-    ;; (def request request)  
     (let [db (db-from-endpoint endpoint)]
       (-> request
           make-context
           (assoc :data/username 
                  (queries/user-profile db (get-in request [:path-params :user-id])))
-          ;; (println :data/username)        
           views/user-profile-route
           response/render)))
 
