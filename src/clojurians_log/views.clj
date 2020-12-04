@@ -198,12 +198,13 @@
                                      (cl.tu/format-inst-time inst)]]
            [:span.message_star]
            [:span.message_content [:p (slack-messages/message->hiccup text usernames emojis)]]
-           (let [reaction-group (group-by #(get-in % [:reaction/emoji :emoji/shortcode]) (:reaction/_message message))]
-             (for [[emoji-shortcode reactions] reaction-group]
-               [:div.message-reaction
-                (slack-messages/text->emoji emoji-shortcode)
-                " "
-                (count reactions)]))])))
+           [:div.message-reaction-bar
+            (let [reaction-group (group-by #(get-in % [:reaction/emoji :emoji/shortcode]) (:reaction/_message message))]
+              (for [[emoji-shortcode reactions] reaction-group]
+                [:div.message-reaction
+                 [:span.emoji (slack-messages/text->emoji emoji-shortcode emojis)]
+                 " "
+                 (count reactions)]))]])))
 
 (defn- message-hiccup
   "Returns either a single message hiccup, or if the given message starts a thread,
