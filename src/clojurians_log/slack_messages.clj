@@ -53,7 +53,7 @@
   ([text]
    (text->emoji text {}))
   ([text emoji-map]
-   (let [emoji-map (merge emoji-map @standard-emoji-map)]
+   (let [emoji-map (merge @standard-emoji-map emoji-map)]
      (loop [shortcode text]
        (when-let [link (emoji-map shortcode)]
          (cond
