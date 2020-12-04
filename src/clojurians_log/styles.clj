@@ -349,9 +349,27 @@
 
   [:.message.thread-msg {:margin-left "1rem"}]
 
+  [:.message-reaction-bar
+   {:margin-top "8px"
+    :margin-bottom "8px"}]
+  
+  [:.message-reaction 
+   {:font-size "11px"
+    :line-height "16px"
+    :padding "4px 6px"
+    :display "inline-flex"
+    :align-items "center"
+    :vertical-align "top"
+    :background "#f6f6f6"
+    :border "none"
+    :border-radius "12px"
+    :margin-bottom "4px"
+    :margin-right "4px"}]
+  
   [:.emoji
-   [:img {:height "22px"
-          :width  "22px"}]]
+   {:margin-right "4px"}
+   [:img {:height "16px"
+          :width  "16px"}]]
 
   [:.content
    {:display "flex"
