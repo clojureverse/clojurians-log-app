@@ -52,7 +52,8 @@
          [:message/text
           :message/ts
           :message/thread-ts
-          {:reaction/_message [:reaction/type {:reaction/emoji [*]}]}
+          {:reaction/_message [:reaction/user 
+                               :reaction/type {:reaction/emoji [*]}]}
           {:message/user [:user/name
                           :user/slack-id
                           :user-profile/real-name
