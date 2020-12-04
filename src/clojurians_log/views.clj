@@ -178,8 +178,8 @@
    {:message/keys [user inst user text thread-ts ts] :as message}]
 
   (let [{:user/keys         [name slack-id]
-         :user-profile/keys [display-name real-name image-48]} user
-        slack-instance (:clojurians-log.application/slack-instance request)]
+         :user-profile/keys [display-name real-name image-48]} user]    
+    (def slack-instance (:clojurians-log.application/slack-instance request))
 
     ;; things in the profile
     ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
@@ -298,10 +298,7 @@
          :user/slack-id [:a {:style "border: none; outline: 0; display: inline-block; padding: 8px 0px; 
                                     color: white; background-color: #000; text-align: center; cursor: pointer; 
                                     width: 100%; font-size: 18px;"
-                             :href (str "https://clojurians.slack.com//team/" v )} "let's talk on Slack"]
-         )
-       )   
-     ]]])
+                             :href (str slack-instance "/team/" v )} "let's talk on Slack"]))]]])
 
 (defn- sitemap-xml [{:data/keys [channel-day-tuples http-origin] :as context}]
   [:urlset {:xmlns "http://www.sitemaps.org/schemas/sitemap/0.9"}
