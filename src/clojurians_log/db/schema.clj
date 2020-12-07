@@ -36,7 +36,11 @@
     :db/valueType   :db.type/string
     :db/cardinality :db.cardinality/one
     :db/doc         "The day this message is categorized under, e.g. 2017-11-20."
-    :db/index       true}])
+    :db/index       true}
+   {:db/ident       :message/thread-broadcast?
+    :db/valueType   :db.type/boolean
+    :db/cardinality :db.cardinality/one
+    :db/doc         "Should this message be shown in the main channel, as well as in the thread, or only in the thread?"}])
 
 (def event-schema
   [{:db/ident       :event/subtype

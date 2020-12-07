@@ -180,7 +180,6 @@
     :data/keys [usernames channel date hostname emojis]
     :as context}
    {:message/keys [user inst user text thread-ts ts] :as message}]
-
   (let [{:user/keys         [name slack-id]
          :user-profile/keys [display-name real-name image-48]} user]
     ;; things in the profile
@@ -218,10 +217,9 @@
   hiccup of all thread messages in a list"
   [context message]
   (if-let [children (:message/children message)]
-    (concat (list (single-message context message))
-            (for [thread-msg children]
-              (single-message context thread-msg)))
-
+    (cons (single-message context message)
+          (for [thread-msg children]
+            (single-message context thread-msg)))
     (single-message context message)))
 
 (defn- message-history [{:data/keys [messages] :as context}]

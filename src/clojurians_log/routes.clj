@@ -37,6 +37,15 @@
              msg))
          messages)))
 
+#_
+(let [foo             {:message/ts 1 :text "Foo"}
+      bar             {:message/ts 2 :text "Bar"}
+      hello           {:message/thread-ts 1 :text "Hello" :broadcast? true}
+      hiii            {:message/thread-ts 1 :text "Hii"}
+      messages        [foo bar hello]
+      thread-messages [hello hiii]]
+  (merge-thread-messages messages thread-messages))
+
 (defn healthcheck-route [_]
   {:headers {"Content-Type" "text/plain"}
    :status 200
