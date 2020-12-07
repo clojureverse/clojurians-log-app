@@ -178,17 +178,18 @@
    {:message/keys [user inst user text thread-ts ts] :as message}]
 
   (let [{:user/keys         [name slack-id]
-         :user-profile/keys [display-name real-name image-48]} user]    
-    (def slack-instance (:clojurians-log.application/slack-instance request))
+         :user-profile/keys [display-name real-name image-48]} user]
+    (def slack-instance (:clojurians-log.application/slack-instance request))    
+    
 
     ;; things in the profile
     ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
     ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
     (list [:div.message
            {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
-          [:a.message_profile-pic {:href (str slack-instance "/users/x/x/" slack-id) :style (str "background-image: url(" image-48 ");")}]
+           [:a.message_profile-pic {:href (str slack-instance "/users/x/x/" slack-id) :style (str "background-image: url(" image-48 ");")}]
            ;;[:a.message_username {:href (str slack-instance "/team/" slack-id)}
-            [:a.message_username {:href (str "/_/_/users/" slack-id)}
+           [:a.message_username {:href (str "/_/_/users/" slack-id)}
             (some #(when-not (str/blank? %) %) [display-name real-name name])]
            [:span.message_timestamp [:a {:rel  "nofollow"
                                          :href (path-for context
@@ -288,13 +289,13 @@
     [:div {:style " box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); max-width: 350px; 
                    margin: auto; text-align: center; font-family: sans-serif;"}
 
-     (for [[k v] (select-keys (get-in context [:data/username 0])
+     (for [[k v] (select-keys (get-in context [:data/user-profile 0])
                               [:user-profile/display-name :user-profile/real-name :user-profile/image-192 :user/slack-id])
            :when (-> k)]
        (case k
-         :user-profile/image-192 [:img {:src [v], :alt "John", :style "width:95%; border-radius:80%; padding: 8px 0px;"}]
-         :user-profile/display-name [:h1 [k v]]
-         :user-profile/real-name [:p {:style "color: grey; font-size: 18px;"} [k v]]
+         :user-profile/image-192 [:img {:src v, :style "width:95%; border-radius:80%; padding: 8px 0px;"}]
+         :user-profile/display-name [:h1 v]
+         :user-profile/real-name [:p {:style "color: grey; font-size: 18px;"} v]
          :user/slack-id [:a {:style "border: none; outline: 0; display: inline-block; padding: 8px 0px; 
                                     color: white; background-color: #000; text-align: center; cursor: pointer; 
                                     width: 100%; font-size: 18px;"

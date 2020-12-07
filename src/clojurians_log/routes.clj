@@ -136,7 +136,7 @@
     (let [db (db-from-endpoint endpoint)]
       (-> request
           make-context
-          (assoc :data/username 
+          (assoc :data/user-profile 
                  (queries/user-profile db (get-in request [:path-params :user-id])))
           views/user-profile-route
           response/render)))
@@ -181,6 +181,6 @@
    ["/_/stats/{from-date}/{to-date}" {:name :clojurians-log.routes/message-stats 
                                       :get message-stats-route}]
 
-   {:conflicts nil}
+  ;;  {:conflicts nil}
    ]
  )
