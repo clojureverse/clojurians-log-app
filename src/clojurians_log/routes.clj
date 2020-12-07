@@ -132,14 +132,13 @@
       views/about
       response/render))
 
-(defn user-profile-route  [{:keys [endpoint] :as request}]
-    (let [db (db-from-endpoint endpoint)]
-      (-> request
-          make-context
-          (assoc :data/user-profile 
-                 (queries/user-profile db (get-in request [:path-params :user-id])))
-          views/user-profile-route
-          response/render)))
+(defn user-profile-route [{:keys [endpoint path-params] :as request}]
+  (let [db (db-from-endpoint endpoint)]
+    (-> request
+        make-context
+        (assoc :data/user-profile (queries/user-profile db (:user-id path-params)))
+        views/user-profile-route
+        response/render)))
 
 (defn sitemap-route [{:keys [endpoint] :as request}]
   (let [config @(get-in endpoint [:config :value])
@@ -166,7 +165,7 @@
   [["/" {:name :clojurians-log.routes/index
          :get index-route}]
    ["/_/_/users/{user-id}" {:name :clojurians-log.routes/user-profile-route
-                          :get user-profile-route}]
+                            :get user-profile-route}]
    ["/x/x/x/about" {:name :clojurians-log.routes/about
                     :get about-route}]
    ["/x/x/x/sitemap" {:name :clojurians-log.routes/sitemap
@@ -178,9 +177,5 @@
    ["/{channel}/{date}" {:name :clojurians-log.routes/channel-date
                          :get log-route}]
    ["/{channel}/{date}/{ts}" {:name :clojurians-log.routes/message :get log-route}]
-   ["/_/stats/{from-date}/{to-date}" {:name :clojurians-log.routes/message-stats 
-                                      :get message-stats-route}]
-
-  ;;  {:conflicts nil}
-   ]
- )
+   ["/_/stats/{from-date}/{to-date}" {:name :clojurians-log.routes/message-stats
+                                      :get message-stats-route}]])
