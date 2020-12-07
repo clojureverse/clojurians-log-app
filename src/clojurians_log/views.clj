@@ -170,6 +170,11 @@
                              :date future-date})}
         [:div.day-next ">"]])]]])
 
+(defn slack-url [ctx & parts]
+  (apply str
+         (get-in ctx [:request :clojurians-log.application/slack-instance])
+         parts))
+
 (defn- single-message
   "Returns the hiccup of a single message"
   [{:keys [request]
@@ -178,26 +183,26 @@
    {:message/keys [user inst user text thread-ts ts] :as message}]
 
   (let [{:user/keys         [name slack-id]
-         :user-profile/keys [display-name real-name image-48]} user
-        slack-instance (:clojurians-log.application/slack-instance request)]
-
+         :user-profile/keys [display-name real-name image-48]} user]
     ;; things in the profile
     ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
     ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
-    (list [:div.message
-           {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
-           [:a.message_profile-pic {:href (str slack-instance "/team/" slack-id) :style (str "background-image: url(" image-48 ");")}]
-           [:a.message_username {:href (str slack-instance "/team/" slack-id)}
-            (some #(when-not (str/blank? %) %) [display-name real-name name])]
-           [:span.message_timestamp [:a {:rel  "nofollow"
-                                         :href (path-for context
-                                                         :clojurians-log.routes/message
-                                                         {:channel (:channel/name channel)
-                                                          :date date
-                                                          :ts ts})}
-                                     (cl.tu/format-inst-time inst)]]
-           [:span.message_star]
-           [:span.message_content [:p (slack-messages/message->hiccup text usernames emojis)]]])))
+    [:div.message
+     {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
+     [:a.message_profile-pic {:href (slack-url context "/users/x/x/" slack-id)
+                              :style (str "background-image: url(" image-48 ");")}]
+     ;;[:a.message_username {:href (str slack-instance "/team/" slack-id)}
+     [:a.message_username {:href (str "/_/_/users/" slack-id)}
+      (some #(when-not (str/blank? %) %) [display-name real-name name])]
+     [:span.message_timestamp [:a {:rel  "nofollow"
+                                   :href (path-for context
+                                                   :clojurians-log.routes/message
+                                                   {:channel (:channel/name channel)
+                                                    :date date
+                                                    :ts ts})}
+                               (cl.tu/format-inst-time inst)]]
+     [:span.message_star]
+     [:span.message_content [:p (slack-messages/message->hiccup text usernames emojis)]]]))
 
 (defn- message-hiccup
   "Returns either a single message hiccup, or if the given message starts a thread,
@@ -280,6 +285,21 @@
      [:section#about
       (:data/about-hiccup context)]]]])
 
+(defn- user-profile-html [context]
+  [:html.user-profile-page
+   (page-head context)
+   [:body
+    [:h2 "User Profile"]
+    [:section
+     (let [user-profile (get-in context [:data/user-profile])
+           {:user-profile/keys [display-name real-name image-192]
+            :user/keys [slack-id]} user-profile]
+       (list
+        [:img {:src image-192 :alt (str display-name " avatar")}]
+        [:h1 display-name]
+        [:p.real-name real-name]
+        [:a.talk-on-slack {:href (slack-url context "/team/" slack-id)} "let's talk on Slack"]))]]])
+
 (defn- sitemap-xml [{:data/keys [channel-day-tuples http-origin] :as context}]
   [:urlset {:xmlns "http://www.sitemaps.org/schemas/sitemap/0.9"}
    (for [[{:channel/keys [name]} channel-days] channel-day-tuples]
@@ -312,7 +332,7 @@
    [:body
     [:div
      [:h4 "Slack message stats"]
-     [:p 
+     [:p
       [:strong {:style {:border-bottom "1px solid black"}} (:day (first message-stats))]
       " to "
       [:strong {:style {:border-bottom "1px solid black"}} (:day (last message-stats))]]
@@ -340,6 +360,9 @@
 
 (defn about [context]
   (assoc context :response/html (about-html context)))
+
+(defn user-profile-route [context]
+  (assoc context :response/html (user-profile-html context)))
 
 (defn sitemap [context]
   (assoc context :response/xml (sitemap-xml context)))

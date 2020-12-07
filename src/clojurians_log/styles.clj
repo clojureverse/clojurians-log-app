@@ -416,4 +416,28 @@
             :line-height "1.33rem"}]
    [:ul {:padding-left "1rem"}]
    [:li {:list-style-type "disc"}]]
-  )
+
+  [:.user-profile-page
+   [:h2 {:text-align "center"
+         :margin-top "20px"
+         :font-family "sans-serif"}]
+   [:section {:box-shadow "0 4px 8px 0 rgba(0, 0, 0, 0.2)"
+              :max-width "350px"
+              :margin "auto"
+              :text-align "center"
+              :font-family "sans-serif"}]
+   [:img {:width "95%"
+          :border-radius "80%"
+          :padding "8px 0px"}]
+   [:.real-name {:color "grey"
+                 :font-size "18px"}]
+   [:.talk-on-slack {:border "none"
+                     :outline "0"
+                     :display "inline-block"
+                     :padding "8px 0px"
+                     :color "white"
+                     :background-color "#000"
+                     :text-align "center"
+                     :cursor "pointer"
+                     :width "100%"
+                     :font-size "18px"}]])
