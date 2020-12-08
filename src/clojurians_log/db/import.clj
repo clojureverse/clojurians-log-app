@@ -18,7 +18,7 @@
   {:pre [(string? ts) (string? channel)]}
   (str channel "--" ts))
 
-(defmulti event->tx :subtype)
+(defmulti event->tx (juxt :type :subtype))
 
 (defmethod event->tx :default [_]
   ;; return nil by default, this will let us skip events we don't (yet) care
@@ -44,20 +44,20 @@
                            :thread-inst (jt/to-java-date thread-inst)
                            :day         (time-util/format-inst-day thread-inst)}))))))
 
-(defmethod event->tx nil [message]
+(defmethod event->tx ["message" nil] [message]
   (message->tx message))
 
-(defmethod event->tx "message_deleted" [{:keys [deleted_ts channel] :as message}]
+(defmethod event->tx ["message" "message_deleted"] [{:keys [deleted_ts channel] :as message}]
   [(if d/cloud?
      :db/retractEntity
      :db.fn/retractEntity) [:message/key (message-key {:channel channel :ts deleted_ts})]])
 
-(defmethod event->tx "message_changed" [{:keys [message channel]}]
+(defmethod event->tx ["message" "message_changed"] [{:keys [message channel]}]
   (event->tx (assoc message :channel channel)))
 
 ;; Thread replies which are copied to the channel. For now we only include them
 ;; in the thread.
-(defmethod event->tx "thread_broadcast" [message]
+(defmethod event->tx ["message" "thread_broadcast"] [message]
   (message->tx message))
 
 (defn user->tx [{:keys [id name real_name is_admin is_owner profile]}]
@@ -93,6 +93,19 @@
 (defn emoji->tx [[shortcode url]]
   #:emoji {:shortcode (name shortcode)
            :url       url})
+
+(defmethod event->tx ["reaction_added" nil] [{:keys [user item reaction item_user event_ts ts]}]
+  {:reaction/type "reaction_added"
+   :reaction/emoji {:emoji/shortcode reaction}
+   :reaction/ts ts
+   :reaction/user [:user/slack-id user]
+   :reaction/message {:message/key (message-key item)}})
+
+(defmethod event->tx ["reaction_removed" nil] [{:keys [user item reaction item_user event_ts ts]}]
+  ;; Placeholder just to show that we're getting some data.
+  ;; TODO: return Datomic transaction data to retract a reaction entity
+  (println "-" reaction)
+  nil)
 
 (defn lines-reducible [^BufferedReader rdr]
   (reify clojure.lang.IReduceInit

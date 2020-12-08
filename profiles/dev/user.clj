@@ -1,6 +1,9 @@
 (ns user
   (:require [reloaded.repl :as reloaded]))
 
+(alter-var-root #'*print-namespace-maps* (constantly false))
+;; (set! *print-namespace-maps* false)
+
 (defmacro jit [sym]
   `(or (resolve '~sym)
        (do

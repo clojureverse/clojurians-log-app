@@ -77,7 +77,7 @@
   or from EDN files (demo data)."
   [file]
   (println (str file))
-  (let [msgs (filter #(= (:type %) "message") (data/event-seq file))
+  (let [msgs (data/event-seq file)
         events (keep import/event->tx msgs)]
     (doseq [event events]
       @(d/transact-async (conn) [event]))))
@@ -180,6 +180,7 @@
   (do
     (user/reset)
     (load-demo-data! "/home/arne/github/clojurians-log-demo-data")
+    (load-demo-data! "/tmp/demo_data")
     )
   )
 

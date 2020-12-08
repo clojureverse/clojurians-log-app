@@ -1,0 +1,3 @@
+#!/bin/bash
+
+wget https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json -O resources/emojis.json

@@ -43,15 +43,17 @@
   `(text->emoji \"smile\") ;; => \"😄\"`"
   (delay
     (with-open [r (io/reader (io/resource "emojis.json"))]
-      (let [emoji-list (-> (json/read r :key-fn keyword)
-                           :emojis)]
-        (into {} (map (juxt :name :emoji) emoji-list))))))
+      (let [emoji-list (json/read r :key-fn keyword)]
+        (into {}
+              (map
+               (comp first #(for [alias (:aliases %)] [alias (:emoji %)]))
+               emoji-list))))))
 
 (defn text->emoji
   ([text]
    (text->emoji text {}))
   ([text emoji-map]
-   (let [emoji-map (merge emoji-map @standard-emoji-map)]
+   (let [emoji-map (merge @standard-emoji-map emoji-map)]
      (loop [shortcode text]
        (when-let [link (emoji-map shortcode)]
          (cond

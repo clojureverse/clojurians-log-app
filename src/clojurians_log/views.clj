@@ -74,7 +74,6 @@
     :title "Fork me on GitHub"}
    "Fork me on GitHub"])
 
-
 (defn path-for [context & args]
   (reitit.core/match->path
    (apply reitit.core/match-by-name (get-in context [:request :reitit.core/router]) args)))
@@ -189,9 +188,7 @@
     ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
     [:div.message
      {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
-     [:a.message_profile-pic {:href (slack-url context "/users/x/x/" slack-id)
-                              :style (str "background-image: url(" image-48 ");")}]
-     ;;[:a.message_username {:href (str slack-instance "/team/" slack-id)}
+     [:a.message_profile-pic {:href (str "/_/_/users/" slack-id) :style (str "background-image: url(" image-48 ");")}]
      [:a.message_username {:href (str "/_/_/users/" slack-id)}
       (some #(when-not (str/blank? %) %) [display-name real-name name])]
      [:span.message_timestamp [:a {:rel  "nofollow"
@@ -202,7 +199,14 @@
                                                     :ts ts})}
                                (cl.tu/format-inst-time inst)]]
      [:span.message_star]
-     [:span.message_content [:p (slack-messages/message->hiccup text usernames emojis)]]]))
+     [:span.message_content [:p (slack-messages/message->hiccup text usernames emojis)]]
+     [:div.message-reaction-bar
+      (let [reaction-group (group-by #(get-in % [:reaction/emoji :emoji/shortcode]) (:reaction/_message message))]
+        (for [[emoji-shortcode reactions] reaction-group]
+          [:div.message-reaction
+           [:span.emoji (slack-messages/text->emoji emoji-shortcode emojis)]
+           " "
+           (count reactions)]))]]))
 
 (defn- message-hiccup
   "Returns either a single message hiccup, or if the given message starts a thread,
