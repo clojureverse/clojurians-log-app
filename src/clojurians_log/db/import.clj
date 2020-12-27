@@ -97,11 +97,13 @@
 ;; TODO: deal with reactions on files (I guess this will depend on us actually dealing with files in the first place :))
 ;; {:reaction "joy", :event_ts "1521818444.000850", :item {:type "file", :file "F9W0B0LHM"}, :user "U06P56UUB", :item_user "U4E5W80P7", :type "reaction_added"}
 
-(defn- reaction-entity [{:keys [user item reaction ts]}]
-  {:reaction/emoji {:emoji/shortcode reaction}
-   :reaction/ts ts
-   :reaction/user [:user/slack-id user]
-   :reaction/message {:message/key (message-key item)}})
+(defn- reaction-entity [{:keys [user item reaction ts type]}]
+  (let [msg-key (message-key item)]
+    {:reaction/emoji {:emoji/shortcode reaction}
+     :reaction/ts ts
+     :reaction/user [:user/slack-id user]
+     :reaction/message {:message/key msg-key}
+     :reaction/key (str message-key "--" user "--" ts "--" reaction "--" type)}))
 
 (defmethod event->tx ["reaction_added" nil] [{:keys [item] :as msg}]
   (when (and (:channel item) (:ts item)) ; exclude reactions on things other than messages

@@ -161,7 +161,12 @@
     :db/cardinality :db.cardinality/one}
    {:db/ident       :reaction/message
     :db/valueType   :db.type/ref
-    :db/cardinality :db.cardinality/one}])
+    :db/cardinality :db.cardinality/one}
+   {:db/ident       :reaction/key
+    :db/doc         "Unique key for a given reaction event, so inserts are idempotent."
+    :db/valueType   :db.type/string
+    :db/cardinality :db.cardinality/one
+    :db/unique      :db.unique/identity}])
 
 (def full-schema
   (concat message-schema
