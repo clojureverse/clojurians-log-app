@@ -102,7 +102,7 @@
 (defn files-from
   "Get a sequence of log files starting ata given date"
   [date]
-  (->> (log-files "/home/arne/github/clojurians-log/logs")
+  (->> (log-files)
        (drop-while #(not (clojure.string/starts-with? (.getName %) date)))))
 
 (defn load-from
