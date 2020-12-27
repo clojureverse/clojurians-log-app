@@ -1,4 +1,7 @@
 #!/bin/sh
 
-# clojure $CLOJURE_OPTS -A:dev:datomic-cloud -m garden-watcher.main clojurians-log.styles
-clojure $CLOJURE_OPTS -A:dev:datomic-pro:postgresql -m garden-watcher.main clojurians-log.styles
+if [ "`hostname`" == "clojurians-log" ]; then
+    clojure $CLOJURE_OPTS -A:dev:datomic-pro:postgresql -m garden-watcher.main clojurians-log.styles
+else
+    clojure $CLOJURE_OPTS -A:dev:datomic-cloud -m garden-watcher.main clojurians-log.styles
+fi
