@@ -97,19 +97,23 @@
 ;; TODO: deal with reactions on files (I guess this will depend on us actually dealing with files in the first place :))
 ;; {:reaction "joy", :event_ts "1521818444.000850", :item {:type "file", :file "F9W0B0LHM"}, :user "U06P56UUB", :item_user "U4E5W80P7", :type "reaction_added"}
 
-(defmethod event->tx ["reaction_added" nil] [{:keys [user item reaction item_user event_ts ts] :as msg}]
-  (when (and (:channel item) (:ts item)) ; exclude reactions on things other than messages
-    {:reaction/type "reaction_added"
-     :reaction/emoji {:emoji/shortcode reaction}
-     :reaction/ts ts
-     :reaction/user [:user/slack-id user]
-     :reaction/message {:message/key (message-key item)}}))
+(defn- reaction-entity [{:keys [user item reaction ts]}]
+  {:reaction/emoji {:emoji/shortcode reaction}
+   :reaction/ts ts
+   :reaction/user [:user/slack-id user]
+   :reaction/message {:message/key (message-key item)}})
 
-(defmethod event->tx ["reaction_removed" nil] [{:keys [user item reaction item_user event_ts ts]}]
-  ;; Placeholder just to show that we're getting some data.
-  ;; TODO: return Datomic transaction data to retract a reaction entity
-  (println "-" reaction)
-  nil)
+(defmethod event->tx ["reaction_added" nil] [{:keys [item] :as msg}]
+  (when (and (:channel item) (:ts item)) ; exclude reactions on things other than messages
+    (assoc
+      (reaction-entity msg)
+      :reaction/type "reaction_added")))
+
+(defmethod event->tx ["reaction_removed" nil] [{:keys [item] :as msg}]
+  (when (and (:channel item) (:ts item)) ; exclude reactions on things other than messages
+    (assoc
+      (reaction-entity msg)
+      :reaction/type "reaction_removed")))
 
 (defn lines-reducible [^BufferedReader rdr]
   (reify clojure.lang.IReduceInit
@@ -137,9 +141,11 @@
                     (rf acc (persistent! @part))
                     (vreset! part (transient []))
                     (vreset! part-keys (transient #{}))))
+          message-key #(or (:message/key %)
+                           (:message/key (:reaction/message %)))
           append (fn [msg]
                    (conj! @part msg)
-                   (conj! @part-keys (:message/key msg)))]
+                   (conj! @part-keys (message-key msg)))]
       (fn
         ([]
          (rf))

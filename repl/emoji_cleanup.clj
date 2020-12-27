@@ -1,4 +1,4 @@
-(ns emoji-cleanup
+(ns repl.emoji-cleanup
   (:require [clojurians-log.datomic :as d]
             [clojurians-log.repl :as repl]
             [clojurians-log.slack-api :as slack]))
@@ -33,3 +33,10 @@
     (println @(first result))
     (Thread/sleep 2000))
   (println :done))
+
+(group-by second
+          (map (juxt :reaction/type
+                     (comp :emoji/shortcode :reaction/emoji))
+               (:reaction/_message
+                (datomic.api/entity (repl/db)
+                                    [:message/key "C0GLTDB2T--1608789973.125700"]))))

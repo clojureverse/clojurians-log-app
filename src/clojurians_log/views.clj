@@ -187,7 +187,9 @@
     ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
     ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
     [:div.message
-     {:id (cl.tu/format-inst-id inst) :class (when (thread-child? message) "thread-msg")}
+     {:id (cl.tu/format-inst-id inst)
+      :class (when (thread-child? message) "thread-msg")
+      :data-message-key (:message/key message)}
      [:a.message_profile-pic {:href (str "/_/_/users/" slack-id) :style (str "background-image: url(" image-48 ");")}]
      [:a.message_username {:href (str "/_/_/users/" slack-id)}
       (some #(when-not (str/blank? %) %) [display-name real-name name])]
@@ -201,12 +203,15 @@
      [:span.message_star]
      [:span.message_content [:p (slack-messages/message->hiccup text usernames emojis)]]
      [:div.message-reaction-bar
-      (let [reaction-group (group-by #(get-in % [:reaction/emoji :emoji/shortcode]) (:reaction/_message message))]
-        (for [[emoji-shortcode reactions] reaction-group]
-          [:div.message-reaction
+      (let [reaction-groups (group-by #(get-in % [:reaction/emoji :emoji/shortcode]) (:reaction/_message message))]
+        (for [[emoji-shortcode reactions] reaction-groups
+              :let [{:strs [reaction_added reaction_removed]} (group-by :reaction/type reactions)
+                    reaction-count (- (count reaction_added) (count reaction_removed))]
+              :when (< 0 reaction-count)]
+          [:div.message-reaction {:title emoji-shortcode}
            [:span.emoji (slack-messages/text->emoji emoji-shortcode emojis)]
            " "
-           (count reactions)]))]]))
+           reaction-count]))]]))
 
 (defn- message-hiccup
   "Returns either a single message hiccup, or if the given message starts a thread,

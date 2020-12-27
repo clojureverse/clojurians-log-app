@@ -19,7 +19,6 @@
    (uncaughtException [_ thread throwable]
      (println (.getMessage throwable)))))
 
-
 (defn read-edn [filepath]
   (-> filepath
       slurp
@@ -48,11 +47,11 @@
   (slack/import-emojis! (conn))
   (let [channel->db-id (q/channel-id-map (d/db (conn)))
         channels       (mapv import/channel->tx (slack/channels))]
-    (d/transact (conn) (map (fn [{slack-id :channel/slack-id :as ch}]
-                              (if-let [db-id (channel->db-id slack-id)]
-                                (assoc ch :db/id db-id)
-                                ch))
-                            channels))))
+    @(d/transact (conn) (map (fn [{slack-id :channel/slack-id :as ch}]
+                               (if-let [db-id (channel->db-id slack-id)]
+                                 (assoc ch :db/id db-id)
+                                 ch))
+                             channels))))
 
 (defn build-indexes! []
   (q/build-indexes! (d/db (conn))))
@@ -100,12 +99,26 @@
   (run! load-log-file! (log-files (java.io.File. directory "logs")))
   (build-indexes!))
 
+(defn files-from
+  "Get a sequence of log files starting ata given date"
+  [date]
+  (->> (log-files "/home/arne/github/clojurians-log/logs")
+       (drop-while #(not (clojure.string/starts-with? (.getName %) date)))))
+
 (defn load-from
   "Load log files starting from a certain date (a string like \"2019-05-20\")"
   [date]
-  (->> (log-files)
-       (drop-while #(not (clojure.string/starts-with? (.getName %) date)))
+  (->> (files-from date)
        (run! load-log-file!)))
+
+(defn wrap-catch [f]
+  (fn [& args]
+    (try
+      (apply f args)
+      (catch Throwable t
+        (let [ex-sym (gensym "ex-")]
+          (intern *ns* ex-sym t)
+          (println (str f " threw " (class t) " see " ex-sym)))))))
 
 (def file->tx
   "Transducer which consumes files and produces transaction data"
@@ -116,8 +129,7 @@
                    (println "Error decoding JSON: " %)
                    (println e)
                    nil)))
-        (filter #(= (:type %) "message"))
-        (keep import/event->tx)))
+        (keep (wrap-catch import/event->tx))))
 
 (def tx-thread-count
   "The number of threads to use for processing transactions"
@@ -135,19 +147,20 @@
     (mod-hash
      (if (vector? msg)
        (second (second msg))
-       (:message/key msg)))))
+       (or (:message/key msg)
+           (:message/key (:reaction/message msg)))))))
 
 (defn load-files!
   "Bulk import a set of files (e.g. from (log-files)), uses multiple threads to speed things up"
   [files]
-  (let [tx-chs (into [] (repeatedly tx-thread-count
-                                    #(async/chan 100 (import/partition-messages tx-size))))
-        file-ch (async/chan 100)
-        pubsub-ch (async/chan 100)
-        pubsub (async/pub pubsub-ch msg-topic)
-        conn  (conn)
-        counter (volatile! 0)
-        done? (promise)]
+  (let [make-tx-chan #(async/chan 100 (import/partition-messages tx-size))
+        tx-chs       (into [] (repeatedly tx-thread-count make-tx-chan))
+        file-ch      (async/chan 100)
+        pubsub-ch    (async/chan 100)
+        pubsub       (async/pub pubsub-ch (wrap-catch msg-topic))
+        conn         (conn)
+        counter      (volatile! 0)
+        done?        (promise)]
 
     (doseq [tx-ch tx-chs]
       (async/thread
@@ -162,14 +175,10 @@
                   (println e)))
               (recur (<!! tx-ch)))))))
 
-    (go-loop [[f & files] files]
-      (>! file-ch f)
-      (if (seq files)
-        (recur files)
-        (async/close! file-ch)))
+    (async/onto-chan file-ch files)
 
-    (doseq [i (range tx-thread-count)]
-      (async/sub pubsub i (get tx-chs i)))
+    (doseq [[i tx-ch] (map-indexed vector tx-chs)]
+      (async/sub pubsub i tx-ch))
 
     (async/pipeline-blocking 10 pubsub-ch file->tx file-ch true)
 
@@ -189,45 +198,70 @@
   (use 'clojurians-log.repl)
   (in-ns 'clojurians-log.repl)
   (load-slack-data!)
+
   (def result (load-files! (log-files)))
-  result
+  ;; or
+  (def result (load-files! (files-from "2019-01-01")))
 
-  (load-files! [f])
+  ;; see progress
+  (future
+    (while (not (realized? (second result)))
+      (println (java.util.Date.) "\t" @(first result))
+      (Thread/sleep 5000)))
 
-  (def result (load-files! (drop 1508 (log-files))))
-  (def rrr (load-files! (filter #(and (.contains (str %) "2020-08") (.contains (str %) "backfill")) (log-files))))
+  ;; After importing, or you won't see data show up
+  (build-indexes!)
 
-  (while (not (realized? (second result)))
-    (println (java.util.Date.) "\t" @(first result))
-    (Thread/sleep 5000))
+  (def result
+    (load-files!
+     (filter #(and (.contains (str %) "2020-08")
+                   (.contains (str %) "backfill"))
+             (log-files))))
 
-  ;; old way (slower)
+
+
+  ;; old way, this does not use multi-thread core.async magic, and does not
+  ;; batch transactions, it literally transacts each slack event separately.
+  ;; Very slow but always works.
   (run! load-log-file! (log-files))
 
-  ;; incremental
-  (load-from "2019-08-23")
-
-
+  ;; Fetch and store slack data
   (do
     (write-edn "users.edn" (map import/user->tx (slack/users)))
-    (write-edn "channels.edn" (map import/channel->tx (slack/channels))))
+    (write-edn "channels.edn" (map import/channel->tx (slack/channels)))
+    (write-edn "emoji.edn" (map import/emoji->tx (slack/emoji))))
 
-  (time
-   (do
-     (time (clojurians-log.db.queries/channel-day-messages db "clojurescript" "2018-02-04"))
-     (time (clojurians-log.db.queries/thread-messages db '("1517722327.000023" "1517722363.000043" "1517722613.000012" "1517724278.000043" "1517724340.000044" "1517724770.000024" "1517724836.000023" "1517725105.000054")))
-     (time (ffirst (clojurians-log.db.queries/channel db "clojurescript")))
-     (time (clojurians-log.db.queries/channel-list db "2018-02-04"))
-     (time (clojurians-log.db.queries/user-names db #{"U2TUBBPNU"}))
-     (time (clojurians-log.db.queries/channel-days db "clojurescript"))
+  ;; Micro-benchmark some queries, good to check if anything is unreasonably
+  ;; slow
+  (let [db (db)]
+    (time
+     (do
+       (time (clojurians-log.db.queries/channel-day-messages db "clojurescript" "2018-02-04"))
+       (time (clojurians-log.db.queries/thread-messages db '("1517722327.000023" "1517722363.000043" "1517722613.000012" "1517724278.000043" "1517724340.000044" "1517724770.000024" "1517724836.000023" "1517725105.000054")))
+       (time (ffirst (clojurians-log.db.queries/channel db "clojurescript")))
+       (time (clojurians-log.db.queries/channel-list db "2018-02-04"))
+       (time (clojurians-log.db.queries/user-names db #{"U2TUBBPNU"}))
+       (time (clojurians-log.db.queries/channel-days db "clojurescript"))
 
-     nil))
+       nil)))
 
+  ;; Original
   "Elapsed time: 18.166254 msecs"
-  "Elapsed time: 631.458841 msecs"
+  "Elapsed time: 631.458841 msecs" ; -> we optimized this
   "Elapsed time: 1.568807 msecs"
   "Elapsed time: 16.425878 msecs"
   "Elapsed time: 1.126005 msecs"
-  "Elapsed time: 1535.355001 msecs"
-  "Elapsed time: 2205.20762 msecs"
+  "Elapsed time: 1535.355001 msecs" ; -> and this
+  "Elapsed time: 2205.20762 msecs" ; Total
+
+  ;; Latest
+  "Elapsed time: 31.38712 msecs" ; -> seems fetching channel-day-messages is
+                                 ; slower now
+  "Elapsed time: 0.844338 msecs"
+  "Elapsed time: 1.582986 msecs"
+  "Elapsed time: 0.22545 msecs"
+  "Elapsed time: 1.120628 msecs"
+  "Elapsed time: 0.00676 msecs"
+  "Elapsed time: 37.954533 msecs" ; Total
+
   )
