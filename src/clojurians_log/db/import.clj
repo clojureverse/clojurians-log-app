@@ -26,7 +26,7 @@
   nil)
 
 (defn message->tx [{:keys [ts text channel user thread_ts] :as message}]
-  (when-not (= \D (first channel)) ;; ignore direct messages
+  (when (= \C (first channel)) ;; ignore direct and private group, can be C, D, G
     (let [inst    (time-util/ts->inst ts)
           message #:message {:key      (message-key message)
                              :ts       ts

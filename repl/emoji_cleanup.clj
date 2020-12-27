@@ -28,6 +28,8 @@
 
 (run! (partial d/transact (conn)) (partition-all 1000 tx-data))
 
+(count (d/q '[:find ?i ?s :where [?i :emoji/shortcode ?s]] (db)))
+
 @(d/transact (conn) [{:db/ident       :emoji/shortcode
                       :db/valueType   :db.type/string
                       :db/cardinality :db.cardinality/one
