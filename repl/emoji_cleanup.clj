@@ -58,9 +58,9 @@
 ;; Re-do reactions but now including the key
 
 
-(def reactions (d/q '[:find [?r ?m]  :where [?r :reaction/message ?m]] (db)))
+(def reactions (d/q '[:find ?r ?m :where [?r :reaction/message ?m]] (db)))
 (def tx-data (for [[r m] reactions]
-               [:db/retract r :reaction/message ?m]))
+               [:db/retract r :reaction/message m]))
 
 (run! (partial d/transact (conn)) (partition-all 1000 tx-data))
 
