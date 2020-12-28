@@ -1,10 +1,7 @@
 # Clojurians Log App [![CircleCI](https://circleci.com/gh/clojureverse/clojurians-log-app.svg?style=svg)](https://circleci.com/gh/clojureverse/clojurians-log-app)
 
-Clojure web app that serves up Slack chat history. This app was created to
-replace the old scripts that generated the site at
-[clojurians-log.clojureverse.org](https://clojurians-log.clojureverse.org). This
-app isn't live yet, but you can see it in action at
-[clojurians-log-staging.clojureverse.org](http://clojurians-log-staging.clojureverse.org).
+Clojure web app that serves up Slack chat history. This app code is live and avialable for preview at
+[clojurians-log.clojureverse.org](https://clojurians-log.clojureverse.org).
 
 Besides serving its utilitarian function of serving logs, this also serves as an
 example open-source Clojure web app. It's small enough to easily understand and
@@ -29,9 +26,18 @@ but also has some
 
 ## Running the app
 
-To run the app on your own laptop, you should first grab the [demo
+To run the app on your own laptop, you should first grab the [clojurians-log-app](https://github.com/clojureverse/clojurians-log-app) in a directory.
+
+``` shell
+git clone https://github.com/clojureverse/clojurians-log-app.git
+cd clojurians-log-app
+```
+
+And for the ease of trying out locally, let's also grab some [demo
 data](https://github.com/clojureverse/clojurians-log-demo-data), so you have
 some Slack history to look at.
+
+> P.S.: This is very old data and few new code related changes will not be rendered with this (like emoji reaction etc)`
 
 ``` shell
 git clone https://github.com/clojureverse/clojurians-log-demo-data.git
@@ -86,8 +92,8 @@ user> (conn)                             ;; Datomic connection
 user> (add-dependency [foo/bar "1.2.3"]) ;; Add a dependency without having to restart
 user> (reset)                            ;; Reload modified namespaces and restart the app
 user> (reset-all)                        ;; Reload all namespaces and restart the app
-user> (last-request)                     ;; See the last ring request handled
-user> (last-response)                    ;; See the last response the app generated
+~~user> (last-request)                     ;; See the last ring request handled~~
+~~user> (last-response)                    ;; See the last response the app generated~~
 ```
 
 ### Tests
