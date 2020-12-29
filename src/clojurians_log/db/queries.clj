@@ -103,9 +103,7 @@
        name))
 
 (defn get-channel-id-by-name [channel-name]
-  ;; TODO: Need to read about any other optimized way like invert or somthing else
-  (key (first 
-        (filter #(= channel-name (val %)) (:chan-id->name @!indexes)))))
+  (get (:chan-name->id @!indexes) channel-name))
 
 (defn user-names
   [db ids]
@@ -168,8 +166,6 @@
 
 (defn channel-message-stats-between-days [from-day to-day channel-name]
   (letfn [(chan-day-cnt [] (:chan-day-cnt @!indexes))]
-    ; C03S1KBA2 beginners
-    ; (println (mapv #(hash-map :day (first %) :msg-count (last %)) (get (chan-day-cnt) "C03S1KBA2")))
     (mapv #(hash-map :day (first %) :msg-count (last %)) (get (chan-day-cnt) (get-channel-id-by-name channel-name)))))
     
 (defn message-stats-between-days [from-day to-day]
