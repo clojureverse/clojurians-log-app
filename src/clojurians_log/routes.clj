@@ -161,6 +161,15 @@
         views/message-stats-page
         response/render)))
 
+(defn channel-message-stats-route [{:keys [endpoint] :as request}]
+  (let [config @(get-in endpoint [:config :value])
+        {:keys [from-date to-date channel-name]} (:path-params request)]
+    (-> request
+        make-context
+        (assoc :data/message-stats (queries/channel-message-stats-between-days from-date to-date channel-name) :data/channel-name channel-name)
+        views/message-stats-page
+        response/render)))
+
 (def routes
   [["/" {:name :clojurians-log.routes/index
          :get index-route}]
@@ -178,4 +187,6 @@
                          :get log-route}]
    ["/{channel}/{date}/{ts}" {:name :clojurians-log.routes/message :get log-route}]
    ["/_/stats/{from-date}/{to-date}" {:name :clojurians-log.routes/message-stats
-                                      :get message-stats-route}]])
+                                      :get message-stats-route}]
+   ["/_/stats/{from-date}/{to-date}/{channel-name}" {:name :clojurians-log.routes/channel-message-stats
+                                      :get channel-message-stats-route}]])

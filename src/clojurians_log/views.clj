@@ -335,12 +335,12 @@
    [:script {:src "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"}]
    ])
 
-(defn- message-stats-page-html [{:data/keys [message-stats] :as context}]
+(defn- message-stats-page-html [{:data/keys [message-stats channel-name] :as context}]
   [:html
    (page-head-stats context)
    [:body
     [:div
-     [:h4 "Slack message stats"]
+     [:h4 "Slack message stats : " channel-name]
      [:p
       [:strong {:style {:border-bottom "1px solid black"}} (:day (first message-stats))]
       " to "
