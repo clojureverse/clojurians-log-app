@@ -30,7 +30,7 @@
    :routes     (-> (new-endpoint (fn [endpoint]
                                    (fn [request]
                                      (let [router (reitit.ring/router routes/routes)
-                                           handler (reitit.ring/ring-handler router)]
+                                           handler (reitit.ring/ring-handler router (reitit.ring/redirect-trailing-slash-handler {:method :strip}))]
                                        (handler (assoc request
                                                        :endpoint endpoint
                                                        :config cfg
