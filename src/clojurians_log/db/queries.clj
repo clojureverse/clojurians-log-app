@@ -168,7 +168,6 @@
   (let [chan-day-cnt (:chan-day-cnt @!indexes)
         chan-day-data (get chan-day-cnt (get-channel-id-by-name channel-name) {})
         range-of-days (time-util/range-of-days from-day to-day)]
-        (println chan-day-data)
     (mapv #(hash-map :day % :msg-count (get chan-day-data % 0)) range-of-days)))
     
 (defn message-stats-between-days [from-day to-day]
