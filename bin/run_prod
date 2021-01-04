@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # FIXME: find a better way to configure this on a per-host basis
-if [ "`hostname`" == "clojurians-log" ]; then
+if [ "`hostname`" = "clojurians-log" ]; then
     clojure $CLOJURE_OPTS -A:datomic-pro:postgresql -m clojurians-log.application "$@"
 else
     clojure $CLOJURE_OPTS -A:datomic-cloud -m clojurians-log.application "$@"
