@@ -55,6 +55,7 @@
           {:reaction/_message [:reaction/user
                                :reaction/type
                                {:reaction/emoji [*]}]}
+          :message/thread-broadcast?
           {:message/user [:user/name
                           :user/slack-id
                           :user-profile/real-name
@@ -66,16 +67,16 @@
              :in '[$ ?chan-name ?day]
              :where '[[?msg :message/day ?day]
                       [?msg :message/channel ?chan]
-                      #_[?msg :message/user ?user]
                       [?chan :channel/name ?chan-name]]}
             db
             chan-name
             day)
        (map first)
        ;; Remove all thread messages except for the thread parent
+       ;; and except for brodcast messages.
        ;; Note that thread parents do not have a :thread-ts value themselves
-       (remove #(if-let [thread-ts (:message/thread-ts %)]
-                  (not= thread-ts (:message/ts %))))
+       (remove #(when-let [thread-ts (:message/thread-ts %)]
+                  (not (contains? % :message/thread-broadcast?))))
        (map assoc-inst)
        (sort-by :message/inst)))
 
@@ -168,7 +169,7 @@
         chan-day-data (get chan-day-cnt (get-channel-id-by-name channel-name) {})
         range-of-days (time-util/range-of-days from-day to-day)]
     (mapv #(hash-map :day % :msg-count (get chan-day-data % 0)) range-of-days)))
-    
+
 (defn message-stats-between-days [from-day to-day]
   (letfn [(day-chan-cnt [] (:day-chan-cnt @!indexes))
           (day-total [day] (apply + (vals (get (day-chan-cnt) day))))
@@ -184,3 +185,13 @@
            #'clojurians-log.db.queries/channel-day-messages
            #'clojurians-log.datomic/db]]
   (alter-var-root v (fn [f] (memoize f))))
+
+
+(comment
+  ;; how to find channel name in the user/db
+  (defn t [db]
+    (d/q '[:find (pull ?chan [*])
+           :where
+           [?chan :channel/name "cljs-dev"]]
+         db))
+  (t (user/db)))
