@@ -55,10 +55,9 @@
 (defmethod event->tx ["message" "message_changed"] [{:keys [message channel]}]
   (event->tx (assoc message :channel channel)))
 
-;; Thread replies which are copied to the channel. For now we only include them
-;; in the thread.
 (defmethod event->tx ["message" "thread_broadcast"] [message]
-  (message->tx message))
+  (assoc
+   (message->tx message) :message/thread-broadcast? true))
 
 (defn user->tx [{:keys [id name real_name is_admin is_owner profile]}]
   (let [{:keys [image_512 email first_name real_name_normalized image_48 image_192
