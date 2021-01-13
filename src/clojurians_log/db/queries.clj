@@ -75,8 +75,7 @@
        ;; Remove all thread messages except for the thread parent
        ;; and except for brodcast messages.
        ;; Note that thread parents do not have a :thread-ts value themselves
-       (remove #(when-let [thread-ts (:message/thread-ts %)]
-                  (not (contains? % :message/thread-broadcast?))))
+       (remove #(and (:message/thread-ts %) (not (:message/thread-broadcast? %))))
        (map assoc-inst)
        (sort-by :message/inst)))
 
