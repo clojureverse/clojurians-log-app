@@ -76,8 +76,13 @@
        ;; and except for brodcast messages.
        ;; Note that thread parents do not have a :thread-ts value themselves
        (remove #(and (:message/thread-ts %) (not (:message/thread-broadcast? %))))
+       (map #(if(:message/thread-broadcast? %) 
+              (assoc % :message/top-level? true)
+               %))
        (map assoc-inst)
        (sort-by :message/inst)))
+
+;; (channel-day-messages (user/db) "cljs-dev" "2018-02-05")
 
 (defn reverse-compare
   "Compares in the reverse order to clojure.core/compare.
