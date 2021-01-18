@@ -13,6 +13,11 @@
   [{:message/keys [thread-ts ts]:as message}]
   (and thread-ts (not= ts thread-ts)))
 
+(defn- is-thread-broadcast?
+  "Answers if the `message` is a brodacst message within a thread."
+  [{:message/keys [thread-ts thread-broadcast?] :as message}]
+  (and thread-ts thread-broadcast?))
+
 (defn- find-message-with-ts
   [messages ts]
   (some #(when (= (:message/ts %) ts) %) messages))
@@ -177,28 +182,33 @@
 (defn- single-message
   "Returns the hiccup of a single message"
   [{:keys [request]
-    :data/keys [usernames channel date hostname emojis]
-    :as context}
-   {:message/keys [user inst user text thread-ts ts] :as message}]
+    :data/keys [usernames channel date hostname emojis] :as context}
+   {:message/keys [user inst user text thread-ts ts thread-broadcast? top-level?] :as message}]
   (let [{:user/keys         [name slack-id]
          :user-profile/keys [display-name real-name image-48]} user]
-    ;; things in the profile
-    ;; :image_512 :email :real_name_normalized :image_48 :image_192 :real_name :image_72 :image_24
-    ;; :avatar_hash :title :team :image_32 :display_name :display_name_normalized
+
     [:div.message
      {:id (cl.tu/format-inst-id inst)
-      :class (when (thread-child? message) "thread-msg")
+      :class (cond
+               (:message/top-level? message)
+               "top-level"
+               (is-thread-broadcast? message)
+               "thread-broadcast thread-msg"
+               (thread-child? message)
+               "thread-msg")
       :data-message-key (:message/key message)}
-     [:a.message_profile-pic {:href (str "/_/_/users/" slack-id) :style (str "background-image: url(" image-48 ");")}]
-     [:a.message_username {:href (str "/_/_/users/" slack-id)}
-      (some #(when-not (str/blank? %) %) [display-name real-name name])]
-     [:span.message_timestamp [:a {:rel  "nofollow"
-                                   :href (path-for context
-                                                   :clojurians-log.routes/message
-                                                   {:channel (:channel/name channel)
-                                                    :date date
-                                                    :ts ts})}
-                               (cl.tu/format-inst-time inst)]]
+     [:section (when (is-thread-broadcast? message)
+                 [:a
+                    {:href (str "/_/_/user/" slack-id)}
+                  (cond
+                    (:message/top-level? message)
+                    "#replied to a thread: see this"
+                    (is-thread-broadcast? message)
+                    "#Also sent to the channel")])
+
+      [:a.message_profile-pic {:href (str "/_/_/users/" slack-id) :style (str "background-image: url(" image-48 ");")}]]
+     [:a.message_username {:href (str "/_/_/users/" slack-id)} (some #(when-not (str/blank? %) %) [display-name real-name name])]
+     [:span.message_timestamp [:a {:rel  "nofollow" :href (path-for context :clojurians-log.routes/message {:channel (:channel/name channel) :date date :ts ts})} (cl.tu/format-inst-time inst)]]
      [:span.message_star]
      [:span.message_content [:p (slack-messages/message->hiccup text usernames emojis)]]
      [:div.message-reaction-bar
