@@ -199,13 +199,18 @@
       :data-message-key (:message/key message)}
      [:section (when (is-thread-broadcast? message)
                  [:a
-                    {:href (str "/_/_/user/" slack-id)}
                   (cond
                     (:message/top-level? message)
-                    "#replied to a thread: see this"
+                    {:href (path-for context :clojurians-log.routes/message
+                                     {:channel (:channel/name channel) :date date :ts thread-ts})}
+                    (is-thread-broadcast? message)
+                    {:href (path-for context :clojurians-log.routes/message
+                                     {:channel (:channel/name channel) :date date :ts ts})})
+                  (cond
+                    (:message/top-level? message)
+                    "#replied to a thread"
                     (is-thread-broadcast? message)
                     "#Also sent to the channel")])
-
       [:a.message_profile-pic {:href (str "/_/_/users/" slack-id) :style (str "background-image: url(" image-48 ");")}]]
      [:a.message_username {:href (str "/_/_/users/" slack-id)} (some #(when-not (str/blank? %) %) [display-name real-name name])]
      [:span.message_timestamp [:a {:rel  "nofollow" :href (path-for context :clojurians-log.routes/message {:channel (:channel/name channel) :date date :ts ts})} (cl.tu/format-inst-time inst)]]
