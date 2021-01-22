@@ -188,7 +188,10 @@
          :user-profile/keys [display-name real-name image-48]} user]
 
     [:div.message
-     {:id (cl.tu/format-inst-id inst)
+     {:id (str (cl.tu/format-inst-id inst)
+               (when (is-thread-broadcast? message) "-broadcast")
+               )
+      ;; (cl.tu/format-inst-id inst)
       :class (cond
                (:message/top-level? message)
                "top-level"
