@@ -208,19 +208,15 @@
                                                            (str ts "-b")
                                                            ts)})}
                                 (cl.tu/format-inst-time inst)]]
-      [:div
-       (when top-level?
-         [:span "replied to a thread:"])
-       (when thread-broadcast?
-         [:a
-          {:href (path-for context
-                           :clojurians-log.routes/message
-                           {:channel (:channel/name channel)
-                            :date date
-                            :ts (if top-level? ts (str ts "-b"))})}
-          (if top-level?
-            (slack-messages/message->text (:message/text thread-parent) usernames)
-            "#Also sent to the channel")])]]
+      (when thread-broadcast?
+        (if top-level?
+          [:div
+           [:span "replied to a thread:"]
+           [:a {:href (path-for context :clojurians-log.routes/message {:channel (:channel/name channel) :date date :ts ts})}
+            (slack-messages/message->text (:message/text thread-parent) usernames)]]
+          [:div
+           [:a {:href (path-for context :clojurians-log.routes/message {:channel (:channel/name channel) :date date :ts (str ts "-b")})}
+            "#Also sent to the channel"]]))]
      [:span.message_star]
      [:span.message_content [:p (slack-messages/message->hiccup text usernames emojis)]]
      [:div.message-reaction-bar
