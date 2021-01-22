@@ -73,8 +73,8 @@
         date                      (if (str/ends-with? date ".html")
                                     (str/replace date ".html" "")
                                     date)
-        broadcast?                (str/ends-with? ts "-b")
-        ts                        (str/replace ts #"-b" "")]
+        broadcast?                (when ts (str/ends-with? ts "-b"))
+        ts                        (when ts (str/replace ts #"-b" ""))]
 
     ;; Since we're displaying a log, presumably, all of the content is permanently cachable
     ;; Message page content also most likely have not changed and does not require any processing/page-generation.
@@ -99,9 +99,10 @@
               (assoc :data/channel (ffirst (queries/channel db channel))
                      :data/channels (queries/channel-list db date)
                      :data/messages (merge-thread-messages messages thread-messages)
-                     :data/target-message (assoc (some #(when (= (:message/ts %) ts) %)
-                                                       (concat messages thread-messages))
-                                                 :message/top-level? broadcast?)
+                     :data/target-message (when ts
+                                            (assoc (some #(when (= (:message/ts %) ts) %)
+                                                         (concat messages thread-messages))
+                                                   :message/top-level? broadcast?))
                      :data/usernames (into {} (queries/user-names db user-ids))
                      :data/emojis (emoji-url-map db)
                      :data/channel-days (queries/channel-days db channel)
