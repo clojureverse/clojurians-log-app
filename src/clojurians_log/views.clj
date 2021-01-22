@@ -13,11 +13,6 @@
   [{:message/keys [thread-ts ts]:as message}]
   (and thread-ts (not= ts thread-ts)))
 
-(defn- is-thread-broadcast?
-  "Answers if the `message` is a brodacst message within a thread."
-  [{:message/keys [thread-ts thread-broadcast?] :as message}]
-  (and thread-ts thread-broadcast?))
-
 (defn- find-message-with-ts
   [messages ts]
   (some #(when (= (:message/ts %) ts) %) messages))
@@ -83,6 +78,11 @@
   (reitit.core/match->path
    (apply reitit.core/match-by-name (get-in context [:request :reitit.core/router]) args)))
 
+(defn- message-dom-id [{:message/keys [inst thread-broadcast? top-level?]}]
+  (str
+   (cl.tu/format-inst-id inst)
+   (when (and thread-broadcast? top-level?) "-broadcast")))
+
 (defn log-page-head [{:data/keys [title channel date target-message http-origin usernames] :as context}]
   (cond-> (page-head context)
     ;; Always add a canonical rel
@@ -116,7 +116,7 @@
                           element.classList.add(\"targeted\");
                           element.scrollIntoView();
                        });"
-                     (cl.tu/format-inst-id (:message/inst target-message))))])))
+                     (message-dom-id target-message)))])))
 
 (defn channel-day-offset
   "Given a list of [date msg-count] pairs, return `date` of the entry that is
@@ -183,40 +183,44 @@
   "Returns the hiccup of a single message"
   [{:keys [request]
     :data/keys [usernames channel date hostname emojis] :as context}
-   {:message/keys [user inst user text thread-ts ts thread-broadcast? top-level?] :as message}]
+   {:message/keys [user inst user text thread-ts ts thread-parent thread-broadcast? top-level?] :as message}]
   (let [{:user/keys         [name slack-id]
          :user-profile/keys [display-name real-name image-48]} user]
-
     [:div.message
-     {:id (str (cl.tu/format-inst-id inst)
-               (when (is-thread-broadcast? message) "-broadcast")
-               )
-      ;; (cl.tu/format-inst-id inst)
+     {:id (message-dom-id message)
+      :data-inspect (pr-str message)
       :class (cond
-               (:message/top-level? message)
+               top-level?
                "top-level"
-               (is-thread-broadcast? message)
+               thread-broadcast?
                "thread-broadcast thread-msg"
                (thread-child? message)
-               "thread-msg")
-      :data-message-key (:message/key message)}
-     [:section (when (is-thread-broadcast? message)
-                 [:a
-                  (cond
-                    (:message/top-level? message)
-                    {:href (path-for context :clojurians-log.routes/message
-                                     {:channel (:channel/name channel) :date date :ts thread-ts})}
-                    (is-thread-broadcast? message)
-                    {:href (path-for context :clojurians-log.routes/message
-                                     {:channel (:channel/name channel) :date date :ts ts})})
-                  (cond
-                    (:message/top-level? message)
-                    "#replied to a thread"
-                    (is-thread-broadcast? message)
-                    "#Also sent to the channel")])
-      [:a.message_profile-pic {:href (str "/_/_/users/" slack-id) :style (str "background-image: url(" image-48 ");")}]]
-     [:a.message_username {:href (str "/_/_/users/" slack-id)} (some #(when-not (str/blank? %) %) [display-name real-name name])]
-     [:span.message_timestamp [:a {:rel  "nofollow" :href (path-for context :clojurians-log.routes/message {:channel (:channel/name channel) :date date :ts ts})} (cl.tu/format-inst-time inst)]]
+               "thread-msg")}
+     [:section
+      [:a.message_profile-pic {:href (str "/_/_/users/" slack-id) :style (str "background-image: url(" image-48 ");")}]
+      [:a.message_username {:href (str "/_/_/users/" slack-id)} (some #(when-not (str/blank? %) %) [display-name real-name name])]
+      [:span.message_timestamp [:a {:rel  "nofollow"
+                                    :href (path-for context
+                                                    :clojurians-log.routes/message
+                                                    {:channel (:channel/name channel)
+                                                     :date date
+                                                     :ts (if (and thread-broadcast? top-level?)
+                                                           (str ts "-b")
+                                                           ts)})}
+                                (cl.tu/format-inst-time inst)]]
+      [:div
+       (when top-level?
+         [:span "replied to a thread:"])
+       (when thread-broadcast?
+         [:a
+          {:href (path-for context
+                           :clojurians-log.routes/message
+                           {:channel (:channel/name channel)
+                            :date date
+                            :ts (if top-level? ts (str ts "-b"))})}
+          (if top-level?
+            (slack-messages/message->text (:message/text thread-parent) usernames)
+            "#Also sent to the channel")])]]
      [:span.message_star]
      [:span.message_content [:p (slack-messages/message->hiccup text usernames emojis)]]
      [:div.message-reaction-bar

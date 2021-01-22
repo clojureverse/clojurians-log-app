@@ -108,7 +108,8 @@
   [:code (hiccup/raw content)])
 
 (defmethod segment->hiccup :user [[type content]]
-  [:span.username "@" (:user-name content)])
+  [:span.username [:a {:href (str "/_/_/users/" (:user-id content))}
+                   "@" (:user-name content)]])
 
 (defmethod segment->hiccup :channel-id [[type content name]]
   [:i "#" (if-not (empty? name)

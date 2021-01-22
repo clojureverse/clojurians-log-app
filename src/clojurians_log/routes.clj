@@ -30,11 +30,14 @@
 (defn- merge-thread-messages
   "Attach thread messages as :message/children to their parent message"
   [messages thread-messages]
-  (let [messages-by-thread-ts (group-by :message/thread-ts thread-messages)]
+  (let [messages-by-thread-ts (group-by :message/thread-ts thread-messages)
+        messages-by-ts (into {} (map (juxt :message/ts identity) messages))]
     (map (fn [msg]
            (if-let [children (get messages-by-thread-ts (:message/ts msg))]
              (assoc msg :message/children children)
-             msg))
+             (if (:message/top-level? msg)
+               (assoc msg :message/thread-parent (-> msg :message/thread-ts messages-by-ts))
+               msg)))
          messages)))
 
 #_
@@ -69,7 +72,9 @@
         cache-time                (get-in config [:message-page :cache-time] 0)
         date                      (if (str/ends-with? date ".html")
                                     (str/replace date ".html" "")
-                                    date)]
+                                    date)
+        broadcast?                (str/ends-with? ts "-b")
+        ts                        (str/replace ts #"-b" "")]
 
     ;; Since we're displaying a log, presumably, all of the content is permanently cachable
     ;; Message page content also most likely have not changed and does not require any processing/page-generation.
@@ -94,7 +99,9 @@
               (assoc :data/channel (ffirst (queries/channel db channel))
                      :data/channels (queries/channel-list db date)
                      :data/messages (merge-thread-messages messages thread-messages)
-                     :data/target-message (some #(when (= (:message/ts %) ts) %) (apply conj messages thread-messages))
+                     :data/target-message (assoc (some #(when (= (:message/ts %) ts) %)
+                                                       (concat messages thread-messages))
+                                                 :message/top-level? broadcast?)
                      :data/usernames (into {} (queries/user-names db user-ids))
                      :data/emojis (emoji-url-map db)
                      :data/channel-days (queries/channel-days db channel)
