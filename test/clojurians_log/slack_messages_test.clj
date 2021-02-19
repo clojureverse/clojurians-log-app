@@ -25,7 +25,7 @@
         reply       "Thanks, I'm wonderful :smile:"
         user-lookup {"U4F2A0Z8ER" "xandrews"}]
     (is (= [:p [[:b "Hey"] " "
-                [:span.username "@" "xandrews"]
+                [:span.username [:a {:href "/_/_/users/U4F2A0Z8ER"} "@" "xandrews"]]
                 " how are things?"]]
            (sm/message->hiccup message user-lookup)))
     (is (= [:p ["Thanks, I'm wonderful " [:span.emoji "😄"]]]
