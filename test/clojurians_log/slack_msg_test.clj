@@ -1,4 +1,4 @@
-(ns clojurians-log.slack-mgs-test
+(ns clojurians-log.slack-msg-test
   (:require [clojurians-log.db.queries :as queries]
             [time-literals.data-readers]
             [clojure.test :refer :all]))
