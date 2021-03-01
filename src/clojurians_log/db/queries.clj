@@ -62,25 +62,29 @@
                           :user-profile/display-name
                           :user-profile/image-48]}]))
 
-(defn channel-day-messages [db chan-name day]
-  (->> (d/q {:find [pull-message-pattern]
-             :in '[$ ?chan-name ?day]
-             :where '[[?msg :message/day ?day]
-                      [?msg :message/channel ?chan]
-                      [?chan :channel/name ?chan-name]]}
-            db
-            chan-name
-            day)
-       (map first)
+(def channel-day-messages-query
+  {:find [pull-message-pattern]
+   :in '[$ ?chan-name ?day]
+   :where '[[?msg :message/day ?day]
+            [?msg :message/channel ?chan]
+            [?chan :channel/name ?chan-name]]})
+
+(defn filter-channel-day-messages [messages]
+  (->> messages
        ;; Remove all thread messages except for the thread parent
        ;; and except for brodcast messages.
        ;; Note that thread parents do not have a :thread-ts value themselves
        (remove #(and (:message/thread-ts %) (not (:message/thread-broadcast? %))))
-       (map #(if(:message/thread-broadcast? %) 
-              (assoc % :message/top-level? true)
+       (map #(if (:message/thread-broadcast? %)
+               (assoc % :message/top-level? true)
                %))
        (map assoc-inst)
        (sort-by :message/inst)))
+
+(defn channel-day-messages [db chan-name day]
+  (->> (d/q channel-day-messages-query db chan-name day)
+       (map first)
+       filter-channel-day-messages))
 
 ;; (channel-day-messages (user/db) "cljs-dev" "2018-02-05")
 
@@ -180,15 +184,14 @@
           (days-total [days] (transduce (map day-total) + 0 days))]
     (mapv #(hash-map :day % :msg-count (day-total %)) (time-util/range-of-days from-day to-day))))
 
-#_
-(doseq [v [#'clojurians-log.db.queries/user-names
-           #'clojurians-log.db.queries/channel
-           #'clojurians-log.db.queries/channel-id-map
-           #'clojurians-log.db.queries/channel-list
-           #'clojurians-log.db.queries/channel-days
-           #'clojurians-log.db.queries/channel-day-messages
-           #'clojurians-log.datomic/db]]
-  (alter-var-root v (fn [f] (memoize f))))
+#_(doseq [v [#'clojurians-log.db.queries/user-names
+             #'clojurians-log.db.queries/channel
+             #'clojurians-log.db.queries/channel-id-map
+             #'clojurians-log.db.queries/channel-list
+             #'clojurians-log.db.queries/channel-days
+             #'clojurians-log.db.queries/channel-day-messages
+             #'clojurians-log.datomic/db]]
+    (alter-var-root v (fn [f] (memoize f))))
 
 
 (comment
