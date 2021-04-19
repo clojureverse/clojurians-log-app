@@ -7,11 +7,15 @@
             [clojurians-log.components.pohjavirta :refer [new-pohjavirta]]
             [system.components.endpoint :refer [new-endpoint]]
             [system.components.middleware :refer [new-middleware]]
+            [system.components.handler :refer [new-handler]]
+            [system.components.jetty :refer [new-jetty]]
             [clojurians-log.datomic :refer [new-datomic-db]]
             [clojurians-log.config :as config]
             [clojurians-log.routes :as routes]
             [clojure.java.io :as io]
             [reloaded.repl]))
+
+(require 'compojure.core)
 
 (def config nil)
 
@@ -28,17 +32,19 @@
   (component/system-map
    :config     (->ValueComponent (atom cfg))
    :routes     (-> (new-endpoint (fn [endpoint]
-                                   (fn [request]
-                                     (let [router (reitit.ring/router routes/routes)
-                                           handler (reitit.ring/ring-handler router (reitit.ring/redirect-trailing-slash-handler {:method :strip}))]
+                                   (let [router (reitit.ring/router routes/routes)
+                                         handler (reitit.ring/ring-handler router (reitit.ring/redirect-trailing-slash-handler {:method :strip}))]
+                                     (fn [request]
                                        (handler (assoc request
                                                        :endpoint endpoint
                                                        :config cfg
                                                        ::slack-instance (get-in cfg [:slack :instance])))))))
                    (component/using [:datomic :config]))
+   :handler (-> (new-handler)
+                (component/using [:routes :middleware]))
    :middleware (new-middleware {:middleware clojurians-log.config/middleware-stack})
-   :http       (-> (new-pohjavirta {:port (:port http) :host (:host http)})
-                   (component/using [:routes :middleware]))
+   :http       (-> (new-jetty :port (:port http) :host (:host http))
+                   (component/using [:handler]))
    :server-info (server-info http)
    :datomic (new-datomic-db datomic)
    :datomic-schema (-> (new-datomic-schema)
@@ -51,7 +57,7 @@
   (let [new-garden-watcher (requiring-resolve 'garden-watcher.core/new-garden-watcher)
         style-nss ['clojurians-log.styles]]
     (-> (prod-system cfg)
-        (assoc :garden-watcher (new-garden-watcher style-nss)))))
+        #_(assoc :garden-watcher (new-garden-watcher style-nss)))))
 
 (defn -main [& [config-file]]
   (let [conf (if (and config-file (.exists (io/file config-file)))
