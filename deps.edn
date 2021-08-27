@@ -8,15 +8,15 @@
          com.stuartsierra/component {:mvn/version "0.4.0"}
          org.danielsz/system        {:mvn/version "0.4.4"}
 
-         metosin/pohjavirta                    {:mvn/version "0.0.1-alpha7"}
-         ring/ring                             {:mvn/version "1.8.0"}
-         metosin/reitit                        {:mvn/version "0.4.2"}
-         ring/ring-defaults                    {:mvn/version "0.3.2"}
-         bk/ring-gzip                          {:mvn/version "0.3.0"}
-         radicalzephyr/ring.middleware.logger  {:mvn/version "0.6.0"}
-         hiccup/hiccup                         {:mvn/version "2.0.0-alpha1"}
-         enlive/enlive                         {:mvn/version "1.1.6"}
-         compojure/compojure                   {:mvn/version "1.6.1"}
+         metosin/pohjavirta                   {:mvn/version "0.0.1-alpha7"}
+         ring/ring                            {:mvn/version "1.8.0"}
+         metosin/reitit                       {:mvn/version "0.4.2"}
+         ring/ring-defaults                   {:mvn/version "0.3.2"}
+         bk/ring-gzip                         {:mvn/version "0.3.0"}
+         radicalzephyr/ring.middleware.logger {:mvn/version "0.6.0"}
+         hiccup/hiccup                        {:mvn/version "2.0.0-alpha1"}
+         enlive/enlive                        {:mvn/version "1.1.6"}
+         compojure/compojure                  {:mvn/version "1.6.1"}
 
          prone/prone                           {:mvn/version "2020-01-17"}
          clj-logging-config/clj-logging-config {:mvn/version "1.9.12"}
@@ -30,8 +30,13 @@
          lambdaisland/repl-tools               {:mvn/version "0.1.0"}
          reloaded.repl/reloaded.repl           {:mvn/version "0.2.4"}
          markdown-to-hiccup/markdown-to-hiccup {:mvn/version "0.6.2"}
-         
-         time-literals/time-literals {:mvn/version "0.1.5"}}
+
+         time-literals/time-literals {:mvn/version "0.1.5"}
+         lambdaisland/uri            {:mvn/version "1.4.54"}
+         hato/hato                   {:mvn/version "0.8.0"}
+         io.pedestal/pedestal.log    {:mvn/version "0.5.8"}
+         com.lambdaisland/glogi      {:mvn/version "1.0.128"}
+         }
 
  :aliases {:dev {:extra-paths ["profiles/dev"]
                  :extra-deps  {vvvvalvalval/scope-capture  {:mvn/version "0.3.2"}
@@ -39,7 +44,9 @@
                                ring/ring-mock              {:mvn/version "0.4.0"}
                                hickory/hickory             {:mvn/version "0.7.1"}
                                lambdaisland/garden-watcher {:mvn/version "0.3.3"}
-                               lambdaisland/kaocha         {:mvn/version "RELEASE"}}}
+                               lambdaisland/kaocha         {:mvn/version "RELEASE"}
+                               com.lambdaisland/classpath  {:git/url "https://github.com/lambdaisland/classpath"
+                                                            :git/sha "ff96d4f07d5b12b2fe0d8b206eb4a3713ad222d6"}}}
 
            :datomic-free  {:extra-paths ["profiles/datomic_on_prem"]
                            :extra-deps  {com.datomic/datomic-free {:mvn/version "0.9.5697"}}}
