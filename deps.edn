@@ -33,8 +33,7 @@
          lambdaisland/uri            {:mvn/version "1.4.70"}
          hato/hato                   {:mvn/version "0.8.2"}
          io.pedestal/pedestal.log    {:mvn/version "0.5.9"}
-         com.lambdaisland/glogi      {:mvn/version "1.0.128"}
-         }
+         com.lambdaisland/glogi      {:mvn/version "1.0.128"}}
 
  :aliases {:dev {:extra-paths ["profiles/dev"]
                  :extra-deps  {vvvvalvalval/scope-capture  {:mvn/version "0.3.2"}
@@ -52,4 +51,9 @@
                            :extra-deps  {com.datomic/datomic-pro {:mvn/version "1.0.6316"}}}
            :datomic-cloud {:extra-paths ["profiles/datomic_cloud"]
                            :extra-deps  {com.datomic/client-cloud {:mvn/version "0.8.113"}}}
-           :postgresql    {:extra-deps {org.postgresql/postgresql {:mvn/version "42.2.23"}}}}}
+           :postgresql    {:extra-deps {org.postgresql/postgresql {:mvn/version "42.2.23"}}}}
+
+
+ :mvn/repos {"central"        {:url "https://repo1.maven.org/maven2/"}
+             "clojars"        {:url "https://clojars.org/repo"}
+             "my.datomic.com" {:url "https://my.datomic.com/repo"}}}
