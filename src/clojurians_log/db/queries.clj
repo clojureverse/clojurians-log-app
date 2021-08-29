@@ -4,6 +4,14 @@
 
 (defonce !indexes (atom nil))
 
+(defn normalize-thread-ts
+  "We don't want the first message in the thread to have a thread-ts. This doesn't
+  usually happen, but it can."
+  [m]
+  (if (= (:message/thread-ts m) (:message/ts m))
+    (dissoc m :message/thread-ts)
+    m))
+
 (defn channels-dates-msgcounts [db]
   (d/q '[:find ?slack-id ?chan-name ?day (count ?msg)
          :in $
@@ -71,12 +79,11 @@
 
 (defn filter-channel-day-messages [messages]
   (->> messages
+       (map normalize-thread-ts)
        ;; Remove all thread messages except for the thread parent
        ;; and except for brodcast messages.
        ;; Note that thread parents do not have a :thread-ts value themselves
        (remove #(and (:message/thread-ts %)
-                     ;; detect self-referenctial thread heads, this happens when importing backfilled data
-                     (not (= (:message/thread-ts %) (:message/ts %)))
                      (not (:message/thread-broadcast? %))))
        (map #(if (:message/thread-broadcast? %)
                (assoc % :message/top-level? true)
@@ -145,6 +152,7 @@
             db
             parent-tss)
        (map first)
+       (remove #(= (:message/thread-ts %) (:message/ts %)))
        (map assoc-inst)
        (sort-by :message/inst)))
 
