@@ -1,6 +1,6 @@
 (ns co.gaiwan.slack.api.web
   (:require [clojure.data.json :as json]
-            [clj-http.client :as http]
+            [hato.client :as http]
             [lambdaisland.glogc :as log]
             [lambdaisland.uri :as uri]))
 

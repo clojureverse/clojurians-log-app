@@ -4,7 +4,6 @@
             [clojurians-log.components.server-info :refer [server-info]]
             [clojurians-log.components.datomic-schema :refer [new-datomic-schema]]
             [clojurians-log.components.indexer :refer [new-indexer]]
-            [clojurians-log.components.pohjavirta :refer [new-pohjavirta]]
             [system.components.endpoint :refer [new-endpoint]]
             [system.components.middleware :refer [new-middleware]]
             [system.components.handler :refer [new-handler]]

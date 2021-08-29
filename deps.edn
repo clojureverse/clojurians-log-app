@@ -1,30 +1,28 @@
 {:paths ["src" "resources" "test"]
- :deps  {org.clojure/data.json  {:mvn/version "0.2.7"}
-         org.clojure/clojure    {:mvn/version "1.10.1"}
-         org.clojure/core.async {:mvn/version "0.7.559"}
+ :deps  {org.clojure/clojure    {:mvn/version "1.10.3"}
+         org.clojure/data.json  {:mvn/version "2.4.0"}
+         org.clojure/core.async {:mvn/version "1.3.618"}
 
-         environ/environ            {:mvn/version "1.1.0"}
-         aero/aero                  {:mvn/version "1.1.4"}
-         com.stuartsierra/component {:mvn/version "0.4.0"}
-         org.danielsz/system        {:mvn/version "0.4.4"}
+         environ/environ            {:mvn/version "1.2.0"}
+         aero/aero                  {:mvn/version "1.1.6"}
+         com.stuartsierra/component {:mvn/version "1.0.0"}
+         org.danielsz/system        {:mvn/version "0.4.7"}
 
-         metosin/pohjavirta                   {:mvn/version "0.0.1-alpha7"}
-         ring/ring                            {:mvn/version "1.8.0"}
-         metosin/reitit                       {:mvn/version "0.4.2"}
-         ring/ring-defaults                   {:mvn/version "0.3.2"}
+         ring/ring                            {:mvn/version "1.9.4"}
+         metosin/reitit                       {:mvn/version "0.5.15"}
+         ring/ring-defaults                   {:mvn/version "0.3.3"}
          bk/ring-gzip                         {:mvn/version "0.3.0"}
          radicalzephyr/ring.middleware.logger {:mvn/version "0.6.0"}
          hiccup/hiccup                        {:mvn/version "2.0.0-alpha1"}
          enlive/enlive                        {:mvn/version "1.1.6"}
-         compojure/compojure                  {:mvn/version "1.6.1"}
+         compojure/compojure                  {:mvn/version "1.6.2"}
 
-         prone/prone                           {:mvn/version "2020-01-17"}
+         prone/prone                           {:mvn/version "2021-04-23"}
          clj-logging-config/clj-logging-config {:mvn/version "1.9.12"}
 
          clojure.java-time/clojure.java-time {:mvn/version "0.3.2"}
          com.cemerick/url                    {:mvn/version "0.1.1"}
-         com.cognitect/transit-clj           {:mvn/version "0.8.319"}
-         clj-http/clj-http                   {:mvn/version "3.10.0"}
+         com.cognitect/transit-clj           {:mvn/version "1.0.324"}
          org.julienxx/clj-slack              {:mvn/version "0.6.3"}
 
          lambdaisland/repl-tools               {:mvn/version "0.1.0"}
@@ -32,26 +30,26 @@
          markdown-to-hiccup/markdown-to-hiccup {:mvn/version "0.6.2"}
 
          time-literals/time-literals {:mvn/version "0.1.5"}
-         lambdaisland/uri            {:mvn/version "1.4.54"}
-         hato/hato                   {:mvn/version "0.8.0"}
-         io.pedestal/pedestal.log    {:mvn/version "0.5.8"}
+         lambdaisland/uri            {:mvn/version "1.4.70"}
+         hato/hato                   {:mvn/version "0.8.2"}
+         io.pedestal/pedestal.log    {:mvn/version "0.5.9"}
          com.lambdaisland/glogi      {:mvn/version "1.0.128"}
          }
 
  :aliases {:dev {:extra-paths ["profiles/dev"]
                  :extra-deps  {vvvvalvalval/scope-capture  {:mvn/version "0.3.2"}
-                               cheshire/cheshire           {:mvn/version "5.8.1"}
+                               cheshire/cheshire           {:mvn/version "5.10.1"}
                                ring/ring-mock              {:mvn/version "0.4.0"}
                                hickory/hickory             {:mvn/version "0.7.1"}
-                               lambdaisland/garden-watcher {:mvn/version "0.3.3"}
+                               lambdaisland/garden-watcher {:mvn/version "1.0.36"}
                                lambdaisland/kaocha         {:mvn/version "RELEASE"}
                                com.lambdaisland/classpath  {:git/url "https://github.com/lambdaisland/classpath"
-                                                            :git/sha "ff96d4f07d5b12b2fe0d8b206eb4a3713ad222d6"}}}
+                                                            :sha "ff96d4f07d5b12b2fe0d8b206eb4a3713ad222d6"}}}
 
            :datomic-free  {:extra-paths ["profiles/datomic_on_prem"]
-                           :extra-deps  {com.datomic/datomic-free {:mvn/version "0.9.5697"}}}
+                           :extra-deps  {com.datomic/datomic-free {:mvn/version "1.0.6316"}}}
            :datomic-pro   {:extra-paths ["profiles/datomic_on_prem"]
-                           :extra-deps  {com.datomic/datomic-pro {:mvn/version "0.9.5561.56"}}}
+                           :extra-deps  {com.datomic/datomic-pro {:mvn/version "1.0.6316"}}}
            :datomic-cloud {:extra-paths ["profiles/datomic_cloud"]
-                           :extra-deps  {com.datomic/client-cloud {:mvn/version "0.8.81"}}}
-           :postgresql    {:extra-deps {org.postgresql/postgresql {:mvn/version "42.2.6"}}}}}
+                           :extra-deps  {com.datomic/client-cloud {:mvn/version "0.8.113"}}}
+           :postgresql    {:extra-deps {org.postgresql/postgresql {:mvn/version "42.2.23"}}}}}
