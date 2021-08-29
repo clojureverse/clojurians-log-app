@@ -46,7 +46,7 @@
                                                             :sha "ff96d4f07d5b12b2fe0d8b206eb4a3713ad222d6"}}}
 
            :datomic-free  {:extra-paths ["profiles/datomic_on_prem"]
-                           :extra-deps  {com.datomic/datomic-free {:mvn/version "1.0.6316"}}}
+                           :extra-deps  {com.datomic/datomic-free {:mvn/version "0.9.5697"}}}
            :datomic-pro   {:extra-paths ["profiles/datomic_on_prem"]
                            :extra-deps  {com.datomic/datomic-pro {:mvn/version "1.0.6316"}}}
            :datomic-cloud {:extra-paths ["profiles/datomic_cloud"]

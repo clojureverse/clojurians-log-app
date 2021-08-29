@@ -129,9 +129,12 @@
             (when (= today a-date)
               index))
           $)
-    (+ $ offset)
-    (nth channel-days $ nil)
-    (first $)))
+    (when $
+      (+ $ offset))
+    (when $
+      (nth channel-days $ nil))
+    (when $
+      (first $))))
 
 (defn- channel-list [{:data/keys [date channels] :as context}]
   [:div.listings_channels

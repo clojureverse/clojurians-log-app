@@ -74,7 +74,10 @@
        ;; Remove all thread messages except for the thread parent
        ;; and except for brodcast messages.
        ;; Note that thread parents do not have a :thread-ts value themselves
-       (remove #(and (:message/thread-ts %) (not (:message/thread-broadcast? %))))
+       (remove #(and (:message/thread-ts %)
+                     ;; detect self-referenctial thread heads, this happens when importing backfilled data
+                     (not (= (:message/thread-ts %) (:message/ts %)))
+                     (not (:message/thread-broadcast? %))))
        (map #(if (:message/thread-broadcast? %)
                (assoc % :message/top-level? true)
                %))

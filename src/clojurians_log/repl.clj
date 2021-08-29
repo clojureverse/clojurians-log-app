@@ -201,7 +201,7 @@
 
   (def result (load-files! (log-files)))
   ;; or
-  (def result (load-files! (files-from "2019-01-01")))
+  (def result (load-files! (files-from "2021-08-25")))
 
   ;; see progress
   (future
