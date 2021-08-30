@@ -197,9 +197,9 @@
   ;; rlwrap nc localhost 50505
   (use 'clojurians-log.repl)
   (in-ns 'clojurians-log.repl)
+  (def result (load-files! (log-files)))
   (load-slack-data!)
 
-  (def result (load-files! (log-files)))
   ;; or
   (def result (load-files! (files-from "2021-08-25")))
 

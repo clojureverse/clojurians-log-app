@@ -56,8 +56,9 @@
   (event->tx (assoc message :channel channel)))
 
 (defmethod event->tx ["message" "thread_broadcast"] [message]
-  (assoc
-   (message->tx message) :message/thread-broadcast? true))
+  (let [msg (message->tx message)]
+    (when msg
+      (assoc msg :message/thread-broadcast? true))))
 
 (defn user->tx [{:keys [id name real_name is_admin is_owner profile]}]
   (let [{:keys [image_512 email first_name real_name_normalized image_48 image_192
