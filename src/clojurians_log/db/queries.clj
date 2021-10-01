@@ -4,6 +4,10 @@
 
 (defonce !indexes (atom nil))
 
+(def scrubbed-message-ids
+  "Messages we have been asked not to display"
+  #{"1617035474.047700"})
+
 (defn normalize-thread-ts
   "We don't want the first message in the thread to have a thread-ts. This doesn't
   usually happen, but it can."
@@ -94,6 +98,7 @@
 (defn channel-day-messages [db chan-name day]
   (->> (d/q channel-day-messages-query db chan-name day)
        (map first)
+       (remove (comp scrubbed-message-ids :message/ts))
        filter-channel-day-messages))
 
 ;; (channel-day-messages (user/db) "cljs-dev" "2018-02-05")
