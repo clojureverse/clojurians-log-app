@@ -88,7 +88,7 @@
       (let [db              (d/db conn)
             messages        (queries/channel-day-messages db channel date)
             thread-messages (queries/thread-messages db (map #(:message/ts %) messages))
-            user-ids        (slack-messages/extract-user-ids messages)]
+            user-ids        (slack-messages/extract-user-ids (concat messages thread-messages))]
 
         (if (empty? messages)
           (-> (ring.util.response/response "Oops! No messages here!")
