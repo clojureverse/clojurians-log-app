@@ -19,11 +19,15 @@ given channel and a given day.
 
 ## Clojurians-log UI
 
+For everyone's understanding, let's briefly recap what clojurians-log (the app/site) actually provides:
+
 - route that renders all messages for a given date/channel
 - thread messages are rendered with the thread head, so on the date of the first message
+- emoji reactions on messages are shown, similar to how they look in slack
+- users are rendered with their avatar, the image is loaded directly from slack
 - each page has an overview of all channels that have messages on the same date, with a count of the number of messages
 - there's also a route for each message, this renders the same date/channel history, but scrolls to and highlights the message
-- route for a user's info 
+- there's a route for a user's info 
 
 ## History
 
