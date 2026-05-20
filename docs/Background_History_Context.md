@@ -258,6 +258,12 @@ I've done work on a new
 events. This also archives images/attachments. I've also experimented with
 filesystem based approaches as part of our clj-slack repo.
 
+I also started an experiment called
+[multislack](https://github.com/GaiwanTeam/multislack), it's basically
+clojurians-log-app, but based on file storage, and with multi-tenancy built in
+based on vhost, so you can cheaply host archives of multiple slack workspaces
+from a single deployment.
+
 ## Filesystem based approach
 
 The idea here is to keep an intermediate format, similar to the raw archive
@@ -285,3 +291,4 @@ not a huge issue.
 - RTMBot (python): https://github.com/clojureverse/rtmbot
 - Slack Event Sink: https://github.com/GaiwanTeam/slack-event-sink
 - Slack Backfill: https://github.com/lambdaisland/slack-backfill
+- Multislack: https://github.com/GaiwanTeam/multislack
