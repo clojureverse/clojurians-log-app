@@ -132,7 +132,7 @@ That all said, with some careful tweaking of the JVM memory flags for both the
 transactor and the application, by putting CloudFlare in front and letting it
 cache, and by setting up a [aggressive bot
 blocklist](https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker)
-we've managed to keep this mostly under the control, sacrificing some liveness
+we've managed to keep this mostly under control, sacrificing some liveness
 because of the caching.
 
 
@@ -180,7 +180,7 @@ annoying to work with for local dev at least, since you need a publicly
 accessible HTTPS endpoint. I use [FRP](https://github.com/fatedier/frp) for
 that.
 
-This is the mechanism [slack-event-sink](https://github.com/GaiwanTeam/slack-event-sink) uses. 
+This is the mechanism [slack-event-sink](https://github.com/GaiwanTeam/slack-event-sink) uses, which I think may become the spiritual successor to rtmbot. 
 
 ## Slack Markdown
 
