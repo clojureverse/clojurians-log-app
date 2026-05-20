@@ -216,6 +216,13 @@ something controlled directly by the community or a non-profit.
 DNS is with DNSimple, clojurians-log.clojureverse.org goes to CloudFlare,
 clojurians-log-internal.clojureverse.org goes to the machine itself.
 
+## Zulip
+
+For a number years we've also had a bridge from Slack to Zulip, built by Gert
+Goet (eval2020). It don't know too much about it, but presumably it deals with a
+lot of the same challenges. It seems it has also stopped working, possibly
+because of the legacy bot tokens being deprecated.
+
 ## WIP
 
 Mitesh and I have both worked on a number of pieces that are supposed to become
